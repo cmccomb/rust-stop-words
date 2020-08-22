@@ -2,6 +2,7 @@
 name = "stop-words"
 version = "0.1.0"
 authors = ["Chris McCOmb <ccmcc2012@gmail.comm"]
+description = "Common stop words in several languages"
 edition = "2018"
 readme = "README.md"
 repository = "https://github.com/cmccomb/stop-words"
