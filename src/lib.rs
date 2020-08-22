@@ -122,7 +122,7 @@ mod tests {
     }
 
     #[test]
-    fn good_language_code_2T() {
+    fn good_language_code_2t() {
         let x = get("eng");
         for y in x {
             println!("{}", y);
@@ -173,7 +173,7 @@ mod tests {
 
     #[test]
     #[should_panic]
-    fn bad_language_code_2T() {
+    fn bad_language_code_2t() {
         let x = get("zzz");
         for y in x {
             println!("{}", y);
