@@ -1,5 +1,8 @@
 use stop_words;
 
 fn main() {
-    let x = stop_words::get("english");
+    let words = stop_words::get("english");
+    for word in words {
+        println!("{}", word)
+    }
 }

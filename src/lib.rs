@@ -9,8 +9,6 @@
 //!
 //! ```
 
-use std::fs;
-
 /// Constant containing an array of available language names
 pub const LANGUAGES: [&str; 25] = ["arabic", "catalan", "danish", "english", "french", "hindi",
     "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "vietnamese",
