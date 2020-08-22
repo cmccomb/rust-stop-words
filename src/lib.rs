@@ -7,7 +7,8 @@ const LANGUAGES: [&str; 26] = ["arabic", "catalan", "danish", "english", "french
     "vietnamese", "bulgarian", "czech", "dutch", "finnish", "german", "hungarian", "italian",
     "polish", "romanian", "slovak", "swedish", "ukrainian"];
 
-
+// TODO: Make sure filepaths work across platforms
+// TODO: Better error handling here - maybe use Result?
 /// The only function you'll ever need! Given a language code it returns common stop words
 pub fn get(language: &str) -> Vec<String> {
     if language_exists(language) {
@@ -42,6 +43,8 @@ fn read_from_file(filename: String) -> Vec<String> {
     output
 }
 
+
+// TODO: More tests
 #[cfg(test)]
 mod tests {
     use crate::get;
