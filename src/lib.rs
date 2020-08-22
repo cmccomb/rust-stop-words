@@ -10,16 +10,17 @@
 //! ```
 
 /// Constant containing an array of available language names
-pub const LANGUAGES: [&str; 25] = ["arabic", "catalan", "danish", "english", "french", "hindi",
+pub const LANGUAGES: [&str; 26] = ["arabic", "catalan", "danish", "english", "french", "hindi",
     "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "vietnamese",
     "bulgarian", "czech", "dutch", "finnish", "german", "hungarian", "italian", "polish",
-    "romanian", "slovak", "swedish", "ukrainian"];
+    "romanian", "slovak", "swedish", "ukrainian", "hebrew"];
 
 // TODO: Add support for ISO language codes
 /// The only function you'll ever need! Given a language code it returns common stop words
 pub fn get(language: &str) -> Vec<String> {
     match language {
         "english" => read_from_bytes(include_bytes!("english.txt")),
+        "hebrew" => read_from_bytes(include_bytes!("hebrew.txt")),
         "arabic" => read_from_bytes(include_bytes!("arabic.txt")),
         "catalan" => read_from_bytes(include_bytes!("catalan.txt")),
         "danish" => read_from_bytes(include_bytes!("danish.txt")),
@@ -79,6 +80,30 @@ mod tests {
     #[test]
     fn good_language_name() {
         let x = get("arabic");
+        for y in x {
+            println!("{}", y);
+        }
+    }
+
+    #[test]
+    fn hebrew() {
+        let x = get("hebrew");
+        for y in x {
+            println!("{}", y);
+        }
+    }
+
+    #[test]
+    fn arabic() {
+        let x = get("arabic");
+        for y in x {
+            println!("{}", y);
+        }
+    }
+
+    #[test]
+    fn russian() {
+        let x = get("russian");
         for y in x {
             println!("{}", y);
         }
