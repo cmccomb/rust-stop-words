@@ -8,7 +8,7 @@ repository = "https://github.com/cmccomb/stop-words"
 homepage = "https://github.com/cmccomb/stop-words"
 documentation = "https://docs.rs/stop-words"
 license = "MIT OR Apache-2.0"
-keywords = ["nlp", ""stop-words"]
+keywords = ["nlp", "stop-words"]
 categories = ["text-processing", "internationalization", "localization"]
 
 [dependencies]
