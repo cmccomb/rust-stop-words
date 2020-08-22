@@ -61,4 +61,16 @@ fn main() {
     }
 }
 ```
-The function ``get`` accepts full language names (in English), ISO 693-1 language codes, and ISO 693-2T language codes.
+The function ``get`` accepts full language names (in English), ISO 693-1 language codes (2-letter codes), and ISO 693-2T (3-letter codes) language codes. This means you can also do this:
+```
+let words = stop_words::get("en");
+```
+or this:
+```
+let words = stop_words::get("eng");
+```
+Finally, you can also convert the ``Vec<String>``of words to a ``HashSet<String>``
+```
+let vec = stop_words::get("en");
+let set = stop_words::vec_to_set(vec);
+```

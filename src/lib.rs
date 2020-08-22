@@ -35,26 +35,6 @@
 //! - Ukrainian
 //! - Vietnamese
 
-//! # Usage
-//! Using this crate is fairly straight-forward:
-//! ```
-//! // Get the stop words
-//! let words = stop_words::get("english");
-//!
-//! // Print them
-//! for word in words {
-//!     println!("{}", word)
-//! }
-//! ```
-//! The function ``get`` accepts full language names (in English), ISO 693-1 language codes (2-letter codes), and ISO 693-2T (3-letter codes) language codes. This means you can also do this:
-//! ```
-//! let words = stop_words::get("en");
-//! ```
-//! or this:
-//! ```
-//! let words = stop_words::get("eng");
-//! ```
-
 use std::collections::HashSet;
 
 /// Constant containing an array of available language names, spelled out
@@ -157,9 +137,9 @@ fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
 ///
 /// ```
 /// let vec = stop_words::get("nl");
-/// let set = stop_words::vec_to_hash(vec);
+/// let set = stop_words::vec_to_set(vec);
 /// ```
-pub fn vec_to_hash(words: Vec<String>) -> HashSet<String> {
+pub fn vec_to_set(words: Vec<String>) -> HashSet<String> {
     let mut hash_words: HashSet<String> = HashSet::new();
     for word in words {
         hash_words.insert(word);
@@ -260,12 +240,12 @@ mod panic_tests {
 
 #[cfg(test)]
 mod conversion_tests {
-    use crate::{get, vec_to_hash};
+    use crate::{get, vec_to_set};
 
     #[test]
     fn convert_to_set() {
         let vec = get("es");
-        let set = vec_to_hash(vec);
+        let set = vec_to_set(vec);
         for y in set {
             println!("{}", y);
         }
