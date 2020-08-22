@@ -2,11 +2,60 @@
 #![warn(missing_docs)]
 #![warn(missing_doc_code_examples)]
 
-//! This module contains stop words for a number of languages, using data from [this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291)
+//! # About
+//! Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text
+//! analysis or natural language processing. This crate contains common stop words for a variety of languages. All stop word
+//! lists are from [this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291).
+//!
+//! This crate currently includes the following languages:
+//! - Arabic
+//! - Bulgarian
+//! - Catalan
+//! - Czech
+//! - Danish
+//! - Dutch
+//! - English
+//! - Finnish
+//! - French
+//! - German
+//! - Hebrew
+//! - Hindi
+//! - Hungarian
+//! - Indonesian
+//! - Italian
+//! - Norwegian
+//! - Polish
+//! - Portuguese
+//! - Romanian
+//! - Russian
+//! - Slovak
+//! - Spanish
+//! - Swedish
+//! - Turkish
+//! - Ukrainian
+//! - Vietnamese
+
+//! # Usage
+//! Using this crate is fairly straight-forward:
 //! ```
-//! use stop_words;
-//! let x = stop_words::get("english");
+//! // Get the stop words
+//! let words = stop_words::get("english");
+//!
+//! // Print them
+//! for word in words {
+//!     println!("{}", word)
+//! }
 //! ```
+//! The function ``get`` accepts full language names (in English), ISO 693-1 language codes (2-letter codes), and ISO 693-2T (3-letter codes) language codes. This means you can also do this:
+//! ```
+//! let words = stop_words::get("en");
+//! ```
+//! or this:
+//! ```
+//! let words = stop_words::get("eng");
+//! ```
+
+use std::collections::HashSet;
 
 /// Constant containing an array of available language names, spelled out
 pub const LANGUAGES: [&str; 26] = ["arabic", "catalan", "danish", "english", "french", "hindi",
@@ -15,18 +64,22 @@ pub const LANGUAGES: [&str; 26] = ["arabic", "catalan", "danish", "english", "fr
     "romanian", "slovak", "swedish", "ukrainian", "hebrew"];
 
 /// Constant containing an array of available language names, using ISO-693-1 codes
-const LANGUAGES_ISO_693_1: [&str; 26] = ["ar", "ca", "da", "en", "fr", "hi",
+pub const LANGUAGES_ISO_693_1: [&str; 26] = ["ar", "ca", "da", "en", "fr", "hi",
     "in", "nn", "pt", "ru", "es", "tr", "vi",
     "bg", "cs", "nl", "fi", "de", "hu", "it", "pl",
     "ro", "sk", "sv", "uk", "he"];
 
 /// Constant containing an array of available language names, using ISO-693-2T codes
-const LANGUAGES_ISO_693_2T: [&str; 26] = ["ara", "cat", "dan", "eng", "fra", "hin",
+pub const LANGUAGES_ISO_693_2T: [&str; 26] = ["ara", "cat", "dan", "eng", "fra", "hin",
     "ind", "nno", "por", "rus", "spa", "tur", "vie",
     "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol",
     "ron", "slk", "swe", "ukr", "heb"];
 
-/// The only function you'll ever need! Given a language code it returns common stop words
+/// The only function you'll ever need! Given a language code or name it returns common stop words as a ``Vec<String>``
+///
+/// ```
+/// let vec = stop_words::get("spanish");
+/// ```
 pub fn get(language: &str) -> Vec<String> {
     // Check to see if its an ISO code, and if so
     let new_language= if language.len() == 2 {
@@ -48,7 +101,7 @@ pub fn get(language: &str) -> Vec<String> {
         "hindi" => read_from_bytes(include_bytes!("hindi.txt")),
         "indonesian" => read_from_bytes(include_bytes!("indonesian.txt")),
         "norwegian" => read_from_bytes(include_bytes!("norwegian.txt")),
-        "portugese" => read_from_bytes(include_bytes!("portuguese.txt")),
+        "portuguese" => read_from_bytes(include_bytes!("portuguese.txt")),
         "russian" => read_from_bytes(include_bytes!("russian.txt")),
         "spanish" => read_from_bytes(include_bytes!("spanish.txt")),
         "turkish" => read_from_bytes(include_bytes!("turkish.txt")),
@@ -100,9 +153,22 @@ fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
     output
 }
 
-// TODO: More tests
+/// This function converts the standard ``Vec<String>`` output to a ``HashSet<String>``
+///
+/// ```
+/// let vec = stop_words::get("nl");
+/// let set = stop_words::vec_to_hash(vec);
+/// ```
+pub fn vec_to_hash(words: Vec<String>) -> HashSet<String> {
+    let mut hash_words: HashSet<String> = HashSet::new();
+    for word in words {
+        hash_words.insert(word);
+    }
+    hash_words
+}
+
 #[cfg(test)]
-mod tests {
+mod good_tests {
     use crate::get;
 
     #[test]
@@ -128,6 +194,11 @@ mod tests {
             println!("{}", y);
         }
     }
+}
+
+#[cfg(test)]
+mod weird_character_tests {
+    use crate::get;
 
     #[test]
     fn hebrew() {
@@ -152,8 +223,13 @@ mod tests {
             println!("{}", y);
         }
     }
+}
 
-    #[test]
+#[cfg(test)]
+mod panic_tests {
+    use crate::get;
+
+        #[test]
     #[should_panic]
     fn bad_language_name() {
         let x = get("engilsh");
@@ -176,6 +252,21 @@ mod tests {
     fn bad_language_code_2t() {
         let x = get("zzz");
         for y in x {
+            println!("{}", y);
+        }
+    }
+}
+
+
+#[cfg(test)]
+mod conversion_tests {
+    use crate::{get, vec_to_hash};
+
+    #[test]
+    fn convert_to_set() {
+        let vec = get("es");
+        let set = vec_to_hash(vec);
+        for y in set {
             println!("{}", y);
         }
     }
