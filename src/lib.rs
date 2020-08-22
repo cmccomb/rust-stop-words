@@ -20,7 +20,7 @@ const LANGUAGES_ISO_693_1: [&str; 26] = ["ar", "ca", "da", "en", "fr", "hi",
     "bg", "cs", "nl", "fi", "de", "hu", "it", "pl",
     "ro", "sk", "sv", "uk", "he"];
 
-/// Constant containing an array of available language names, using ISO-693-1 codes
+/// Constant containing an array of available language names, using ISO-693-2T codes
 const LANGUAGES_ISO_693_2T: [&str; 26] = ["ara", "cat", "dan", "eng", "fra", "hin",
     "ind", "nno", "por", "rus", "spa", "tur", "vie",
     "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol",
