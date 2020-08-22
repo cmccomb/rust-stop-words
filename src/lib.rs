@@ -2,11 +2,33 @@
 
 use std::fs;
 
+const LANGUAGES: [&str; 26] = ["arabic", "catalan", "danish", "english", "french", "hindi",
+    "indonesian", "languages", "norwegian", "portuguese", "russian", "spanish", "turkish",
+    "vietnamese", "bulgarian", "czech", "dutch", "finnish", "german", "hungarian", "italian",
+    "polish", "romanian", "slovak", "swedish", "ukrainian"];
+
+
 /// The only function you'll ever need! Given a language code it returns common stop words
 pub fn get(language: &str) -> Vec<String> {
-    read_from_file("./src/data/".to_owned() + language + ".txt")
+    if language_exists(language) {
+        read_from_file("./src/data/".to_owned() + language + ".txt")
+    } else {
+        vec!["Language not found".to_string(); 0]
+    }
 }
 
+
+fn language_exists(language: &str) -> bool {
+    let mut language_exists = false;
+    for language_option in LANGUAGES.iter() {
+        println!("{}", language == *language_option );
+        if language == *language_option {
+            language_exists = true;
+            break;
+        }
+    }
+    language_exists
+}
 
 /// This function is only used internally to read in stopwords from file. It is not public.
 fn read_from_file(filename: String) -> Vec<String> {
