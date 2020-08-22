@@ -1,8 +1,14 @@
 //! This module contains stop words for a number of languages, based on [this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291)
+//! ```
+//! use stop_words;
+//! let x = stop_words::get("english");
+//! ```
+
 
 use std::fs;
 
-const LANGUAGES: [&str; 26] = ["arabic", "catalan", "danish", "english", "french", "hindi",
+/// Constant containing an array of available language names
+pub const LANGUAGES: [&str; 26] = ["arabic", "catalan", "danish", "english", "french", "hindi",
     "indonesian", "languages", "norwegian", "portuguese", "russian", "spanish", "turkish",
     "vietnamese", "bulgarian", "czech", "dutch", "finnish", "german", "hungarian", "italian",
     "polish", "romanian", "slovak", "swedish", "ukrainian"];
