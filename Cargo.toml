@@ -4,11 +4,11 @@ version = "0.1.0"
 authors = ["Chris McCOmb <ccmcc2012@gmail.comm"]
 edition = "2018"
 readme = "README.md"
-repository = "https://github.com/cmccomb/vote"
-homepage = "https://github.com/cmccomb/vote"
-documentation = "https://docs.rs/vote"
+repository = "https://github.com/cmccomb/stop-words"
+homepage = "https://github.com/cmccomb/stop-words"
+documentation = "https://docs.rs/stop-words"
 license = "MIT OR Apache-2.0"
-keywords = ["natural language processing", "stop words"]
-categories = ["algorithms", "mathematics", "science"]
+keywords = ["natural-language-processing", "stop-words"]
+categories = ["text-processing", "internationalization", "localization"]
 
 [dependencies]
