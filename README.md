@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/cmccomb/stop-words.svg?branch=master)](https://travis-ci.org/cmccomb/stop-words)
+[![Build Status](https://travis-ci.org/cmccomb/rust-stop-words.svg?branch=master)](https://travis-ci.org/cmccomb/rust-stop-words)
 [![Crates.io](https://img.shields.io/crates/v/stop-words.svg)](https://crates.io/crates/stop-words)
 # About
 Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text 
