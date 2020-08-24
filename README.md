@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/cmccomb/rust-stop-words.svg?branch=master)](https://travis-ci.org/cmccomb/rust-stop-words)
 [![Crates.io](https://img.shields.io/crates/v/stop-words.svg)](https://crates.io/crates/stop-words)
+[![docs.rs](https://docs.rs/stop-words/badge.svg)](https://docs.rs/stop-words)
 # About
 Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text 
 analysis or natural language processing. This crate contains common stop words for a variety of languages. All stop word 
@@ -35,14 +36,14 @@ This crate currently includes the following languages:
 
 # Installation
 Install through ``crates.io`` with:
-```
+```bash
 cargo install stop_words
 ```
 
 Then add it to your ``Cargo.toml` with:
 ```toml
 [dependencies]
-stop-words = "0.1.2"
+stop-words = "0.1.5"
 ```
 and add this to your root:
 ```rust
