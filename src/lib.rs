@@ -198,6 +198,7 @@ pub fn vec_to_set(words: Vec<String>) -> HashSet<String> {
     hash_words
 }
 
+// TODO more extensive tests and explicit tests of conversion functions
 #[cfg(test)]
 mod good_tests {
     use crate::{get, get_nltk};
