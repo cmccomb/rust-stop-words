@@ -154,6 +154,7 @@ fn convert_language_code(language: &str) -> &str {
 }
 
 /// This function converts the ISO-693-1 language string to a full name
+// TODO: Possible to DRY out this function?
 fn convert_language_from_iso_693_1(code: &str) -> &str {
     let mut iter = LANGUAGES_ISO_693_1.iter();
     let idx = iter.position(|&x| x == code);
@@ -164,6 +165,7 @@ fn convert_language_from_iso_693_1(code: &str) -> &str {
 }
 
 /// This function converts the ISO-693-1 language string to a full name
+// TODO: Possible to DRY out this function?
 fn convert_language_from_iso_693_2t(code: &str) -> &str {
     let mut iter = LANGUAGES_ISO_693_2T.iter();
     let idx = iter.position(|&x| x == code);
