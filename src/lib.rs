@@ -38,22 +38,23 @@
 use std::collections::HashSet;
 
 /// Constant containing an array of available language names, spelled out
-pub const LANGUAGES: [&str; 26] = ["arabic", "catalan", "danish", "english", "french", "hindi",
-    "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "vietnamese",
+pub const LANGUAGES: [&str; 28] = ["arabic", "azerbaijani", "catalan", "danish", "english", "french",
+    "hindi", "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "vietnamese",
     "bulgarian", "czech", "dutch", "finnish", "german", "hungarian", "italian", "polish",
-    "romanian", "slovak", "swedish", "ukrainian", "hebrew"];
+    "romanian", "slovak", "swedish", "ukrainian", "hebrew", "greek"];
+// TODO: Add Kazakh, Nepali, Slovene, Tajik
 
 /// Constant containing an array of available language names, using ISO-693-1 codes
-pub const LANGUAGES_ISO_693_1: [&str; 26] = ["ar", "ca", "da", "en", "fr", "hi",
-    "in", "nn", "pt", "ru", "es", "tr", "vi",
+pub const LANGUAGES_ISO_693_1: [&str; 28] = ["ar", "az", "ca", "da", "en", "fr",
+    "hi", "in", "nn", "pt", "ru", "es", "tr", "vi",
     "bg", "cs", "nl", "fi", "de", "hu", "it", "pl",
-    "ro", "sk", "sv", "uk", "he"];
+    "ro", "sk", "sv", "uk", "he", "el"];
 
 /// Constant containing an array of available language names, using ISO-693-2T codes
-pub const LANGUAGES_ISO_693_2T: [&str; 26] = ["ara", "cat", "dan", "eng", "fra", "hin",
-    "ind", "nno", "por", "rus", "spa", "tur", "vie",
+pub const LANGUAGES_ISO_693_2T: [&str; 28] = ["ara", "aze", "cat", "dan", "eng", "fra",
+    "hin", "ind", "nno", "por", "rus", "spa", "tur", "vie",
     "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol",
-    "ron", "slk", "swe", "ukr", "heb"];
+    "ron", "slk", "swe", "ukr", "heb", "ell"];
 
 /// The only function you'll ever need! Given a language code or name it returns common stop words as a ``Vec<String>``
 ///
@@ -61,6 +62,7 @@ pub const LANGUAGES_ISO_693_2T: [&str; 26] = ["ara", "cat", "dan", "eng", "fra",
 /// let vec = stop_words::get("spanish");
 /// ```
 pub fn get(language: &str) -> Vec<String> {
+    // TODO: Auto lowercase
     // Check to see if its an ISO code, and if so
     let new_language= if language.len() == 2 {
         convert_language_from_iso_693_1(language)
@@ -70,7 +72,7 @@ pub fn get(language: &str) -> Vec<String> {
         language
     };
 
-    // Match the full language name
+    // Match the full language name TODO: Add in NLTK options
     match new_language {
         "english" =>    read_from_bytes(include_bytes!("savand/english.txt")),
         "hebrew" =>     read_from_bytes(include_bytes!("savand/hebrew.txt")),
@@ -98,7 +100,7 @@ pub fn get(language: &str) -> Vec<String> {
         "slovak" =>     read_from_bytes(include_bytes!("savand/slovak.txt")),
         "swedish" =>    read_from_bytes(include_bytes!("savand/swedish.txt")),
         "ukrainian" =>  read_from_bytes(include_bytes!("savand/ukrainian.txt")),
-        _ =>            panic!("It looks like you're trying to spell out a full language name. Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English", language)
+        _ =>            panic!("It looks like you're trying to spell out a full language name. Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English.", language)
     }
 }
 
