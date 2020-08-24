@@ -102,6 +102,15 @@ pub fn get(language: &str) -> Vec<String> {
     }
 }
 
+/// Ok, you might need this function too. It fetches stop words specifically for NLTK.
+///
+/// ```
+/// let vec = stop_words::get_nltk("spanish");
+/// ```
+pub fn get_nltk(language: &str) -> Vec<String> {
+
+}
+
 /// This function converts the ISO-693-1 language string to a full name
 fn convert_language_from_iso_693_1(code: &str) -> &str {
     let mut iter = LANGUAGES_ISO_693_1.iter();
