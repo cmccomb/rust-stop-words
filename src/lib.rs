@@ -72,33 +72,33 @@ pub fn get(language: &str) -> Vec<String> {
 
     // Match the full language name
     match new_language {
-        "english" => read_from_bytes(include_bytes!("english.txt")),
-        "hebrew" => read_from_bytes(include_bytes!("hebrew.txt")),
-        "arabic" => read_from_bytes(include_bytes!("arabic.txt")),
-        "catalan" => read_from_bytes(include_bytes!("catalan.txt")),
-        "danish" => read_from_bytes(include_bytes!("danish.txt")),
-        "french" => read_from_bytes(include_bytes!("french.txt")),
-        "hindi" => read_from_bytes(include_bytes!("hindi.txt")),
-        "indonesian" => read_from_bytes(include_bytes!("indonesian.txt")),
-        "norwegian" => read_from_bytes(include_bytes!("norwegian.txt")),
-        "portuguese" => read_from_bytes(include_bytes!("portuguese.txt")),
-        "russian" => read_from_bytes(include_bytes!("russian.txt")),
-        "spanish" => read_from_bytes(include_bytes!("spanish.txt")),
-        "turkish" => read_from_bytes(include_bytes!("turkish.txt")),
-        "vietnamese" => read_from_bytes(include_bytes!("vietnamese.txt")),
-        "bulgarian" => read_from_bytes(include_bytes!("bulgarian.txt")),
-        "czech" => read_from_bytes(include_bytes!("czech.txt")),
-        "dutch" => read_from_bytes(include_bytes!("dutch.txt")),
-        "finnish" => read_from_bytes(include_bytes!("finnish.txt")),
-        "german" => read_from_bytes(include_bytes!("german.txt")),
-        "hungarian" => read_from_bytes(include_bytes!("hungarian.txt")),
-        "italian" => read_from_bytes(include_bytes!("italian.txt")),
-        "polish" => read_from_bytes(include_bytes!("polish.txt")),
-        "romanian" => read_from_bytes(include_bytes!("romanian.txt")),
-        "slovak" => read_from_bytes(include_bytes!("slovak.txt")),
-        "swedish" => read_from_bytes(include_bytes!("swedish.txt")),
-        "ukrainian" => read_from_bytes(include_bytes!("ukrainian.txt")),
-        _ => panic!("It looks like you're trying to spell out a full language name. Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English", language)
+        "english" =>    read_from_bytes(include_bytes!("savand/english.txt")),
+        "hebrew" =>     read_from_bytes(include_bytes!("savand/hebrew.txt")),
+        "arabic" =>     read_from_bytes(include_bytes!("savand/arabic.txt")),
+        "catalan" =>    read_from_bytes(include_bytes!("savand/catalan.txt")),
+        "danish" =>     read_from_bytes(include_bytes!("savand/danish.txt")),
+        "french" =>     read_from_bytes(include_bytes!("savand/french.txt")),
+        "hindi" =>      read_from_bytes(include_bytes!("savand/hindi.txt")),
+        "indonesian" => read_from_bytes(include_bytes!("savand/indonesian.txt")),
+        "norwegian" =>  read_from_bytes(include_bytes!("savand/norwegian.txt")),
+        "portuguese" => read_from_bytes(include_bytes!("savand/portuguese.txt")),
+        "russian" =>    read_from_bytes(include_bytes!("savand/russian.txt")),
+        "spanish" =>    read_from_bytes(include_bytes!("savand/spanish.txt")),
+        "turkish" =>    read_from_bytes(include_bytes!("savand/turkish.txt")),
+        "vietnamese" => read_from_bytes(include_bytes!("savand/vietnamese.txt")),
+        "bulgarian" =>  read_from_bytes(include_bytes!("savand/bulgarian.txt")),
+        "czech" =>      read_from_bytes(include_bytes!("savand/czech.txt")),
+        "dutch" =>      read_from_bytes(include_bytes!("savand/dutch.txt")),
+        "finnish" =>    read_from_bytes(include_bytes!("savand/finnish.txt")),
+        "german" =>     read_from_bytes(include_bytes!("savand/german.txt")),
+        "hungarian" =>  read_from_bytes(include_bytes!("savand/hungarian.txt")),
+        "italian" =>    read_from_bytes(include_bytes!("savand/italian.txt")),
+        "polish" =>     read_from_bytes(include_bytes!("savand/polish.txt")),
+        "romanian" =>   read_from_bytes(include_bytes!("savand/romanian.txt")),
+        "slovak" =>     read_from_bytes(include_bytes!("savand/slovak.txt")),
+        "swedish" =>    read_from_bytes(include_bytes!("savand/swedish.txt")),
+        "ukrainian" =>  read_from_bytes(include_bytes!("savand/ukrainian.txt")),
+        _ =>            panic!("It looks like you're trying to spell out a full language name. Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English", language)
     }
 }
 
@@ -108,7 +108,7 @@ pub fn get(language: &str) -> Vec<String> {
 /// let vec = stop_words::get_nltk("spanish");
 /// ```
 pub fn get_nltk(language: &str) -> Vec<String> {
-
+    vec!["".to_string(); 0]
 }
 
 /// This function converts the ISO-693-1 language string to a full name
