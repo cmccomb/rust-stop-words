@@ -40,7 +40,7 @@ cargo install stop_words
 ```
 
 Then add it to your ``Cargo.toml` with:
-```
+```toml
 [dependencies]
 stop-words = "0.1.2"
 ```
@@ -48,7 +48,7 @@ stop-words = "0.1.2"
 
 # Usage
 Using this crate is fairly straight-forward: 
-```
+```rust
 use stop_words;
 
 fn main() {
@@ -62,15 +62,15 @@ fn main() {
 }
 ```
 The function ``get`` accepts full language names (in English), ISO 693-1 language codes (2-letter codes), and ISO 693-2T (3-letter codes) language codes. This means you can also do this:
-```
+```rust
 let words = stop_words::get("en");
 ```
 or this:
-```
+```rust
 let words = stop_words::get("eng");
 ```
 Finally, you can also convert the ``Vec<String>``of words to a ``HashSet<String>``
-```
+```rust
 let vec = stop_words::get("en");
 let set = stop_words::vec_to_set(vec);
 ```
