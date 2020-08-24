@@ -2,12 +2,13 @@
 [![Crates.io](https://img.shields.io/crates/v/stop-words.svg)](https://crates.io/crates/stop-words)
 [![docs.rs](https://docs.rs/stop-words/badge.svg)](https://docs.rs/stop-words)
 # About
-Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text 
-analysis or natural language processing. This crate contains common stop words for a variety of languages. All stop word 
-lists are from [this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291). 
+Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text
+analysis or natural language processing. This crate contains common stop words for a variety of languages. This crate uses stop word
+lists from [this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291) and also from [NLTK](https://www.nltk.org/).
 
 This crate currently includes the following languages:
 - Arabic
+- Azerbaijani
 - Bulgarian
 - Catalan
 - Czech
@@ -17,19 +18,24 @@ This crate currently includes the following languages:
 - Finnish
 - French
 - German
+- Greek
 - Hebrew
 - Hindi
 - Hungarian
 - Indonesian
+- Kazakh
 - Italian
+- Nepali
 - Norwegian
 - Polish
 - Portuguese
 - Romanian
 - Russian
 - Slovak
+- Slovenian
 - Spanish
 - Swedish
+- Tajik
 - Turkish
 - Ukrainian
 - Vietnamese

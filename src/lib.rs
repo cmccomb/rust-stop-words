@@ -4,11 +4,12 @@
 
 //! # About
 //! Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text
-//! analysis or natural language processing. This crate contains common stop words for a variety of languages. All stop word
-//! lists are from [this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291).
+//! analysis or natural language processing. This crate contains common stop words for a variety of languages. This crate uses stop word
+//! lists from [this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291) and also from [NLTK](https://www.nltk.org/).
 //!
 //! This crate currently includes the following languages:
 //! - Arabic
+//! - Azerbaijani
 //! - Bulgarian
 //! - Catalan
 //! - Czech
@@ -18,19 +19,24 @@
 //! - Finnish
 //! - French
 //! - German
+//! - Greek
 //! - Hebrew
 //! - Hindi
 //! - Hungarian
 //! - Indonesian
 //! - Italian
+//! - Kazakh
+//! - Nepali
 //! - Norwegian
 //! - Polish
 //! - Portuguese
 //! - Romanian
 //! - Russian
 //! - Slovak
+//! - Slovenian
 //! - Spanish
 //! - Swedish
+//! - Tajik
 //! - Turkish
 //! - Ukrainian
 //! - Vietnamese
@@ -38,23 +44,25 @@
 use std::collections::HashSet;
 
 /// Constant containing an array of available language names, spelled out
-pub const LANGUAGES: [&str; 28] = ["arabic", "azerbaijani", "catalan", "danish", "english", "french",
+pub const LANGUAGES: [&str; 32] = ["arabic", "azerbaijani", "catalan", "danish", "english", "french",
     "hindi", "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "vietnamese",
     "bulgarian", "czech", "dutch", "finnish", "german", "hungarian", "italian", "polish",
-    "romanian", "slovak", "swedish", "ukrainian", "hebrew", "greek"];
-// TODO: Add Kazakh, Nepali, Slovene, Tajik
+    "romanian", "slovak", "swedish", "ukrainian", "hebrew", "greek", "kazakh", "nepali", "slovenian",
+    "tajik"];
 
 /// Constant containing an array of available language names, using ISO-693-1 codes
-pub const LANGUAGES_ISO_693_1: [&str; 28] = ["ar", "az", "ca", "da", "en", "fr",
+pub const LANGUAGES_ISO_693_1: [&str; 32] = ["ar", "az", "ca", "da", "en", "fr",
     "hi", "in", "nn", "pt", "ru", "es", "tr", "vi",
     "bg", "cs", "nl", "fi", "de", "hu", "it", "pl",
-    "ro", "sk", "sv", "uk", "he", "el"];
+    "ro", "sk", "sv", "uk", "he", "el", "kk", "ne", "sl",
+    "tg"];
 
 /// Constant containing an array of available language names, using ISO-693-2T codes
-pub const LANGUAGES_ISO_693_2T: [&str; 28] = ["ara", "aze", "cat", "dan", "eng", "fra",
+pub const LANGUAGES_ISO_693_2T: [&str; 32] = ["ara", "aze", "cat", "dan", "eng", "fra",
     "hin", "ind", "nno", "por", "rus", "spa", "tur", "vie",
     "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol",
-    "ron", "slk", "swe", "ukr", "heb", "ell"];
+    "ron", "slk", "swe", "ukr", "heb", "ell", "kaz", "nep", "slv",
+    "tgk"];
 
 /// The only function you'll ever need! Given a language code or name it returns common stop words as a ``Vec<String>``
 ///
@@ -62,18 +70,8 @@ pub const LANGUAGES_ISO_693_2T: [&str; 28] = ["ara", "aze", "cat", "dan", "eng",
 /// let vec = stop_words::get("spanish");
 /// ```
 pub fn get(language: &str) -> Vec<String> {
-    // TODO: Auto lowercase
-    // Check to see if its an ISO code, and if so
-    let new_language= if language.len() == 2 {
-        convert_language_from_iso_693_1(language)
-    } else if language.len() == 3 {
-        convert_language_from_iso_693_2t(language)
-    } else {
-        language
-    };
-
-    // Match the full language name TODO: Add in NLTK options
-    match new_language {
+    // Match the full language name
+    match convert_language_code(language) {
         "english" =>    read_from_bytes(include_bytes!("savand/english.txt")),
         "hebrew" =>     read_from_bytes(include_bytes!("savand/hebrew.txt")),
         "arabic" =>     read_from_bytes(include_bytes!("savand/arabic.txt")),
@@ -100,7 +98,12 @@ pub fn get(language: &str) -> Vec<String> {
         "slovak" =>     read_from_bytes(include_bytes!("savand/slovak.txt")),
         "swedish" =>    read_from_bytes(include_bytes!("savand/swedish.txt")),
         "ukrainian" =>  read_from_bytes(include_bytes!("savand/ukrainian.txt")),
-        _ =>            panic!("It looks like you're trying to spell out a full language name. Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English.", language)
+        "azerbaijani" =>read_from_bytes(include_bytes!("nltk/azerbaijani")),
+        "kazakh" =>     read_from_bytes(include_bytes!("nltk/kazakh")),
+        "nepali" =>     read_from_bytes(include_bytes!("nltk/nepali")),
+        "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovene")),
+        "tajik" =>      read_from_bytes(include_bytes!("nltk/tajik")),
+        _ =>            panic!("Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English.", language)
     }
 }
 
@@ -110,7 +113,44 @@ pub fn get(language: &str) -> Vec<String> {
 /// let vec = stop_words::get_nltk("spanish");
 /// ```
 pub fn get_nltk(language: &str) -> Vec<String> {
-    vec!["".to_string(); 0]
+    // Match the full language name
+    match convert_language_code(language) {
+        "english" =>    read_from_bytes(include_bytes!("nltk/english")),
+        "arabic" =>     read_from_bytes(include_bytes!("nltk/arabic")),
+        "danish" =>     read_from_bytes(include_bytes!("nltk/danish")),
+        "french" =>     read_from_bytes(include_bytes!("nltk/french")),
+        "indonesian" => read_from_bytes(include_bytes!("nltk/indonesian")),
+        "norwegian" =>  read_from_bytes(include_bytes!("nltk/norwegian")),
+        "portuguese" => read_from_bytes(include_bytes!("nltk/portuguese")),
+        "russian" =>    read_from_bytes(include_bytes!("nltk/russian")),
+        "spanish" =>    read_from_bytes(include_bytes!("nltk/spanish")),
+        "turkish" =>    read_from_bytes(include_bytes!("nltk/turkish")),
+        "dutch" =>      read_from_bytes(include_bytes!("nltk/dutch")),
+        "finnish" =>    read_from_bytes(include_bytes!("nltk/finnish")),
+        "german" =>     read_from_bytes(include_bytes!("nltk/german")),
+        "hungarian" =>  read_from_bytes(include_bytes!("nltk/hungarian")),
+        "italian" =>    read_from_bytes(include_bytes!("nltk/italian")),
+        "romanian" =>   read_from_bytes(include_bytes!("nltk/romanian")),
+        "swedish" =>    read_from_bytes(include_bytes!("nltk/swedish")),
+        "azerbaijani" =>read_from_bytes(include_bytes!("nltk/azerbaijani")),
+        "kazakh" =>     read_from_bytes(include_bytes!("nltk/kazakh")),
+        "nepali" =>     read_from_bytes(include_bytes!("nltk/nepali")),
+        "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovene")),
+        "tajik" =>      read_from_bytes(include_bytes!("nltk/tajik")),
+        _ =>            panic!("Unfortunately, the {} language is not currently supported in NLTK. Please make sure that the name of the language is spelled in English.", language)
+    }
+}
+
+/// This function takes an arbitrary code and converts it as needed to a full language name
+// TODO: Auto lowercase
+fn convert_language_code(language: &str) -> &str {
+    if language.len() == 2 {
+        convert_language_from_iso_693_1(language)
+    } else if language.len() == 3 {
+        convert_language_from_iso_693_2t(language)
+    } else {
+        language
+    }
 }
 
 /// This function converts the ISO-693-1 language string to a full name
@@ -160,7 +200,7 @@ pub fn vec_to_set(words: Vec<String>) -> HashSet<String> {
 
 #[cfg(test)]
 mod good_tests {
-    use crate::get;
+    use crate::{get, get_nltk};
 
     #[test]
     fn good_language_name() {
@@ -180,7 +220,7 @@ mod good_tests {
 
     #[test]
     fn good_language_code_2t() {
-        let x = get("eng");
+        let x = get_nltk("eng");
         for y in x {
             println!("{}", y);
         }
