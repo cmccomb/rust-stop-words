@@ -44,7 +44,10 @@ Then add it to your ``Cargo.toml` with:
 [dependencies]
 stop-words = "0.1.2"
 ```
-
+and add this to your root:
+```rust
+use stop_words;
+```
 
 # Usage
 Using this crate is fairly straight-forward: 

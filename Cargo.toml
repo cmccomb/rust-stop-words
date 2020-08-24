@@ -1,6 +1,6 @@
 [package]
 name = "stop-words"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Chris McComb <ccmcc2012@gmail.com>"]
 description = "Common stop words in several languages"
 edition = "2018"
@@ -9,7 +9,7 @@ repository = "https://github.com/cmccomb/stop-words"
 homepage = "https://github.com/cmccomb/stop-words"
 documentation = "https://docs.rs/stop-words"
 license = "MIT OR Apache-2.0"
-keywords = ["nlp", "stop-words"]
+keywords = ["nlp", "stop-words", "text", "languages"]
 categories = ["text-processing", "internationalization", "localization"]
 
 [dependencies]
