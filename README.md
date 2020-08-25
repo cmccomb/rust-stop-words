@@ -49,7 +49,7 @@ cargo install stop_words
 Then add it to your ``Cargo.toml` with:
 ```toml
 [dependencies]
-stop-words = "0.2.0"
+stop-words = "0.2.1"
 ```
 and add this to your root:
 ```rust
