@@ -75,7 +75,7 @@ The function ``get`` will pull stop words in all of the languages given above, d
 [this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291) and also from 
 [NLTK](https://www.nltk.org/) if the target language doesn't exist in the former. If you'd like to specifically get stop
 words from NLTK, that's easy too, just do:
-```
+```rust
 let words = stop_words::get_nltk("en");
 ```
 
