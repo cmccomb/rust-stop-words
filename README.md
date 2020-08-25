@@ -42,14 +42,14 @@ This crate currently includes the following languages:
 
 # Installation
 Install through ``crates.io`` with:
-```bash
+```shell script
 cargo install stop_words
 ```
 
 Then add it to your ``Cargo.toml` with:
 ```toml
 [dependencies]
-stop-words = "0.1.5"
+stop-words = "0.2.0"
 ```
 and add this to your root:
 ```rust
@@ -71,7 +71,17 @@ fn main() {
     }
 }
 ```
-The function ``get`` accepts full language names (in English), ISO 693-1 language codes (2-letter codes), and ISO 693-2T (3-letter codes) language codes. This means you can also do this:
+The function ``get`` will pull stop words in all of the languages given above, drawing on 
+[this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291) and also from 
+[NLTK](https://www.nltk.org/) if the target language doesn't exist in the former. If you'd like to specifically get stop
+words from NLTK, that's easy too, just do:
+```
+let words = stop_words::get_nltk("en");
+```
+
+
+Both ``get`` and ``get_nltk`` accept full language names (in English), ISO 693-1 language codes (2-letter codes), and 
+ISO 693-2T (3-letter codes) language codes. This means you can also do this:
 ```rust
 let words = stop_words::get("en");
 ```
@@ -79,8 +89,12 @@ or this:
 ```rust
 let words = stop_words::get("eng");
 ```
-Finally, you can also convert the ``Vec<String>``of words to a ``HashSet<String>``
+
+
+Finally, you can convert the ``Vec<String>`` of words to a ``HashSet<String>``. I'm not here to judge you.
 ```rust
 let vec = stop_words::get("en");
 let set = stop_words::vec_to_set(vec);
 ```
+
+
