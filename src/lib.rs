@@ -69,9 +69,9 @@ pub const LANGUAGES_ISO_693_2T: [&str; 32] = ["ara", "aze", "cat", "dan", "eng",
 /// ```
 /// let vec = stop_words::get("spanish");
 /// ```
-pub fn get(language: &str) -> Vec<String> {
+pub fn get(target_language: &str) -> Vec<String> {
     // Match the full language name
-    match convert_language_code(language) {
+    match get_language_from_code(target_language) {
         "english" =>    read_from_bytes(include_bytes!("savand/english.txt")),
         "hebrew" =>     read_from_bytes(include_bytes!("savand/hebrew.txt")),
         "arabic" =>     read_from_bytes(include_bytes!("savand/arabic.txt")),
@@ -99,11 +99,12 @@ pub fn get(language: &str) -> Vec<String> {
         "swedish" =>    read_from_bytes(include_bytes!("savand/swedish.txt")),
         "ukrainian" =>  read_from_bytes(include_bytes!("savand/ukrainian.txt")),
         "azerbaijani" =>read_from_bytes(include_bytes!("nltk/azerbaijani")),
+        "greek" =>      read_from_bytes(include_bytes!("nltk/greek")),
         "kazakh" =>     read_from_bytes(include_bytes!("nltk/kazakh")),
         "nepali" =>     read_from_bytes(include_bytes!("nltk/nepali")),
         "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovene")),
         "tajik" =>      read_from_bytes(include_bytes!("nltk/tajik")),
-        _ =>            panic!("Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English.", language)
+        _ =>            panic!("Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English.", target_language)
     }
 }
 
@@ -112,9 +113,9 @@ pub fn get(language: &str) -> Vec<String> {
 /// ```
 /// let vec = stop_words::get_nltk("spanish");
 /// ```
-pub fn get_nltk(language: &str) -> Vec<String> {
+pub fn get_nltk(target_language: &str) -> Vec<String> {
     // Match the full language name
-    match convert_language_code(language) {
+    match get_language_from_code(target_language) {
         "english" =>    read_from_bytes(include_bytes!("nltk/english")),
         "arabic" =>     read_from_bytes(include_bytes!("nltk/arabic")),
         "danish" =>     read_from_bytes(include_bytes!("nltk/danish")),
@@ -125,6 +126,7 @@ pub fn get_nltk(language: &str) -> Vec<String> {
         "russian" =>    read_from_bytes(include_bytes!("nltk/russian")),
         "spanish" =>    read_from_bytes(include_bytes!("nltk/spanish")),
         "turkish" =>    read_from_bytes(include_bytes!("nltk/turkish")),
+        "greek" =>      read_from_bytes(include_bytes!("nltk/greek")),
         "dutch" =>      read_from_bytes(include_bytes!("nltk/dutch")),
         "finnish" =>    read_from_bytes(include_bytes!("nltk/finnish")),
         "german" =>     read_from_bytes(include_bytes!("nltk/german")),
@@ -137,26 +139,24 @@ pub fn get_nltk(language: &str) -> Vec<String> {
         "nepali" =>     read_from_bytes(include_bytes!("nltk/nepali")),
         "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovene")),
         "tajik" =>      read_from_bytes(include_bytes!("nltk/tajik")),
-        _ =>            panic!("Unfortunately, the {} language is not currently supported in NLTK. Please make sure that the name of the language is spelled in English.", language)
+        _ =>            panic!("Unfortunately, the {} language is not currently supported in NLTK. Please make sure that the name of the language is spelled in English.", target_language)
     }
 }
 
 /// This function takes an arbitrary code and converts it as needed to a full language name
-// TODO: Auto lowercase
-fn convert_language_code(language: &str) -> &str {
-    if language.len() == 2 {
-        convert_language_from_iso_693_1(language)
-    } else if language.len() == 3 {
-        convert_language_from_iso_693_2t(language)
+fn get_language_from_code(code: &str) -> &str {
+    if code.len() == 2 {
+        get_language_from_iso(code, LANGUAGES_ISO_693_1)
+    } else if code.len() == 3 {
+        get_language_from_iso(code, LANGUAGES_ISO_693_2T)
     } else {
-        language
+        code
     }
 }
 
 /// This function converts the ISO-693-1 language string to a full name
-// TODO: Possible to DRY out this function?
-fn convert_language_from_iso_693_1(code: &str) -> &str {
-    let mut iter = LANGUAGES_ISO_693_1.iter();
+fn get_language_from_iso<'a>(code: &'a str, library: [&str; 32]) -> &'a str {
+    let mut iter = library.iter();
     let idx = iter.position(|&x| x == code);
     match idx {
         Some(x) => LANGUAGES[x],
@@ -164,21 +164,10 @@ fn convert_language_from_iso_693_1(code: &str) -> &str {
     }
 }
 
-/// This function converts the ISO-693-1 language string to a full name
-// TODO: Possible to DRY out this function?
-fn convert_language_from_iso_693_2t(code: &str) -> &str {
-    let mut iter = LANGUAGES_ISO_693_2T.iter();
-    let idx = iter.position(|&x| x == code);
-    match idx {
-        Some(x) => LANGUAGES[x],
-        None => panic!("It looks like you're trying to use an ISO 693-2T (3-letter) language code. Unfortunately, the {} language code is not currently supported.", code),
-    }
-}
-
 /// This function converts the bytestring to a vector
 fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
     let contents=String::from_utf8_lossy(bytes);
-    let split_contents = contents.split("\n");
+    let split_contents = contents.split('\n');
     let mut output = vec![];
     for word in split_contents {
         output.push(String::from(word));
@@ -200,60 +189,17 @@ pub fn vec_to_set(words: Vec<String>) -> HashSet<String> {
     hash_words
 }
 
-// TODO more extensive tests and explicit tests of conversion functions
+
+/// Just a few tests here
 #[cfg(test)]
-mod good_tests {
-    use crate::{get, get_nltk};
+mod conversion_tests {
+    use crate as stop_words;
 
     #[test]
-    fn good_language_name() {
-        let x = get("arabic");
-        for y in x {
-            println!("{}", y);
-        }
-    }
-
-    #[test]
-    fn good_language_code_1() {
-        let x = get("en");
-        for y in x {
-            println!("{}", y);
-        }
-    }
-
-    #[test]
-    fn good_language_code_2t() {
-        let x = get_nltk("eng");
-        for y in x {
-            println!("{}", y);
-        }
-    }
-}
-
-#[cfg(test)]
-mod weird_character_tests {
-    use crate::get;
-
-    #[test]
-    fn hebrew() {
-        let x = get("hebrew");
-        for y in x {
-            println!("{}", y);
-        }
-    }
-
-    #[test]
-    fn arabic() {
-        let x = get("arabic");
-        for y in x {
-            println!("{}", y);
-        }
-    }
-
-    #[test]
-    fn russian() {
-        let x = get("russian");
-        for y in x {
+    fn convert_to_set() {
+        let vec = stop_words::get("es");
+        let set = stop_words::vec_to_set(vec);
+        for y in set {
             println!("{}", y);
         }
     }
@@ -261,12 +207,12 @@ mod weird_character_tests {
 
 #[cfg(test)]
 mod panic_tests {
-    use crate::get;
+    use crate as stop_words;
 
-        #[test]
+    #[test]
     #[should_panic]
     fn bad_language_name() {
-        let x = get("engilsh");
+        let x = stop_words::get("engilsh");
         for y in x {
             println!("{}", y);
         }
@@ -275,7 +221,7 @@ mod panic_tests {
     #[test]
     #[should_panic]
     fn bad_language_code_1() {
-        let x = get("zz");
+        let x = stop_words::get("zz");
         for y in x {
             println!("{}", y);
         }
@@ -284,23 +230,8 @@ mod panic_tests {
     #[test]
     #[should_panic]
     fn bad_language_code_2t() {
-        let x = get("zzz");
+        let x = stop_words::get("zzz");
         for y in x {
-            println!("{}", y);
-        }
-    }
-}
-
-
-#[cfg(test)]
-mod conversion_tests {
-    use crate::{get, vec_to_set};
-
-    #[test]
-    fn convert_to_set() {
-        let vec = get("es");
-        let set = vec_to_set(vec);
-        for y in set {
             println!("{}", y);
         }
     }
