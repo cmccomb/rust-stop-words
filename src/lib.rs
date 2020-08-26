@@ -154,7 +154,7 @@ fn get_language_from_code(code: &str) -> &str {
     }
 }
 
-/// This function converts the ISO-693-1 language string to a full name
+/// This function converts a language code to a full language name
 fn get_language_from_iso<'a>(code: &'a str, library: [&str; 32]) -> &'a str {
     let mut iter = library.iter();
     let idx = iter.position(|&x| x == code);
