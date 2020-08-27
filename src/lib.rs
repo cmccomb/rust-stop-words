@@ -44,25 +44,53 @@
 use std::collections::HashSet;
 
 /// Constant containing an array of available language names, spelled out
-pub const LANGUAGES: [&str; 32] = ["arabic", "azerbaijani", "catalan", "danish", "english", "french",
-    "hindi", "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "vietnamese",
-    "bulgarian", "czech", "dutch", "finnish", "german", "hungarian", "italian", "polish",
-    "romanian", "slovak", "swedish", "ukrainian", "hebrew", "greek", "kazakh", "nepali", "slovenian",
-    "tajik"];
+pub const LANGUAGES: [&str; 32] = [
+    "arabic",
+    "azerbaijani",
+    "catalan",
+    "danish",
+    "english",
+    "french",
+    "hindi",
+    "indonesian",
+    "norwegian",
+    "portuguese",
+    "russian",
+    "spanish",
+    "turkish",
+    "vietnamese",
+    "bulgarian",
+    "czech",
+    "dutch",
+    "finnish",
+    "german",
+    "hungarian",
+    "italian",
+    "polish",
+    "romanian",
+    "slovak",
+    "swedish",
+    "ukrainian",
+    "hebrew",
+    "greek",
+    "kazakh",
+    "nepali",
+    "slovenian",
+    "tajik",
+];
 
 /// Constant containing an array of available language names, using ISO-693-1 codes
-pub const LANGUAGES_ISO_693_1: [&str; 32] = ["ar", "az", "ca", "da", "en", "fr",
-    "hi", "in", "nn", "pt", "ru", "es", "tr", "vi",
-    "bg", "cs", "nl", "fi", "de", "hu", "it", "pl",
-    "ro", "sk", "sv", "uk", "he", "el", "kk", "ne", "sl",
-    "tg"];
+pub const LANGUAGES_ISO_693_1: [&str; 32] = [
+    "ar", "az", "ca", "da", "en", "fr", "hi", "in", "nn", "pt", "ru", "es", "tr", "vi", "bg", "cs",
+    "nl", "fi", "de", "hu", "it", "pl", "ro", "sk", "sv", "uk", "he", "el", "kk", "ne", "sl", "tg",
+];
 
 /// Constant containing an array of available language names, using ISO-693-2T codes
-pub const LANGUAGES_ISO_693_2T: [&str; 32] = ["ara", "aze", "cat", "dan", "eng", "fra",
-    "hin", "ind", "nno", "por", "rus", "spa", "tur", "vie",
-    "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol",
-    "ron", "slk", "swe", "ukr", "heb", "ell", "kaz", "nep", "slv",
-    "tgk"];
+pub const LANGUAGES_ISO_693_2T: [&str; 32] = [
+    "ara", "aze", "cat", "dan", "eng", "fra", "hin", "ind", "nno", "por", "rus", "spa", "tur",
+    "vie", "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol", "ron", "slk", "swe", "ukr",
+    "heb", "ell", "kaz", "nep", "slv", "tgk",
+];
 
 /// The only function you'll ever need! Given a language code or name it returns common stop words as a ``Vec<String>``
 ///
@@ -102,9 +130,24 @@ pub fn get(target_language: &str) -> Vec<String> {
         "greek" =>      read_from_bytes(include_bytes!("nltk/greek")),
         "kazakh" =>     read_from_bytes(include_bytes!("nltk/kazakh")),
         "nepali" =>     read_from_bytes(include_bytes!("nltk/nepali")),
-        "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovene")),
+        "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovenian")),
         "tajik" =>      read_from_bytes(include_bytes!("nltk/tajik")),
         _ =>            panic!("Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English.", target_language)
+    }
+}
+
+
+
+/// Let's define a macro
+macro_rules! nltk_match {
+( $( $language:expr )* , $( $lang:literal ),* ) =>
+    {
+        match $( $language )* {
+            $(
+                $lang => read_from_bytes(include_bytes!(concat!("nltk/", $lang))),
+            )*
+            _ => panic!("Unfortunately, the {} language is not currently supported in NLTK. Please make sure that the name of the language is spelled in English.", $($language)* )
+        }
     }
 }
 
@@ -115,32 +158,36 @@ pub fn get(target_language: &str) -> Vec<String> {
 /// ```
 pub fn get_nltk(target_language: &str) -> Vec<String> {
     // Match the full language name
-    match get_language_from_code(target_language) {
-        "english" =>    read_from_bytes(include_bytes!("nltk/english")),
-        "arabic" =>     read_from_bytes(include_bytes!("nltk/arabic")),
-        "danish" =>     read_from_bytes(include_bytes!("nltk/danish")),
-        "french" =>     read_from_bytes(include_bytes!("nltk/french")),
-        "indonesian" => read_from_bytes(include_bytes!("nltk/indonesian")),
-        "norwegian" =>  read_from_bytes(include_bytes!("nltk/norwegian")),
-        "portuguese" => read_from_bytes(include_bytes!("nltk/portuguese")),
-        "russian" =>    read_from_bytes(include_bytes!("nltk/russian")),
-        "spanish" =>    read_from_bytes(include_bytes!("nltk/spanish")),
-        "turkish" =>    read_from_bytes(include_bytes!("nltk/turkish")),
-        "greek" =>      read_from_bytes(include_bytes!("nltk/greek")),
-        "dutch" =>      read_from_bytes(include_bytes!("nltk/dutch")),
-        "finnish" =>    read_from_bytes(include_bytes!("nltk/finnish")),
-        "german" =>     read_from_bytes(include_bytes!("nltk/german")),
-        "hungarian" =>  read_from_bytes(include_bytes!("nltk/hungarian")),
-        "italian" =>    read_from_bytes(include_bytes!("nltk/italian")),
-        "romanian" =>   read_from_bytes(include_bytes!("nltk/romanian")),
-        "swedish" =>    read_from_bytes(include_bytes!("nltk/swedish")),
-        "azerbaijani" =>read_from_bytes(include_bytes!("nltk/azerbaijani")),
-        "kazakh" =>     read_from_bytes(include_bytes!("nltk/kazakh")),
-        "nepali" =>     read_from_bytes(include_bytes!("nltk/nepali")),
-        "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovene")),
-        "tajik" =>      read_from_bytes(include_bytes!("nltk/tajik")),
-        _ =>            panic!("Unfortunately, the {} language is not currently supported in NLTK. Please make sure that the name of the language is spelled in English.", target_language)
-    }
+    nltk_match!(get_language_from_code(target_language), "english", "arabic", "danish", "french",
+                "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "greek",
+                "dutch", "finnish", "german", "hungarian", "italian", "romanian", "swedish",
+                "azerbaijani", "kazakh", "nepali", "slovenian", "tajik")N
+    // match get_language_from_code(target_language) {
+    //     "english" =>    read_from_bytes(include_bytes!("nltk/english")),
+    //     "arabic" =>     read_from_bytes(include_bytes!("nltk/arabic")),
+    //     "danish" =>     read_from_bytes(include_bytes!("nltk/danish")),
+    //     "french" =>     read_from_bytes(include_bytes!("nltk/french")),
+    //     "indonesian" => read_from_bytes(include_bytes!("nltk/indonesian")),
+    //     "norwegian" =>  read_from_bytes(include_bytes!("nltk/norwegian")),
+    //     "portuguese" => read_from_bytes(include_bytes!("nltk/portuguese")),
+    //     "russian" =>    read_from_bytes(include_bytes!("nltk/russian")),
+    //     "spanish" =>    read_from_bytes(include_bytes!("nltk/spanish")),
+    //     "turkish" =>    read_from_bytes(include_bytes!("nltk/turkish")),
+    //     "greek" =>      read_from_bytes(include_bytes!("nltk/greek")),
+    //     "dutch" =>      read_from_bytes(include_bytes!("nltk/dutch")),
+    //     "finnish" =>    read_from_bytes(include_bytes!("nltk/finnish")),
+    //     "german" =>     read_from_bytes(include_bytes!("nltk/german")),
+    //     "hungarian" =>  read_from_bytes(include_bytes!("nltk/hungarian")),
+    //     "italian" =>    read_from_bytes(include_bytes!("nltk/italian")),
+    //     "romanian" =>   read_from_bytes(include_bytes!("nltk/romanian")),
+    //     "swedish" =>    read_from_bytes(include_bytes!("nltk/swedish")),
+    //     "azerbaijani" =>read_from_bytes(include_bytes!("nltk/azerbaijani")),
+    //     "kazakh" =>     read_from_bytes(include_bytes!("nltk/kazakh")),
+    //     "nepali" =>     read_from_bytes(include_bytes!("nltk/nepali")),
+    //     "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovene")),
+    //     "tajik" =>      read_from_bytes(include_bytes!("nltk/tajik")),
+    //     _ =>            panic!("Unfortunately, the {} language is not currently supported in NLTK. Please make sure that the name of the language is spelled in English.", target_language)
+    // }
 }
 
 /// This function takes an arbitrary code and converts it as needed to a full language name
@@ -166,7 +213,7 @@ fn get_language_from_iso<'a>(code: &'a str, library: [&str; 32]) -> &'a str {
 
 /// This function converts the bytestring to a vector
 fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
-    let contents=String::from_utf8_lossy(bytes);
+    let contents = String::from_utf8_lossy(bytes);
     let split_contents = contents.split('\n');
     let mut output = vec![];
     for word in split_contents {
@@ -188,7 +235,6 @@ pub fn vec_to_set(words: Vec<String>) -> HashSet<String> {
     }
     hash_words
 }
-
 
 /// Just a few tests here
 #[cfg(test)]

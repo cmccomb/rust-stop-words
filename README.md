@@ -91,10 +91,10 @@ let words = stop_words::get("eng");
 ```
 
 
-Finally, you can convert the ``Vec<String>`` of words to a ``HashSet<String>``. I'm not here to judge you.
+Finally, if you prefer to have a ``HashSet<String>`` of words instead of a ``Vec<String>``, you can do this:
 ```rust
 let vec = stop_words::get("en");
-let set = stop_words::vec_to_set(vec);
-```
+vec.into_iter().collect();```
+
 
 
