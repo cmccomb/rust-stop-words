@@ -161,7 +161,7 @@ pub fn get_nltk(target_language: &str) -> Vec<String> {
     nltk_match!(get_language_from_code(target_language), "english", "arabic", "danish", "french",
                 "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "greek",
                 "dutch", "finnish", "german", "hungarian", "italian", "romanian", "swedish",
-                "azerbaijani", "kazakh", "nepali", "slovenian", "tajik")N
+                "azerbaijani", "kazakh", "nepali", "slovenian", "tajik")
     // match get_language_from_code(target_language) {
     //     "english" =>    read_from_bytes(include_bytes!("nltk/english")),
     //     "arabic" =>     read_from_bytes(include_bytes!("nltk/arabic")),
