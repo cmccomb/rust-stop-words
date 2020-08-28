@@ -41,8 +41,6 @@
 //! - Ukrainian
 //! - Vietnamese
 
-use std::collections::HashSet;
-
 /// Constant containing an array of available language names, spelled out
 pub const LANGUAGES: [&str; 32] = [
     "arabic",
@@ -92,63 +90,40 @@ pub const LANGUAGES_ISO_693_2T: [&str; 32] = [
     "heb", "ell", "kaz", "nep", "slv", "tgk",
 ];
 
+/// Let's define a macro to help us out
+macro_rules! data_match {
+    (
+        $($language:expr)*,
+        $(
+            $directory:literal, [$( $lang:literal ),*]
+        ),*
+    ) =>
+    {
+        match $( $language )? {
+            $(
+                $(
+                    $lang => read_from_bytes(include_bytes!(concat!($directory, "/", $lang))),
+                )*
+            )*
+            _ => panic!("Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English.", $( $language)? )
+        }
+    }
+}
+
 /// The only function you'll ever need! Given a language code or name it returns common stop words as a ``Vec<String>``
 ///
 /// ```
 /// let vec = stop_words::get("spanish");
 /// ```
 pub fn get(target_language: &str) -> Vec<String> {
-    // Match the full language name
-    match get_language_from_code(target_language) {
-        "english" =>    read_from_bytes(include_bytes!("savand/english.txt")),
-        "hebrew" =>     read_from_bytes(include_bytes!("savand/hebrew.txt")),
-        "arabic" =>     read_from_bytes(include_bytes!("savand/arabic.txt")),
-        "catalan" =>    read_from_bytes(include_bytes!("savand/catalan.txt")),
-        "danish" =>     read_from_bytes(include_bytes!("savand/danish.txt")),
-        "french" =>     read_from_bytes(include_bytes!("savand/french.txt")),
-        "hindi" =>      read_from_bytes(include_bytes!("savand/hindi.txt")),
-        "indonesian" => read_from_bytes(include_bytes!("savand/indonesian.txt")),
-        "norwegian" =>  read_from_bytes(include_bytes!("savand/norwegian.txt")),
-        "portuguese" => read_from_bytes(include_bytes!("savand/portuguese.txt")),
-        "russian" =>    read_from_bytes(include_bytes!("savand/russian.txt")),
-        "spanish" =>    read_from_bytes(include_bytes!("savand/spanish.txt")),
-        "turkish" =>    read_from_bytes(include_bytes!("savand/turkish.txt")),
-        "vietnamese" => read_from_bytes(include_bytes!("savand/vietnamese.txt")),
-        "bulgarian" =>  read_from_bytes(include_bytes!("savand/bulgarian.txt")),
-        "czech" =>      read_from_bytes(include_bytes!("savand/czech.txt")),
-        "dutch" =>      read_from_bytes(include_bytes!("savand/dutch.txt")),
-        "finnish" =>    read_from_bytes(include_bytes!("savand/finnish.txt")),
-        "german" =>     read_from_bytes(include_bytes!("savand/german.txt")),
-        "hungarian" =>  read_from_bytes(include_bytes!("savand/hungarian.txt")),
-        "italian" =>    read_from_bytes(include_bytes!("savand/italian.txt")),
-        "polish" =>     read_from_bytes(include_bytes!("savand/polish.txt")),
-        "romanian" =>   read_from_bytes(include_bytes!("savand/romanian.txt")),
-        "slovak" =>     read_from_bytes(include_bytes!("savand/slovak.txt")),
-        "swedish" =>    read_from_bytes(include_bytes!("savand/swedish.txt")),
-        "ukrainian" =>  read_from_bytes(include_bytes!("savand/ukrainian.txt")),
-        "azerbaijani" =>read_from_bytes(include_bytes!("nltk/azerbaijani")),
-        "greek" =>      read_from_bytes(include_bytes!("nltk/greek")),
-        "kazakh" =>     read_from_bytes(include_bytes!("nltk/kazakh")),
-        "nepali" =>     read_from_bytes(include_bytes!("nltk/nepali")),
-        "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovenian")),
-        "tajik" =>      read_from_bytes(include_bytes!("nltk/tajik")),
-        _ =>            panic!("Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English.", target_language)
-    }
-}
-
-
-
-/// Let's define a macro
-macro_rules! nltk_match {
-( $( $language:expr )* , $( $lang:literal ),* ) =>
-    {
-        match $( $language )* {
-            $(
-                $lang => read_from_bytes(include_bytes!(concat!("nltk/", $lang))),
-            )*
-            _ => panic!("Unfortunately, the {} language is not currently supported in NLTK. Please make sure that the name of the language is spelled in English.", $($language)* )
-        }
-    }
+    data_match!(get_language_from_code(target_language),
+                "savand", ["english", "hebrew", "arabic", "catalan", "danish", "french", "hindi",
+                           "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish",
+                           "vietnamese", "bulgarian", "czech", "dutch", "finnish", "german",
+                           "hungarian", "italian", "polish", "romanian", "slovak", "swedish",
+                           "ukrainian"],
+                "nltk", ["azerbaijani", "greek", "kazakh", "nepali", "slovenian", "tajik"]
+                )
 }
 
 /// Ok, you might need this function too. It fetches stop words specifically for NLTK.
@@ -158,36 +133,10 @@ macro_rules! nltk_match {
 /// ```
 pub fn get_nltk(target_language: &str) -> Vec<String> {
     // Match the full language name
-    nltk_match!(get_language_from_code(target_language), "english", "arabic", "danish", "french",
+    data_match!(get_language_from_code(target_language), "nltk", ["english", "arabic", "danish", "french",
                 "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "greek",
                 "dutch", "finnish", "german", "hungarian", "italian", "romanian", "swedish",
-                "azerbaijani", "kazakh", "nepali", "slovenian", "tajik")
-    // match get_language_from_code(target_language) {
-    //     "english" =>    read_from_bytes(include_bytes!("nltk/english")),
-    //     "arabic" =>     read_from_bytes(include_bytes!("nltk/arabic")),
-    //     "danish" =>     read_from_bytes(include_bytes!("nltk/danish")),
-    //     "french" =>     read_from_bytes(include_bytes!("nltk/french")),
-    //     "indonesian" => read_from_bytes(include_bytes!("nltk/indonesian")),
-    //     "norwegian" =>  read_from_bytes(include_bytes!("nltk/norwegian")),
-    //     "portuguese" => read_from_bytes(include_bytes!("nltk/portuguese")),
-    //     "russian" =>    read_from_bytes(include_bytes!("nltk/russian")),
-    //     "spanish" =>    read_from_bytes(include_bytes!("nltk/spanish")),
-    //     "turkish" =>    read_from_bytes(include_bytes!("nltk/turkish")),
-    //     "greek" =>      read_from_bytes(include_bytes!("nltk/greek")),
-    //     "dutch" =>      read_from_bytes(include_bytes!("nltk/dutch")),
-    //     "finnish" =>    read_from_bytes(include_bytes!("nltk/finnish")),
-    //     "german" =>     read_from_bytes(include_bytes!("nltk/german")),
-    //     "hungarian" =>  read_from_bytes(include_bytes!("nltk/hungarian")),
-    //     "italian" =>    read_from_bytes(include_bytes!("nltk/italian")),
-    //     "romanian" =>   read_from_bytes(include_bytes!("nltk/romanian")),
-    //     "swedish" =>    read_from_bytes(include_bytes!("nltk/swedish")),
-    //     "azerbaijani" =>read_from_bytes(include_bytes!("nltk/azerbaijani")),
-    //     "kazakh" =>     read_from_bytes(include_bytes!("nltk/kazakh")),
-    //     "nepali" =>     read_from_bytes(include_bytes!("nltk/nepali")),
-    //     "slovenian" =>  read_from_bytes(include_bytes!("nltk/slovene")),
-    //     "tajik" =>      read_from_bytes(include_bytes!("nltk/tajik")),
-    //     _ =>            panic!("Unfortunately, the {} language is not currently supported in NLTK. Please make sure that the name of the language is spelled in English.", target_language)
-    // }
+                "azerbaijani", "kazakh", "nepali", "slovenian", "tajik"])
 }
 
 /// This function takes an arbitrary code and converts it as needed to a full language name
@@ -222,34 +171,6 @@ fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
     output
 }
 
-/// This function converts the standard ``Vec<String>`` output to a ``HashSet<String>``
-///
-/// ```
-/// let vec = stop_words::get("nl");
-/// let set = stop_words::vec_to_set(vec);
-/// ```
-pub fn vec_to_set(words: Vec<String>) -> HashSet<String> {
-    let mut hash_words: HashSet<String> = HashSet::new();
-    for word in words {
-        hash_words.insert(word);
-    }
-    hash_words
-}
-
-/// Just a few tests here
-#[cfg(test)]
-mod conversion_tests {
-    use crate as stop_words;
-
-    #[test]
-    fn convert_to_set() {
-        let vec = stop_words::get("es");
-        let set = stop_words::vec_to_set(vec);
-        for y in set {
-            println!("{}", y);
-        }
-    }
-}
 
 #[cfg(test)]
 mod panic_tests {
