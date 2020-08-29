@@ -1,18 +1,18 @@
 /// Let's define a macro to help us out
 macro_rules! test {
     (
-        $($language_full:literal)?,
-        $($language_2:literal)?,
-        $($language_3:literal)?,
-        $($nltk_panic:ident)?
+        $language_full:literal,
+        $language_2:literal,
+        $language_3:literal,
+        $nltk_panic:ident
     ) =>
     {
         use stop_words;
 
         #[test]
         fn compare_full_to_2letter() {
-            let x = stop_words::get( $( $language_full )? );
-            let y = stop_words::get( $( $language_2 )? );
+            let x = stop_words::get( $language_full );
+            let y = stop_words::get( $language_2 );
             for idx in 0..x.len() {
                 assert_eq!(x[idx], y[idx])
             }
@@ -20,23 +20,24 @@ macro_rules! test {
 
         #[test]
         fn compare_full_to_3letter() {
-            let x = stop_words::get( $( $language_full )? );
-            let y = stop_words::get( $( $language_3 )? );
+            let x = stop_words::get( $language_full );
+            let y = stop_words::get( $language_3 );
             for idx in 0..x.len() {
                 assert_eq!(x[idx], y[idx])
             }
         }
 
         #[test]
-        #[$($nltk_panic)*]
+        #[ $nltk_panic ]
         fn check_nltk() {
-            let x = stop_words::get_nltk( $( $language_full )? );
+            let x = stop_words::get_nltk( $language_full );
             for idx in 0..x.len() {
                 println!("{}", x[idx])
             }
         }
     }
 }
+
 
 #[cfg(test)]
 mod arabic { test!("arabic", "ar", "ara", test); }
