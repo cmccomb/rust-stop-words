@@ -211,7 +211,7 @@ macro_rules! data_match {
                     $lang => read_from_bytes(include_bytes!(concat!($directory, "/", $lang))),
                 )*
             )*
-            _ => panic!("Unfortunately, the {} language is not currently supported. Please make sure that the name of the language is spelled in English.", $( $language)? )
+            _ => panic!(concat!("Unfortunately, the '{}' language is not currently supported. Please make sure that the name of the language is spelled in English."), $( $language )? )
         }
     }
 }
@@ -262,7 +262,7 @@ fn get_language_from_iso<'a>(code: &'a str, library: [&str; 32]) -> &'a str {
     let idx = iter.position(|&x| x == code);
     match idx {
         Some(x) => LANGUAGES[x],
-        None => panic!("It looks like you're trying to use an ISO 693-1 (2-letter) language code. Unfortunately, the {} language code is not currently supported.", code),
+        None => panic!("It looks like you're trying to use an ISO 693 language code. Unfortunately, the {} language code is not currently supported.", code),
     }
 }
 
