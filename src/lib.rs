@@ -77,11 +77,83 @@ pub const LANGUAGES: [&str; 32] = [
     "tajik",
 ];
 
+/// Constant containing an array of available language names, spelled out
+#[non_exhaustive]
+pub enum LANGUAGE {
+    Arabic,
+    Azerbaijani,
+    Catalan,
+    Danish,
+    English,
+    French,
+    Hindi,
+    Indonesian,
+    Norwegian,
+    Portuguese,
+    Russian,
+    Spanish,
+    Turkish,
+    Vietnamese,
+    Bulgarian,
+    Czech,
+    Dutch,
+    Finnish,
+    German,
+    Hungarian,
+    Italian,
+    Polish,
+    Romanian,
+    Slovak,
+    Swedish,
+    Ukrainian,
+    Hebrew,
+    Greek,
+    Kazakh,
+    Nepali,
+    Slovenian,
+    Tajik,
+}
+
 /// Constant containing an array of available language names, using ISO-693-1 codes
 pub const LANGUAGES_ISO_693_1: [&str; 32] = [
     "ar", "az", "ca", "da", "en", "fr", "hi", "in", "nn", "pt", "ru", "es", "tr", "vi", "bg", "cs",
     "nl", "fi", "de", "hu", "it", "pl", "ro", "sk", "sv", "uk", "he", "el", "kk", "ne", "sl", "tg",
 ];
+
+#[non_exhaustive]
+pub enum LA {
+    AR,
+    AZ,
+    CA,
+    DA,
+    EN,
+    FR,
+    HI,
+    IN,
+    NN,
+    RU,
+    ES,
+    TR,
+    VI,
+    BG,
+    CS,
+    NL,
+    FI,
+    DE,
+    HU,
+    IT,
+    PL,
+    RO,
+    SK,
+    SV,
+    UK,
+    HE,
+    EL,
+    KK,
+    NE,
+    SL,
+    TG,
+}
 
 /// Constant containing an array of available language names, using ISO-693-2T codes
 pub const LANGUAGES_ISO_693_2T: [&str; 32] = [
@@ -89,6 +161,40 @@ pub const LANGUAGES_ISO_693_2T: [&str; 32] = [
     "vie", "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol", "ron", "slk", "swe", "ukr",
     "heb", "ell", "kaz", "nep", "slv", "tgk",
 ];
+pub enum LAN {
+    ARA,
+    AZA,
+    CAT,
+    DAN,
+    ENG,
+    FRA,
+    HIN,
+    IND,
+    NNO,
+    POR,
+    RUS,
+    SPA,
+    TUR,
+    VIE,
+    BUL,
+    CES,
+    NLD,
+    FIN,
+    DEU,
+    HUN,
+    ITA,
+    POL,
+    RON,
+    SLK,
+    SWE,
+    UKR,
+    HEB,
+    ELL,
+    KAZ,
+    NEP,
+    SLV,
+    TGK,
+}
 
 /// Let's define a macro to help us out
 macro_rules! data_match {
