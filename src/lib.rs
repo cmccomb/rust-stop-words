@@ -222,14 +222,47 @@ macro_rules! data_match {
 /// let vec = stop_words::get("spanish");
 /// ```
 pub fn get(target_language: &str) -> Vec<String> {
-    data_match!(get_language_from_code(target_language),
-                "savand", ["english", "hebrew", "arabic", "catalan", "danish", "french", "hindi",
-                           "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish",
-                           "vietnamese", "bulgarian", "czech", "dutch", "finnish", "german",
-                           "hungarian", "italian", "polish", "romanian", "slovak", "swedish",
-                           "ukrainian"],
-                "nltk", ["azerbaijani", "greek", "kazakh", "nepali", "slovenian", "tajik"]
-                )
+    data_match!(
+        get_language_from_code(target_language),
+        "savand",
+        [
+            "english",
+            "hebrew",
+            "arabic",
+            "catalan",
+            "danish",
+            "french",
+            "hindi",
+            "indonesian",
+            "norwegian",
+            "portuguese",
+            "russian",
+            "spanish",
+            "turkish",
+            "vietnamese",
+            "bulgarian",
+            "czech",
+            "dutch",
+            "finnish",
+            "german",
+            "hungarian",
+            "italian",
+            "polish",
+            "romanian",
+            "slovak",
+            "swedish",
+            "ukrainian"
+        ],
+        "nltk",
+        [
+            "azerbaijani",
+            "greek",
+            "kazakh",
+            "nepali",
+            "slovenian",
+            "tajik"
+        ]
+    )
 }
 
 /// Ok, you might need this function too. It fetches stop words specifically for NLTK.
@@ -239,10 +272,35 @@ pub fn get(target_language: &str) -> Vec<String> {
 /// ```
 pub fn get_nltk(target_language: &str) -> Vec<String> {
     // Match the full language name
-    data_match!(get_language_from_code(target_language), "nltk", ["english", "arabic", "danish", "french",
-                "indonesian", "norwegian", "portuguese", "russian", "spanish", "turkish", "greek",
-                "dutch", "finnish", "german", "hungarian", "italian", "romanian", "swedish",
-                "azerbaijani", "kazakh", "nepali", "slovenian", "tajik"])
+    data_match!(
+        get_language_from_code(target_language),
+        "nltk",
+        [
+            "english",
+            "arabic",
+            "danish",
+            "french",
+            "indonesian",
+            "norwegian",
+            "portuguese",
+            "russian",
+            "spanish",
+            "turkish",
+            "greek",
+            "dutch",
+            "finnish",
+            "german",
+            "hungarian",
+            "italian",
+            "romanian",
+            "swedish",
+            "azerbaijani",
+            "kazakh",
+            "nepali",
+            "slovenian",
+            "tajik"
+        ]
+    )
 }
 
 /// This function takes an arbitrary code and converts it as needed to a full language name
@@ -276,7 +334,6 @@ fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
     }
     output
 }
-
 
 #[cfg(test)]
 mod panic_tests {
