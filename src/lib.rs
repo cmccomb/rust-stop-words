@@ -41,6 +41,49 @@
 //! - Ukrainian
 //! - Vietnamese
 
+// Strum contains all the trait definitions
+#[cfg(feature = "enum")]
+use {std::string::ToString, strum_macros};
+
+/// Enum containing available language names, spelled out
+#[cfg(feature = "enum")]
+#[non_exhaustive]
+#[derive(strum_macros::ToString, Debug)]
+pub enum LANGUAGE {
+    Arabic,
+    Azerbaijani,
+    Catalan,
+    Danish,
+    English,
+    French,
+    Hindi,
+    Indonesian,
+    Norwegian,
+    Portuguese,
+    Russian,
+    Spanish,
+    Turkish,
+    Vietnamese,
+    Bulgarian,
+    Czech,
+    Dutch,
+    Finnish,
+    German,
+    Hungarian,
+    Italian,
+    Polish,
+    Romanian,
+    Slovak,
+    Swedish,
+    Ukrainian,
+    Hebrew,
+    Greek,
+    Kazakh,
+    Nepali,
+    Slovenian,
+    Tajik,
+}
+
 /// Constant containing an array of available language names, spelled out
 pub const LANGUAGES: [&str; 32] = [
     "arabic",
@@ -77,127 +120,23 @@ pub const LANGUAGES: [&str; 32] = [
     "tajik",
 ];
 
-/// Constant containing an array of available language names, spelled out
-#[non_exhaustive]
-pub enum LANGUAGE {
-    Arabic,
-    Azerbaijani,
-    Catalan,
-    Danish,
-    English,
-    French,
-    Hindi,
-    Indonesian,
-    Norwegian,
-    Portuguese,
-    Russian,
-    Spanish,
-    Turkish,
-    Vietnamese,
-    Bulgarian,
-    Czech,
-    Dutch,
-    Finnish,
-    German,
-    Hungarian,
-    Italian,
-    Polish,
-    Romanian,
-    Slovak,
-    Swedish,
-    Ukrainian,
-    Hebrew,
-    Greek,
-    Kazakh,
-    Nepali,
-    Slovenian,
-    Tajik,
-}
-
 /// Constant containing an array of available language names, using ISO-693-1 codes
+#[cfg(not(feature = "enum"))]
 pub const LANGUAGES_ISO_693_1: [&str; 32] = [
     "ar", "az", "ca", "da", "en", "fr", "hi", "in", "nn", "pt", "ru", "es", "tr", "vi", "bg", "cs",
     "nl", "fi", "de", "hu", "it", "pl", "ro", "sk", "sv", "uk", "he", "el", "kk", "ne", "sl", "tg",
 ];
 
-#[non_exhaustive]
-pub enum LA {
-    AR,
-    AZ,
-    CA,
-    DA,
-    EN,
-    FR,
-    HI,
-    IN,
-    NN,
-    RU,
-    ES,
-    TR,
-    VI,
-    BG,
-    CS,
-    NL,
-    FI,
-    DE,
-    HU,
-    IT,
-    PL,
-    RO,
-    SK,
-    SV,
-    UK,
-    HE,
-    EL,
-    KK,
-    NE,
-    SL,
-    TG,
-}
-
 /// Constant containing an array of available language names, using ISO-693-2T codes
+#[cfg(not(feature = "enum"))]
 pub const LANGUAGES_ISO_693_2T: [&str; 32] = [
     "ara", "aze", "cat", "dan", "eng", "fra", "hin", "ind", "nno", "por", "rus", "spa", "tur",
     "vie", "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol", "ron", "slk", "swe", "ukr",
     "heb", "ell", "kaz", "nep", "slv", "tgk",
 ];
-pub enum LAN {
-    ARA,
-    AZA,
-    CAT,
-    DAN,
-    ENG,
-    FRA,
-    HIN,
-    IND,
-    NNO,
-    POR,
-    RUS,
-    SPA,
-    TUR,
-    VIE,
-    BUL,
-    CES,
-    NLD,
-    FIN,
-    DEU,
-    HUN,
-    ITA,
-    POL,
-    RON,
-    SLK,
-    SWE,
-    UKR,
-    HEB,
-    ELL,
-    KAZ,
-    NEP,
-    SLV,
-    TGK,
-}
 
-/// Let's define a macro to help us out
-macro_rules! data_match {
+/// Let's define a macro to help us out with string matching
+macro_rules! string_match {
     (
         $($language:expr)*,
         $(
@@ -221,9 +160,12 @@ macro_rules! data_match {
 /// ```
 /// let vec = stop_words::get("spanish");
 /// ```
-pub fn get(target_language: &str) -> Vec<String> {
-    data_match!(
-        get_language_from_code(target_language),
+pub fn get(
+    #[cfg(feature = "enum")] input_language: LANGUAGE,
+    #[cfg(not(feature = "enum"))] input_language: &str,
+) -> Vec<String> {
+    string_match!(
+        parse(input_language),
         "savand",
         [
             "english",
@@ -270,10 +212,13 @@ pub fn get(target_language: &str) -> Vec<String> {
 /// ```
 /// let vec = stop_words::get_nltk("spanish");
 /// ```
-pub fn get_nltk(target_language: &str) -> Vec<String> {
+pub fn get_nltk(
+    #[cfg(feature = "enum")] input_language: LANGUAGE,
+    #[cfg(not(feature = "enum"))] input_language: &str,
+) -> Vec<String> {
     // Match the full language name
-    data_match!(
-        get_language_from_code(target_language),
+    string_match!(
+        parse(input_language),
         "nltk",
         [
             "english",
@@ -301,6 +246,18 @@ pub fn get_nltk(target_language: &str) -> Vec<String> {
             "tajik"
         ]
     )
+}
+
+/// This is a helper function to resolve inputs when using different features
+fn parse(
+    #[cfg(feature = "enum")] input_language: LANGUAGE,
+    #[cfg(not(feature = "enum"))] input_language: &str,
+) -> &str {
+    #[cfg(feature = "enum")]
+    let target_string: &str = Box::leak(input_language.to_string().to_lowercase().into_boxed_str());
+    #[cfg(not(feature = "enum"))]
+    let target_string: &str = get_language_from_code(input_language);
+    return target_string;
 }
 
 /// This function takes an arbitrary code and converts it as needed to a full language name
@@ -333,36 +290,4 @@ fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
         output.push(String::from(word));
     }
     output
-}
-
-#[cfg(test)]
-mod panic_tests {
-    use crate as stop_words;
-
-    #[test]
-    #[should_panic]
-    fn bad_language_name() {
-        let x = stop_words::get("engilsh");
-        for y in x {
-            println!("{}", y);
-        }
-    }
-
-    #[test]
-    #[should_panic]
-    fn bad_language_code_1() {
-        let x = stop_words::get("zz");
-        for y in x {
-            println!("{}", y);
-        }
-    }
-
-    #[test]
-    #[should_panic]
-    fn bad_language_code_2t() {
-        let x = stop_words::get("zzz");
-        for y in x {
-            println!("{}", y);
-        }
-    }
 }

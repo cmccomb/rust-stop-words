@@ -1,3 +1,5 @@
+// use stop_words;
+
 /// Let's define a macro to help us out
 macro_rules! test {
     (
@@ -6,8 +8,6 @@ macro_rules! test {
         $language_3:literal,
         $nltk_panic:ident
     ) => {
-        use stop_words;
-
         #[test]
         fn compare_full_to_2letter() {
             let x = stop_words::get($language_full);
