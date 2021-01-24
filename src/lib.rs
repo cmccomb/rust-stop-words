@@ -48,39 +48,102 @@ use {std::string::ToString, strum_macros};
 /// Enum containing available language names, spelled out
 #[cfg(feature = "enum")]
 #[non_exhaustive]
-#[derive(strum_macros::ToString, Debug, Copy, Clone)]
+#[derive(strum_macros::ToString, Debug, Copy, Clone, PartialEq, strum_macros::EnumString)]
 pub enum LANGUAGE {
+    /// Arabic
     Arabic,
+
+    /// Azerbaijani
     Azerbaijani,
+
+    ///
     Catalan,
+
+    ///
     Danish,
+
+    ///
     English,
+
+    ///
     French,
+
+    ///
     Hindi,
+
+    ///
     Indonesian,
+
+    ///
     Norwegian,
+
+    ///
     Portuguese,
+
+    ///
     Russian,
+
+    ///
     Spanish,
+
+    ///
     Turkish,
+
+    ///
     Vietnamese,
+
+    ///
     Bulgarian,
+
+    ///
     Czech,
+
+    ///
     Dutch,
+
+    ///
     Finnish,
+
+    ///
     German,
+
+    ///
     Hungarian,
+
+    ///
     Italian,
+
+    ///
     Polish,
+
+    ///
     Romanian,
+
+    ///
     Slovak,
+
+    ///
     Swedish,
+
+    ///
     Ukrainian,
+
+    ///
     Hebrew,
+
+    ///
     Greek,
+
+    ///
     Kazakh,
+
+    ///
     Nepali,
+
+    ///
     Slovenian,
+
+    ///
     Tajik,
 }
 
@@ -265,6 +328,7 @@ fn parse(
 }
 
 /// This function takes an arbitrary code and converts it as needed to a full language name
+#[cfg(not(feature = "enum"))]
 fn get_language_from_code(code: &str) -> &str {
     if code.len() == 2 {
         get_language_from_iso(code, LANGUAGES_ISO_693_1)
@@ -276,6 +340,7 @@ fn get_language_from_code(code: &str) -> &str {
 }
 
 /// This function converts a language code to a full language name
+#[cfg(not(feature = "enum"))]
 fn get_language_from_iso<'a>(code: &'a str, library: [&str; 32]) -> &'a str {
     let mut iter = library.iter();
     let idx = iter.position(|&x| x == code);
