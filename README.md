@@ -19,6 +19,7 @@ This crate currently includes the following languages:
 - French
 - German
 - Greek
+- Gujarati
 - Hebrew
 - Hindi
 - Hungarian
@@ -49,7 +50,7 @@ cargo install stop_words
 Then add it to your ``Cargo.toml` with:
 ```toml
 [dependencies]
-stop-words = "0.2.1"
+stop-words = "0.3.2"
 ```
 and add this to your root:
 ```rust
@@ -100,7 +101,8 @@ vec.into_iter().collect();
 # So you want to use enums?
 That's easy too! All of the above functionality works, just add the following to your ``Cargo.toml`` instead of what is shown above:
 ```toml
-stop-words = {version = "0.3.0", features=["enum"]}
+[dependencies]
+stop-words = {version = "0.3.2", features=["enum"]}
 ```
 And then swap out the language string (e.g., ``"english"``) with the ``LANGUAGE`` enum (e.g., ``stop_words::LANGUAGE::English``).
 ```rust

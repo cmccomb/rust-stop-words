@@ -20,6 +20,7 @@
 //! - French
 //! - German
 //! - Greek
+//! - Gujarati
 //! - Hebrew
 //! - Hindi
 //! - Hungarian
@@ -145,10 +146,13 @@ pub enum LANGUAGE {
 
     ///
     Tajik,
+
+    ///
+    Gujarati,
 }
 
 /// Constant containing an array of available language names, spelled out
-pub const LANGUAGES: [&str; 32] = [
+pub const LANGUAGES: [&str; 33] = [
     "arabic",
     "azerbaijani",
     "catalan",
@@ -181,19 +185,21 @@ pub const LANGUAGES: [&str; 32] = [
     "nepali",
     "slovenian",
     "tajik",
+    "gujarati",
 ];
 
 /// Constant containing an array of available language names, using ISO-693-1 codes
-pub const LANGUAGES_ISO_693_1: [&str; 32] = [
+pub const LANGUAGES_ISO_693_1: [&str; 33] = [
     "ar", "az", "ca", "da", "en", "fr", "hi", "in", "nn", "pt", "ru", "es", "tr", "vi", "bg", "cs",
     "nl", "fi", "de", "hu", "it", "pl", "ro", "sk", "sv", "uk", "he", "el", "kk", "ne", "sl", "tg",
+    "gu",
 ];
 
 /// Constant containing an array of available language names, using ISO-693-2T codes
-pub const LANGUAGES_ISO_693_2T: [&str; 32] = [
+pub const LANGUAGES_ISO_693_2T: [&str; 33] = [
     "ara", "aze", "cat", "dan", "eng", "fra", "hin", "ind", "nno", "por", "rus", "spa", "tur",
     "vie", "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol", "ron", "slk", "swe", "ukr",
-    "heb", "ell", "kaz", "nep", "slv", "tgk",
+    "heb", "ell", "kaz", "nep", "slv", "tgk", "guj",
 ];
 
 /// Let's define a macro to help us out with string matching
@@ -257,7 +263,8 @@ pub fn get(
             "romanian",
             "slovak",
             "swedish",
-            "ukrainian"
+            "ukrainian",
+            "gujarati"
         ],
         "nltk",
         [
@@ -341,7 +348,7 @@ fn get_language_from_code(code: &str) -> &str {
 
 /// This function converts a language code to a full language name
 #[cfg(not(feature = "enum"))]
-fn get_language_from_iso<'a>(code: &'a str, library: [&str; 32]) -> &'a str {
+fn get_language_from_iso<'a>(code: &'a str, library: [&str; 33]) -> &'a str {
     let mut iter = library.iter();
     let idx = iter.position(|&x| x == code);
     match idx {

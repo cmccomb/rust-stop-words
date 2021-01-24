@@ -3,7 +3,7 @@ use stop_words;
 fn main() {
     // Get the stop words
     #[cfg(not(feature = "enum"))]
-    let words = stop_words::get("english");
+    let words = stop_words::get("en");
     #[cfg(feature = "enum")]
     let words = stop_words::get(stop_words::LANGUAGE::English);
 

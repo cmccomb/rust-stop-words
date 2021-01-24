@@ -118,6 +118,11 @@ mod greek {
 }
 
 #[cfg(test)]
+mod gujarati {
+    test!("Gujarati", "gu", "guj", should_panic);
+}
+
+#[cfg(test)]
 mod hebrew {
     test!("Hebrew", "he", "heb", should_panic);
 }
