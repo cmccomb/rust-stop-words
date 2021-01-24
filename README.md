@@ -98,7 +98,11 @@ vec.into_iter().collect();
 ```
 
 # So you want to use enums?
-That's easy too! All of the above functionality works, just swap out the language string with the ``LANGUAGE`` enum.
+That's easy too! All of the above functionality works, just add the following to your ``Cargo.toml`` instead of what is shown above:
+```toml
+stop-words = {version = "0.3.0", features=["enum"]}
+```
+And then swap out the language string (e.g., ``"english"``) with the ``LANGUAGE`` enum (e.g., ``stop_words::LANGUAGE::English``).
 ```rust
 use stop_words;
 
@@ -112,3 +116,4 @@ fn main() {
     }
 }
 ```
+Of course, there are benefits and downsides to using this version. The primary benefit is that the enum is self-documenting, so it becomes much less likely that you will misspell a language name. The downside is that the enum implementation relies on [``strum``](https://crates.io/crates/strum), which adds some size to the build.
