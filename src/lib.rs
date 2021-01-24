@@ -48,7 +48,7 @@ use {std::string::ToString, strum_macros};
 /// Enum containing available language names, spelled out
 #[cfg(feature = "enum")]
 #[non_exhaustive]
-#[derive(strum_macros::ToString, Debug)]
+#[derive(strum_macros::ToString, Debug, Copy, Clone)]
 pub enum LANGUAGE {
     Arabic,
     Azerbaijani,
@@ -121,14 +121,12 @@ pub const LANGUAGES: [&str; 32] = [
 ];
 
 /// Constant containing an array of available language names, using ISO-693-1 codes
-#[cfg(not(feature = "enum"))]
 pub const LANGUAGES_ISO_693_1: [&str; 32] = [
     "ar", "az", "ca", "da", "en", "fr", "hi", "in", "nn", "pt", "ru", "es", "tr", "vi", "bg", "cs",
     "nl", "fi", "de", "hu", "it", "pl", "ro", "sk", "sv", "uk", "he", "el", "kk", "ne", "sl", "tg",
 ];
 
 /// Constant containing an array of available language names, using ISO-693-2T codes
-#[cfg(not(feature = "enum"))]
 pub const LANGUAGES_ISO_693_2T: [&str; 32] = [
     "ara", "aze", "cat", "dan", "eng", "fra", "hin", "ind", "nno", "por", "rus", "spa", "tur",
     "vie", "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol", "ron", "slk", "swe", "ukr",
@@ -158,11 +156,14 @@ macro_rules! string_match {
 /// The only function you'll ever need! Given a language code or name it returns common stop words as a ``Vec<String>``
 ///
 /// ```
+/// #[cfg(not(feature = "enum"))]
 /// let vec = stop_words::get("spanish");
+/// #[cfg(feature = "enum")]
+/// let vec = stop_words::get(stop_words::LANGUAGE::Spanish);
 /// ```
 pub fn get(
     #[cfg(feature = "enum")] input_language: LANGUAGE,
-    #[cfg(not(feature = "enum"))] input_language: &str,
+    #[cfg(not(feature = "enum"))] input_language: &'static str,
 ) -> Vec<String> {
     string_match!(
         parse(input_language),
@@ -210,11 +211,14 @@ pub fn get(
 /// Ok, you might need this function too. It fetches stop words specifically for NLTK.
 ///
 /// ```
+/// #[cfg(not(feature = "enum"))]
 /// let vec = stop_words::get_nltk("spanish");
+/// #[cfg(feature = "enum")]
+/// let vec = stop_words::get_nltk(stop_words::LANGUAGE::Spanish);
 /// ```
 pub fn get_nltk(
     #[cfg(feature = "enum")] input_language: LANGUAGE,
-    #[cfg(not(feature = "enum"))] input_language: &str,
+    #[cfg(not(feature = "enum"))] input_language: &'static str,
 ) -> Vec<String> {
     // Match the full language name
     string_match!(
@@ -251,8 +255,8 @@ pub fn get_nltk(
 /// This is a helper function to resolve inputs when using different features
 fn parse(
     #[cfg(feature = "enum")] input_language: LANGUAGE,
-    #[cfg(not(feature = "enum"))] input_language: &str,
-) -> &str {
+    #[cfg(not(feature = "enum"))] input_language: &'static str,
+) -> &'static str {
     #[cfg(feature = "enum")]
     let target_string: &str = Box::leak(input_language.to_string().to_lowercase().into_boxed_str());
     #[cfg(not(feature = "enum"))]

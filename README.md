@@ -96,3 +96,6 @@ Finally, if you prefer to have a ``HashSet<String>`` of words instead of a ``Vec
 let vec = stop_words::get("en");
 vec.into_iter().collect();
 ```
+
+# So you want to use enums?
+That's easy too! 
