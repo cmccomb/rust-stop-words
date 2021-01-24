@@ -98,4 +98,17 @@ vec.into_iter().collect();
 ```
 
 # So you want to use enums?
-That's easy too! 
+That's easy too! All of the above functionality works, just swap out the language string with the ``LANGUAGE`` enum.
+```rust
+use stop_words;
+
+fn main() {
+    // Get the stop words
+    let words = stop_words::get(stop_words::LANGUAGE::English);
+
+    // Print them
+    for word in words {
+        println!("{}", word)
+    }
+}
+```
