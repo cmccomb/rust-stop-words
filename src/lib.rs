@@ -15,27 +15,8 @@ mod language_names;
 use helpers::{get_language_from_iso, read_from_bytes};
 pub use language_names::{ISO_LANGUAGES, LANGUAGE};
 
+#[cfg(not(feature = "nltk"))]
 use serde_json::{Result, Value};
-
-/// Let's define a macro to help us out with string matching
-#[cfg(feature = "nltk")]
-macro_rules! string_match {
-    (
-        $($language:expr)*,
-        $($directory:literal)*,
-        [$( $lang:literal ),*]
-    ) =>
-    {
-        match $( $language )? {
-            $(
-                $(
-                    $lang => read_from_bytes(include_bytes!(concat!($directory, "/", $lang))),
-                )*
-            )*
-            _ => panic!(concat!("Unfortunately, the '{}' language is not currently supported. Please make sure that the name of the language is spelled in English."), $( $language )? )
-        }
-    }
-}
 
 /// This function fetches stop words for a language using an enum.
 pub fn get(input_language: LANGUAGE) -> Vec<String> {
