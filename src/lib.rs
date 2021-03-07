@@ -1,214 +1,29 @@
 #![warn(clippy::all)]
 #![warn(missing_docs)]
 #![warn(missing_doc_code_examples)]
+#![warn(clippy::missing_docs_in_private_items)]
 
 //! # About
 //! Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text
 //! analysis or natural language processing. This crate contains common stop words for a variety of languages. This crate uses stop word
-//! lists from [this resource](https://github.com/Alir3z4/stop-words/tree/bd8cc1434faeb3449735ed570a4a392ab5d35291) and also from [NLTK](https://www.nltk.org/).
-//!
-//! This crate currently includes the following languages:
-//! - Arabic
-//! - Azerbaijani
-//! - Bulgarian
-//! - Catalan
-//! - Czech
-//! - Danish
-//! - Dutch
-//! - English
-//! - Finnish
-//! - French
-//! - German
-//! - Greek
-//! - Gujarati
-//! - Hebrew
-//! - Hindi
-//! - Hungarian
-//! - Indonesian
-//! - Italian
-//! - Kazakh
-//! - Nepali
-//! - Norwegian
-//! - Polish
-//! - Portuguese
-//! - Romanian
-//! - Russian
-//! - Slovak
-//! - Slovenian
-//! - Spanish
-//! - Swedish
-//! - Tajik
-//! - Turkish
-//! - Ukrainian
-//! - Vietnamese
+//! lists from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK](https://www.nltk.org/).
 
 // Strum contains all the trait definitions
-#[cfg(feature = "enum")]
-use {std::string::ToString, strum_macros};
+mod helpers;
+mod language_names;
 
-/// Enum containing available language names, spelled out
-#[cfg(feature = "enum")]
-#[non_exhaustive]
-#[derive(strum_macros::ToString, Debug, Copy, Clone, PartialEq, strum_macros::EnumString)]
-pub enum LANGUAGE {
-    /// Arabic
-    Arabic,
+use helpers::{get_language_from_iso, read_from_bytes};
+pub use language_names::{ISO_LANGUAGES, LANGUAGE};
 
-    /// Azerbaijani
-    Azerbaijani,
-
-    ///
-    Catalan,
-
-    ///
-    Danish,
-
-    ///
-    English,
-
-    ///
-    French,
-
-    ///
-    Hindi,
-
-    ///
-    Indonesian,
-
-    ///
-    Norwegian,
-
-    ///
-    Portuguese,
-
-    ///
-    Russian,
-
-    ///
-    Spanish,
-
-    ///
-    Turkish,
-
-    ///
-    Vietnamese,
-
-    ///
-    Bulgarian,
-
-    ///
-    Czech,
-
-    ///
-    Dutch,
-
-    ///
-    Finnish,
-
-    ///
-    German,
-
-    ///
-    Hungarian,
-
-    ///
-    Italian,
-
-    ///
-    Polish,
-
-    ///
-    Romanian,
-
-    ///
-    Slovak,
-
-    ///
-    Swedish,
-
-    ///
-    Ukrainian,
-
-    ///
-    Hebrew,
-
-    ///
-    Greek,
-
-    ///
-    Kazakh,
-
-    ///
-    Nepali,
-
-    ///
-    Slovenian,
-
-    ///
-    Tajik,
-
-    ///
-    Gujarati,
-}
-
-/// Constant containing an array of available language names, spelled out
-pub const LANGUAGES: [&str; 33] = [
-    "arabic",
-    "azerbaijani",
-    "catalan",
-    "danish",
-    "english",
-    "french",
-    "hindi",
-    "indonesian",
-    "norwegian",
-    "portuguese",
-    "russian",
-    "spanish",
-    "turkish",
-    "vietnamese",
-    "bulgarian",
-    "czech",
-    "dutch",
-    "finnish",
-    "german",
-    "hungarian",
-    "italian",
-    "polish",
-    "romanian",
-    "slovak",
-    "swedish",
-    "ukrainian",
-    "hebrew",
-    "greek",
-    "kazakh",
-    "nepali",
-    "slovenian",
-    "tajik",
-    "gujarati",
-];
-
-/// Constant containing an array of available language names, using ISO-693-1 codes
-pub const LANGUAGES_ISO_693_1: [&str; 33] = [
-    "ar", "az", "ca", "da", "en", "fr", "hi", "in", "nn", "pt", "ru", "es", "tr", "vi", "bg", "cs",
-    "nl", "fi", "de", "hu", "it", "pl", "ro", "sk", "sv", "uk", "he", "el", "kk", "ne", "sl", "tg",
-    "gu",
-];
-
-/// Constant containing an array of available language names, using ISO-693-2T codes
-pub const LANGUAGES_ISO_693_2T: [&str; 33] = [
-    "ara", "aze", "cat", "dan", "eng", "fra", "hin", "ind", "nno", "por", "rus", "spa", "tur",
-    "vie", "bul", "ces", "nld", "fin", "deu", "hun", "ita", "pol", "ron", "slk", "swe", "ukr",
-    "heb", "ell", "kaz", "nep", "slv", "tgk", "guj",
-];
+use serde_json::{Result, Value};
 
 /// Let's define a macro to help us out with string matching
+#[cfg(feature = "nltk")]
 macro_rules! string_match {
     (
         $($language:expr)*,
-        $(
-            $directory:literal, [$( $lang:literal ),*]
-        ),*
+        $($directory:literal)*,
+        [$( $lang:literal ),*]
     ) =>
     {
         match $( $language )? {
@@ -222,148 +37,56 @@ macro_rules! string_match {
     }
 }
 
-/// The only function you'll ever need! Given a language code or name it returns common stop words as a ``Vec<String>``
-///
-/// ```
-/// #[cfg(not(feature = "enum"))]
-/// let vec = stop_words::get("spanish");
-/// #[cfg(feature = "enum")]
-/// let vec = stop_words::get(stop_words::LANGUAGE::Spanish);
-/// ```
-pub fn get(
-    #[cfg(feature = "enum")] input_language: LANGUAGE,
-    #[cfg(not(feature = "enum"))] input_language: &'static str,
-) -> Vec<String> {
-    string_match!(
-        parse(input_language),
-        "savand",
-        [
-            "english",
-            "hebrew",
-            "arabic",
-            "catalan",
-            "danish",
-            "french",
-            "hindi",
-            "indonesian",
-            "norwegian",
-            "portuguese",
-            "russian",
-            "spanish",
-            "turkish",
-            "vietnamese",
-            "bulgarian",
-            "czech",
-            "dutch",
-            "finnish",
-            "german",
-            "hungarian",
-            "italian",
-            "polish",
-            "romanian",
-            "slovak",
-            "swedish",
-            "ukrainian",
-            "gujarati"
-        ],
-        "nltk",
-        [
-            "azerbaijani",
-            "greek",
-            "kazakh",
-            "nepali",
-            "slovenian",
-            "tajik"
-        ]
-    )
-}
-
-/// Ok, you might need this function too. It fetches stop words specifically for NLTK.
-///
-/// ```
-/// #[cfg(not(feature = "enum"))]
-/// let vec = stop_words::get_nltk("spanish");
-/// #[cfg(feature = "enum")]
-/// let vec = stop_words::get_nltk(stop_words::LANGUAGE::Spanish);
-/// ```
-pub fn get_nltk(
-    #[cfg(feature = "enum")] input_language: LANGUAGE,
-    #[cfg(not(feature = "enum"))] input_language: &'static str,
-) -> Vec<String> {
+/// This function fetches stop words for a language using an enum.
+pub fn get(input_language: LANGUAGE) -> Vec<String> {
     // Match the full language name
-    string_match!(
-        parse(input_language),
-        "nltk",
-        [
-            "english",
-            "arabic",
-            "danish",
-            "french",
-            "indonesian",
-            "norwegian",
-            "portuguese",
-            "russian",
-            "spanish",
-            "turkish",
-            "greek",
-            "dutch",
-            "finnish",
-            "german",
-            "hungarian",
-            "italian",
-            "romanian",
-            "swedish",
-            "azerbaijani",
-            "kazakh",
-            "nepali",
-            "slovenian",
-            "tajik"
-        ]
-    )
+    let target = ISO_LANGUAGES[input_language as usize];
+    get_iso(target)
 }
 
-/// This is a helper function to resolve inputs when using different features
-fn parse(
-    #[cfg(feature = "enum")] input_language: LANGUAGE,
-    #[cfg(not(feature = "enum"))] input_language: &'static str,
-) -> &'static str {
-    #[cfg(feature = "enum")]
-    let target_string: &str = Box::leak(input_language.to_string().to_lowercase().into_boxed_str());
-    #[cfg(not(feature = "enum"))]
-    let target_string: &str = get_language_from_code(input_language);
-    return target_string;
-}
-
-/// This function takes an arbitrary code and converts it as needed to a full language name
-#[cfg(not(feature = "enum"))]
-fn get_language_from_code(code: &str) -> &str {
-    if code.len() == 2 {
-        get_language_from_iso(code, LANGUAGES_ISO_693_1)
-    } else if code.len() == 3 {
-        get_language_from_iso(code, LANGUAGES_ISO_693_2T)
-    } else {
-        code
+/// This function fetches stop words for a language using a 2-letter ISO code
+#[cfg(feature = "nltk")]
+pub fn get_iso(input_language: &str) -> Vec<String> {
+    let x = get_language_from_iso(input_language);
+    match x {
+        "ar" => read_from_bytes(include_bytes!("nltk/arabic")),
+        "az" => read_from_bytes(include_bytes!("nltk/azerbaijani")),
+        "da" => read_from_bytes(include_bytes!("nltk/danish")),
+        "nl" => read_from_bytes(include_bytes!("nltk/dutch")),
+        "en" => read_from_bytes(include_bytes!("nltk/english")),
+        "fi" => read_from_bytes(include_bytes!("nltk/finnish")),
+        "fr" => read_from_bytes(include_bytes!("nltk/french")),
+        "de" => read_from_bytes(include_bytes!("nltk/german")),
+        "el" => read_from_bytes(include_bytes!("nltk/greek")),
+        "hu" => read_from_bytes(include_bytes!("nltk/hungarian")),
+        "id" => read_from_bytes(include_bytes!("nltk/indonesian")),
+        "it" => read_from_bytes(include_bytes!("nltk/italian")),
+        "kk" => read_from_bytes(include_bytes!("nltk/kazakh")),
+        "ne" => read_from_bytes(include_bytes!("nltk/nepali")),
+        "no" => read_from_bytes(include_bytes!("nltk/norwegian")),
+        "pt" => read_from_bytes(include_bytes!("nltk/portuguese")),
+        "ro" => read_from_bytes(include_bytes!("nltk/romanian")),
+        "ru" => read_from_bytes(include_bytes!("nltk/russian")),
+        "sl" => read_from_bytes(include_bytes!("nltk/slovenian")),
+        "es" => read_from_bytes(include_bytes!("nltk/spanish")),
+        "sv" => read_from_bytes(include_bytes!("nltk/swedish")),
+        "tg" => read_from_bytes(include_bytes!("nltk/tajik")),
+        "tr" => read_from_bytes(include_bytes!("nltk/turkish")),
+        _ => panic!(concat!("Unfortunately, the '{}' language is not currently supported. Please make sure that the name of the language is spelled in English."), x )
     }
 }
 
-/// This function converts a language code to a full language name
-#[cfg(not(feature = "enum"))]
-fn get_language_from_iso<'a>(code: &'a str, library: [&str; 33]) -> &'a str {
-    let mut iter = library.iter();
-    let idx = iter.position(|&x| x == code);
-    match idx {
-        Some(x) => LANGUAGES[x],
-        None => panic!("It looks like you're trying to use an ISO 693 language code. Unfortunately, the {} language code is not currently supported.", code),
+/// This function fetches stop words for a language using a 2-letter ISO code
+#[cfg(not(feature = "nltk"))]
+pub fn get_iso(input_language: &str) -> Vec<String> {
+    let bytes = include_bytes!("iso/stopwords-iso.json");
+    let mut json: serde_json::Value = serde_json::from_slice(bytes).unwrap();
+    if !json[input_language].is_array() {
+        panic!(concat!("Unfortunately, the '{}' language is not currently supported or nonexistent. Please make sure that the name is an appropriate 2-letter ISO code."), input_language )
     }
-}
-
-/// This function converts the bytestring to a vector
-fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
-    let contents = String::from_utf8_lossy(bytes);
-    let split_contents = contents.split('\n');
-    let mut output = vec![];
-    for word in split_contents {
-        output.push(String::from(word));
-    }
-    output
+    let array_of_words = json[input_language].as_array_mut().unwrap();
+    array_of_words
+        .into_iter()
+        .map(|x| x.as_str().unwrap().to_owned())
+        .collect()
 }

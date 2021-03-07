@@ -10,7 +10,5 @@ matrix:
   allow_failures:
     - rust: nightly
 script:
-  - cargo build --verbose
   - cargo test --verbose
-  - cargo build --verbose --features enum
-  - cargo test --verbose --features enum
+  - cargo test --verbose --features nltk

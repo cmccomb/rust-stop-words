@@ -4,54 +4,20 @@
 macro_rules! test {
     (
         $language_full:literal,
-        $language_2:literal,
-        $language_3:literal,
-        $nltk_panic:ident
+        $language_2:literal
     ) => {
-        #[cfg(feature = "enum")]
         use std::str::FromStr;
 
         #[test]
-        #[cfg(not(feature = "enum"))]
-        fn compare_full_to_2letter() {
-            let s = $language_full;
-            let x = stop_words::get(Box::leak(s.to_lowercase().into_boxed_str()));
-            let y = stop_words::get($language_2);
+        fn compare_enum_to_2letter() {
+            let lingo = stop_words::LANGUAGE::from_str($language_full).unwrap();
+            println!("{:?}", lingo);
+            let x = stop_words::get(lingo);
+            println!("{:?}", x);
+            let y = stop_words::get_iso($language_2);
+            println!("{:?}", y);
             for idx in 0..x.len() {
                 assert_eq!(x[idx], y[idx])
-            }
-        }
-
-        #[test]
-        #[cfg(not(feature = "enum"))]
-        fn compare_full_to_3letter() {
-            let s = $language_full;
-            let x = stop_words::get(Box::leak(s.to_lowercase().into_boxed_str()));
-            let y = stop_words::get($language_3);
-            for idx in 0..x.len() {
-                assert_eq!(x[idx], y[idx])
-            }
-        }
-
-        #[test]
-        #[cfg(feature = "enum")]
-        fn check_enum() {
-            let x = stop_words::get(stop_words::LANGUAGE::from_str($language_full).unwrap());
-
-            for idx in 0..x.len() {
-                println!("{}", x[idx])
-            }
-        }
-
-        #[test]
-        #[cfg(not(feature = "enum"))]
-        #[$nltk_panic]
-        fn check_nltk() {
-            let s = $language_full;
-            let x = stop_words::get_nltk(Box::leak(s.to_lowercase().into_boxed_str()));
-
-            for idx in 0..x.len() {
-                println!("{}", x[idx])
             }
         }
     };
@@ -59,165 +25,179 @@ macro_rules! test {
 
 #[cfg(test)]
 mod arabic {
-    test!("Arabic", "ar", "ara", test);
+    test!("Arabic", "ar");
 }
 
+#[cfg(feature = "nltk")]
 #[cfg(test)]
 mod azerbaijani {
-    test!("Azerbaijani", "az", "aze", test);
+    test!("Azerbaijani", "az");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod bulgarian {
-    test!("Bulgarian", "bg", "bul", should_panic);
+    test!("Bulgarian", "bg");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod catalan {
-    test!("Catalan", "ca", "cat", should_panic);
+    test!("Catalan", "ca");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod czech {
-    test!("Czech", "cs", "ces", should_panic);
+    test!("Czech", "cs");
 }
 
 #[cfg(test)]
 mod danish {
-    test!("Danish", "da", "dan", test);
+    test!("Danish", "da");
 }
 
 #[cfg(test)]
 mod dutch {
-    test!("Dutch", "nl", "nld", test);
+    test!("Dutch", "nl");
 }
 
 #[cfg(test)]
 mod english {
-    test!("English", "en", "eng", test);
+    test!("English", "en");
 }
 
 #[cfg(test)]
 mod finnish {
-    test!("Finnish", "fi", "fin", test);
+    test!("Finnish", "fi");
 }
 
 #[cfg(test)]
 mod french {
-    test!("French", "fr", "fra", test);
+    test!("French", "fr");
 }
 
 #[cfg(test)]
 mod german {
-    test!("German", "de", "deu", test);
+    test!("German", "de");
 }
 
 #[cfg(test)]
 mod greek {
-    test!("Greek", "el", "ell", test);
+    test!("Greek", "el");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod gujarati {
-    test!("Gujarati", "gu", "guj", should_panic);
+    test!("Gujarati", "gu");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod hebrew {
-    test!("Hebrew", "he", "heb", should_panic);
+    test!("Hebrew", "he");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod hindi {
-    test!("Hindi", "hi", "hin", should_panic);
+    test!("Hindi", "hi");
 }
 
 #[cfg(test)]
 mod hungarian {
-    test!("Hungarian", "hu", "hun", test);
+    test!("Hungarian", "hu");
 }
 
 #[cfg(test)]
 mod indonesian {
-    test!("Indonesian", "in", "ind", test);
+    test!("Indonesian", "id");
 }
 
 #[cfg(test)]
 mod italian {
-    test!("Italian", "it", "ita", test);
+    test!("Italian", "it");
 }
 
+#[cfg(feature = "nltk")]
 #[cfg(test)]
 mod kazakh {
-    test!("Kazakh", "kk", "kaz", test);
+    test!("Kazakh", "kk");
 }
 
+#[cfg(feature = "nltk")]
 #[cfg(test)]
 mod nepali {
-    test!("Nepali", "ne", "nep", test);
+    test!("Nepali", "ne");
 }
 
 #[cfg(test)]
 mod norwegian {
-    test!("Norwegian", "nn", "nno", test);
+    test!("Norwegian", "no");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod polish {
-    test!("Polish", "pl", "pol", should_panic);
+    test!("Polish", "pl");
 }
 
 #[cfg(test)]
 mod portuguese {
-    test!("Portuguese", "pt", "por", test);
+    test!("Portuguese", "pt");
 }
 
 #[cfg(test)]
 mod romanian {
-    test!("Romanian", "ro", "ron", test);
+    test!("Romanian", "ro");
 }
 
 #[cfg(test)]
 mod russian {
-    test!("Russian", "ru", "rus", test);
+    test!("Russian", "ru");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod slovak {
-    test!("Slovak", "sk", "slk", should_panic);
+    test!("Slovak", "sk");
 }
 
 #[cfg(test)]
 mod slovenian {
-    test!("Slovenian", "sl", "slv", test);
+    test!("Slovenian", "sl");
 }
 
 #[cfg(test)]
 mod spanish {
-    test!("Spanish", "es", "spa", test);
+    test!("Spanish", "es");
 }
 
 #[cfg(test)]
 mod swedish {
-    test!("Swedish", "sv", "swe", test);
+    test!("Swedish", "sv");
 }
 
+#[cfg(feature = "nltk")]
 #[cfg(test)]
 mod tajik {
-    test!("Tajik", "tg", "tgk", test);
+    test!("Tajik", "tg");
 }
 
 #[cfg(test)]
 mod turkish {
-    test!("Turkish", "tr", "tur", test);
+    test!("Turkish", "tr");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod ukrainian {
-    test!("Ukrainian", "uk", "ukr", should_panic);
+    test!("Ukrainian", "uk");
 }
 
+#[cfg(not(feature = "nltk"))]
 #[cfg(test)]
 mod vietnamese {
-    test!("Vietnamese", "vi", "vie", should_panic);
+    test!("Vietnamese", "vi");
 }
