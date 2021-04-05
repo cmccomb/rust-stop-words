@@ -29,7 +29,7 @@ let words = stop_words::get_iso("en");
 
 If you prefer to have a ``HashSet<String>`` of words instead of a ``Vec<String>``, you can do this:
 ```rust
-let vec = stop_words::get(English);
+let vec = stop_words::get(stop_words::LANGUAGE::English);
 let hash = vec.into_iter().collect();
 ```
 
