@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/cmccomb/rust-stop-words.svg?branch=master)](https://travis-ci.org/cmccomb/rust-stop-words)
 [![Crates.io](https://img.shields.io/crates/v/stop-words.svg)](https://crates.io/crates/stop-words)
 [![docs.rs](https://docs.rs/stop-words/badge.svg)](https://docs.rs/stop-words)
 # About
@@ -22,16 +21,8 @@ fn main() {
     }
 }
 ```
-The function ``get`` will pull stop words from using an enum from `LANGUAGE` as an input. The function `get_iso` will allow you to feed in a two letter ISO code as followed:
-```rust
-let words = stop_words::get_iso("en");
-```
+The function ``get`` will take either a member of the `LANGUAGE` enum or a two-letter ISO language code as either a `str` or a `String` type..
 
-If you prefer to have a ``HashSet<String>`` of words instead of a ``Vec<String>``, you can do this:
-```rust
-let vec = stop_words::get(stop_words::LANGUAGE::English);
-let hash = vec.into_iter().collect();
-```
 
 # Language Availability
 | ISO 639-1 Code | Language | Stopwords ISO | NLTK |

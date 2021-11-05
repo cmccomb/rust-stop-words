@@ -1,35 +1,45 @@
 #![warn(clippy::all)]
 #![warn(missing_docs)]
-#![warn(missing_doc_code_examples)]
+#![warn(rustdoc::missing_doc_code_examples)]
 #![warn(clippy::missing_docs_in_private_items)]
 
-//! # About
 //! Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text
 //! analysis or natural language processing. This crate contains common stop words for a variety of languages. This crate uses stop word
 //! lists from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK](https://www.nltk.org/).
 
-// Strum contains all the trait definitions
-mod helpers;
 mod language_names;
+pub use language_names::LANGUAGE;
 
-use helpers::{get_language_from_iso, read_from_bytes};
-pub use language_names::{ISO_LANGUAGES, LANGUAGE};
+use std::fmt::Display;
 
 #[cfg(not(feature = "nltk"))]
-use serde_json::{Result, Value};
+use serde_json;
 
-/// This function fetches stop words for a language using an enum.
-pub fn get(input_language: LANGUAGE) -> Vec<String> {
-    // Match the full language name
-    let target = ISO_LANGUAGES[input_language as usize];
-    get_iso(target)
+/// Define and implement a trait that allows for overloading the method
+#[doc(hidden)]
+pub trait LanguageName: Display {}
+impl LanguageName for LANGUAGE {}
+impl LanguageName for &str {}
+impl LanguageName for String {}
+
+/// This function is the only one you'll ever need! It fetches stop words for a language using
+/// either a member of the `LANGUAGE` enum, or a two-character ISO language name as either a `str` or a `String` type.
+/// ```
+/// let first_list = stop_words::get("ar");
+/// let second_list = stop_words::get(stop_words::LANGUAGE::Arabic);
+/// assert_eq!(first_list, second_list)
+/// ```
+pub fn get<T>(input_language: T) -> Vec<String>
+where
+    T: LanguageName,
+{
+    get_iso(&*format!("{}", input_language))
 }
 
 /// This function fetches stop words for a language using a 2-letter ISO code
 #[cfg(feature = "nltk")]
-pub fn get_iso(input_language: &str) -> Vec<String> {
-    let x = get_language_from_iso(input_language);
-    match x {
+fn get_iso(input_language: &str) -> Vec<String> {
+    match input_language {
         "ar" => read_from_bytes(include_bytes!("nltk/arabic")),
         "az" => read_from_bytes(include_bytes!("nltk/azerbaijani")),
         "da" => read_from_bytes(include_bytes!("nltk/danish")),
@@ -53,13 +63,13 @@ pub fn get_iso(input_language: &str) -> Vec<String> {
         "sv" => read_from_bytes(include_bytes!("nltk/swedish")),
         "tg" => read_from_bytes(include_bytes!("nltk/tajik")),
         "tr" => read_from_bytes(include_bytes!("nltk/turkish")),
-        _ => panic!(concat!("Unfortunately, the '{}' language is not currently supported. Please make sure that the name of the language is spelled in English."), x )
+        _ => panic!("Unfortunately, the '{}' language is not currently supported. Please make sure that the name of the language is spelled in English.", input_language)
     }
 }
 
 /// This function fetches stop words for a language using a 2-letter ISO code
 #[cfg(not(feature = "nltk"))]
-pub fn get_iso(input_language: &str) -> Vec<String> {
+fn get_iso(input_language: &str) -> Vec<String> {
     let bytes = include_bytes!("iso/stopwords-iso.json");
     let mut json: serde_json::Value = serde_json::from_slice(bytes).unwrap();
     if !json[input_language].is_array() {
@@ -70,4 +80,16 @@ pub fn get_iso(input_language: &str) -> Vec<String> {
         .into_iter()
         .map(|x| x.as_str().unwrap().to_owned())
         .collect()
+}
+
+#[cfg(feature = "nltk")]
+/// This function converts the bytestring to a vector
+pub(crate) fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
+    let contents = String::from_utf8_lossy(bytes);
+    let split_contents = contents.split('\n');
+    let mut output = vec![];
+    for word in split_contents {
+        output.push(String::from(word));
+    }
+    output
 }

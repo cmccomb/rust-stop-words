@@ -1,5 +1,4 @@
 use std::collections::HashSet;
-use stop_words;
 
 fn main() {
     // Get the stop words

@@ -1,6 +1,6 @@
 [package]
 name = "stop-words"
-version = "0.5.0"
+version = "0.6.0"
 authors = ["Chris McComb <ccmcc2012@gmail.com>"]
 description = "Common stop words in several languages"
 edition = "2021"
@@ -17,6 +17,4 @@ default = ["serde_json"]
 nltk = []
 
 [dependencies]
-strum =  "0.20.0"
-strum_macros = "0.20.0"
 serde_json = {version="1.0.68", optional=true}
