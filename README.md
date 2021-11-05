@@ -1,3 +1,4 @@
+[![Github CI](https://github.com/cmccomb/rust-stop-words/actions/workflows/rust.yml/badge.svg)](https://github.com/cmccomb/rust-stop-words/actions)
 [![Crates.io](https://img.shields.io/crates/v/stop-words.svg)](https://crates.io/crates/stop-words)
 [![docs.rs](https://docs.rs/stop-words/badge.svg)](https://docs.rs/stop-words)
 # About
