@@ -1,6 +1,6 @@
-[![Github CI](https://github.com/cmccomb/rust-stop-words/actions/workflows/rust.yml/badge.svg)](https://github.com/cmccomb/rust-stop-words/actions)
+[![Github CI](https://github.com/cmccomb/rust-stop-words/actions/workflows/tests.yml/badge.svg)](https://github.com/cmccomb/rust-stop-words/actions)
 [![Crates.io](https://img.shields.io/crates/v/stop-words.svg)](https://crates.io/crates/stop-words)
-[![docs.rs](https://docs.rs/stop-words/badge.svg)](https://docs.rs/stop-words)
+[![docs.rs](https://img.shields.io/docsrs/stop-words/latest?logo=rust)](https://docs.rs/stop-words)
 # About
 
 Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text
@@ -22,7 +22,7 @@ fn main() {
     }
 }
 ```
-The function ``get`` will take either a member of the `LANGUAGE` enum or a two-letter ISO language code as either a `str` or a `String` type..
+The function ``get`` will take either a member of the `LANGUAGE` enum or a two-letter ISO language code as either a `str` or a `String` type.
 
 
 # Language Availability
