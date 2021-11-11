@@ -26,6 +26,9 @@ The function ``get`` will take either a member of the `LANGUAGE` enum or a two-l
 
 
 # Language Availability
+This crate supports all languages from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK](https://www.nltk.org/). Expand the table below to see a comprehensive description.
+<details>
+    <summary>Language Coverage Table</summary>
 | ISO 639-1 Code | Language | Stopwords ISO | NLTK |
 | -------------- | -------- | ------------- | ------------- |
 | aa | Afar      |  |  |
@@ -212,3 +215,6 @@ The function ``get`` will take either a member of the `LANGUAGE` enum or a two-l
 | yo | Yoruba | ✓ |  |
 | za | Zhuang; Chuang |  |  |
 | zu | Zulu | ✓ |  |
+
+</details>
+
