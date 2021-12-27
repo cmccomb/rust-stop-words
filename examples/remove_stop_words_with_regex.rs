@@ -3,7 +3,7 @@ use human_regex::{exactly, or, punctuation, whitespace, word_boundary, one_or_mo
 
 fn main() {
     // Read in a file
-    let document = std::fs::read_to_string("foreword.txt").expect("Cannot read file");
+    let document = std::fs::read_to_string("examples/foreword.txt").expect("Cannot read file");
 
     // Print the contents
     println!("Original text:\n{}", document);
