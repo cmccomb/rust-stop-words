@@ -1,8 +1,8 @@
 [package]
 name = "stop-words"
-version = "0.6.0"
+version = "0.6.1"
 authors = ["Chris McComb <ccmcc2012@gmail.com>"]
-description = "Common stop words in several languages"
+description = "Common stop words in many languages"
 edition = "2021"
 readme = "README.md"
 repository = "https://github.com/cmccomb/stop-words"

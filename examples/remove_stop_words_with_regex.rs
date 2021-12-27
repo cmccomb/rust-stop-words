@@ -1,9 +1,9 @@
 use stop_words::{get, LANGUAGE};
-use human_regex::{exactly, or, punctuation, whitespace, zero_or_more, word_boundary, one_or_more};
+use human_regex::{exactly, or, punctuation, whitespace, word_boundary, one_or_more};
 
 fn main() {
     // Read in a file
-    let mut text = std::fs::read_to_string("foreword.txt").expect("Cannot read file");
+    let text = std::fs::read_to_string("foreword.txt").expect("Cannot read file");
 
     // Print the contents
     println!("Original text:\n{}", text);

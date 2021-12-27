@@ -5,5 +5,5 @@ fn main() {
     let vec = stop_words::get(stop_words::LANGUAGE::English);
 
     // Convert to hash set
-    let set: HashSet<String> = vec.into_iter().collect();
+    let _set: HashSet<String> = vec.into_iter().collect();
 }
