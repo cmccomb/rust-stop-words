@@ -18,3 +18,6 @@ nltk = []
 
 [dependencies]
 serde_json = {version="1.0.68", optional=true}
+
+[dev-dependencies]
+human_regex = "0.2.0"

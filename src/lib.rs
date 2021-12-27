@@ -3,9 +3,7 @@
 #![warn(rustdoc::missing_doc_code_examples)]
 #![warn(clippy::missing_docs_in_private_items)]
 
-//! Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text
-//! analysis or natural language processing. This crate contains common stop words for a variety of languages. This crate uses stop word
-//! lists from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK](https://www.nltk.org/).
+#![doc = include_str!("../README.md")]
 
 mod language_names;
 pub use language_names::LANGUAGE;

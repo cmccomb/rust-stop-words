@@ -7,8 +7,11 @@ macro_rules! test {
         fn compare_enum_to_2letter() {
             let x = stop_words::get($language_full);
             let y = stop_words::get(format!("{}", $language_full));
+            let z = stop_words::get(format!("{}", $language_full).to_string());
             for idx in 0..x.len() {
-                assert_eq!(x[idx], y[idx])
+                assert_eq!(x[idx], y[idx]);
+                assert_eq!(z[idx], y[idx]);
+                assert_eq!(x[idx], z[idx]);
             }
         }
 
