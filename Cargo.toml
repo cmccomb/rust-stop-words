@@ -18,7 +18,7 @@ iso = ["serde_json"]
 nltk = []
 
 [dependencies]
-serde_json = {version="1.0.68", optional=true}
+serde_json = {version="1.0.85", optional=true}
 
 [dev-dependencies]
 human_regex = "0.2.3"

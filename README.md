@@ -10,6 +10,7 @@ lists from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK
 # Usage
 Using this crate is fairly straight-forward: 
 ```rust
+
 // Get the stop words
 let words = stop_words::get(stop_words::LANGUAGE::English);
 
