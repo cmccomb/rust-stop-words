@@ -7,11 +7,13 @@
 mod language_names;
 pub use language_names::LANGUAGE;
 
+use human_regex::{exactly, one_or_more, or, punctuation, whitespace, word_boundary};
+
 #[cfg(feature = "iso")]
 use serde_json;
 
 #[cfg(any(feature = "iso", feature = "nltk"))]
-/// This function is the only one you'll ever need! It fetches stop words for a language using
+/// This function  fetches stop words for a language using
 /// either a member of the `LANGUAGE` enum, or a two-character ISO language name as either a `str` or a `String` type.
 /// ```
 /// let first_list = stop_words::get("ar");
@@ -23,6 +25,38 @@ where
     T: Into<String>,
 {
     get_iso(input_language.into())
+}
+
+/// This function removes stop words for a specific language from a document using
+/// either a member of the `LANGUAGE` enum, or a two-character ISO language name as either a `str` or a `String` type.
+/// ```
+/// let dirty_text = "um the things did something important".to_string();
+/// let clean_text = stop_words::remove(stop_words::LANGUAGE::English, dirty_text);
+/// assert_eq!(clean_text, "important")
+/// ```
+pub fn remove<T>(input_language: T, document: String) -> String
+where
+    T: Into<String>,
+{
+    // Get the stopwords
+    let words = get(input_language);
+
+    // Remove punctuation and lowercase the text to make parsing easier
+    let lowercase_doc = document.to_ascii_lowercase();
+    let regex_for_punctuation = one_or_more(punctuation());
+    let text_without_punctuation = regex_for_punctuation
+        .to_regex()
+        .replace_all(&*lowercase_doc, "");
+
+    // Make a regex to match stopwords with trailing spaces and punctuation
+    let regex_for_stop_words =
+        word_boundary() + exactly(1, or(&words)) + word_boundary() + one_or_more(whitespace());
+
+    // Remove stop words
+    regex_for_stop_words
+        .to_regex()
+        .replace_all(&*text_without_punctuation, "")
+        .to_string()
 }
 
 /// This function fetches stop words for a language using a 2-letter ISO code
