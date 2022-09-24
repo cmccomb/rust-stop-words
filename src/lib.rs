@@ -7,17 +7,8 @@
 mod language_names;
 pub use language_names::LANGUAGE;
 
-use std::fmt::Display;
-
 #[cfg(feature = "iso")]
 use serde_json;
-
-/// Define and implement a trait that allows for overloading the method
-#[doc(hidden)]
-pub trait LanguageName: Display {}
-impl LanguageName for LANGUAGE {}
-impl LanguageName for &str {}
-impl LanguageName for String {}
 
 #[cfg(any(feature = "iso", feature = "nltk"))]
 /// This function is the only one you'll ever need! It fetches stop words for a language using
@@ -29,7 +20,7 @@ impl LanguageName for String {}
 /// ```
 pub fn get<T>(input_language: T) -> Vec<String>
 where
-    T: Into<String>, // T: LanguageName,
+    T: Into<String>,
 {
     get_iso(input_language.into())
 }
