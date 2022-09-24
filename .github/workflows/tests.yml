@@ -21,3 +21,7 @@ jobs:
       run: cargo build --verbose
     - name: Run default tests
       run: cargo test --verbose
+    - name: Build
+      run: cargo build --no-default-features --features nltk --verbose
+    - name: Run default tests
+      run: cargo test --no-default-features --features nltk --verbose

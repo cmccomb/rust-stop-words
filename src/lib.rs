@@ -2,7 +2,6 @@
 #![warn(missing_docs)]
 #![warn(rustdoc::missing_doc_code_examples)]
 #![warn(clippy::missing_docs_in_private_items)]
-
 #![doc = include_str!("../README.md")]
 
 mod language_names;
@@ -10,7 +9,7 @@ pub use language_names::LANGUAGE;
 
 use std::fmt::Display;
 
-#[cfg(not(feature = "nltk"))]
+#[cfg(feature = "iso")]
 use serde_json;
 
 /// Define and implement a trait that allows for overloading the method
@@ -20,6 +19,7 @@ impl LanguageName for LANGUAGE {}
 impl LanguageName for &str {}
 impl LanguageName for String {}
 
+#[cfg(any(feature = "iso", feature = "nltk"))]
 /// This function is the only one you'll ever need! It fetches stop words for a language using
 /// either a member of the `LANGUAGE` enum, or a two-character ISO language name as either a `str` or a `String` type.
 /// ```
@@ -29,15 +29,15 @@ impl LanguageName for String {}
 /// ```
 pub fn get<T>(input_language: T) -> Vec<String>
 where
-    T: LanguageName,
+    T: Into<String>, // T: LanguageName,
 {
-    get_iso(&*format!("{}", input_language))
+    get_iso(input_language.into())
 }
 
 /// This function fetches stop words for a language using a 2-letter ISO code
 #[cfg(feature = "nltk")]
-fn get_iso(input_language: &str) -> Vec<String> {
-    match input_language {
+fn get_iso(input_language: String) -> Vec<String> {
+    match &*input_language {
         "ar" => read_from_bytes(include_bytes!("nltk/arabic")),
         "az" => read_from_bytes(include_bytes!("nltk/azerbaijani")),
         "da" => read_from_bytes(include_bytes!("nltk/danish")),
@@ -67,13 +67,13 @@ fn get_iso(input_language: &str) -> Vec<String> {
 
 /// This function fetches stop words for a language using a 2-letter ISO code
 #[cfg(not(feature = "nltk"))]
-fn get_iso(input_language: &str) -> Vec<String> {
+fn get_iso(input_language: String) -> Vec<String> {
     let bytes = include_bytes!("iso/stopwords-iso.json");
     let mut json: serde_json::Value = serde_json::from_slice(bytes).unwrap();
-    if !json[input_language].is_array() {
+    if !json[&*input_language].is_array() {
         panic!(concat!("Unfortunately, the '{}' language is not currently supported or nonexistent. Please make sure that the name is an appropriate 2-letter ISO code."), input_language )
     }
-    let array_of_words = json[input_language].as_array_mut().unwrap();
+    let array_of_words = json[&*input_language].as_array_mut().unwrap();
     array_of_words
         .into_iter()
         .map(|x| x.as_str().unwrap().to_owned())

@@ -1,3 +1,4 @@
+#[cfg(any(feature = "nltk", feature = "default"))]
 #[cfg(test)]
 mod panic_tests {
     #[test]

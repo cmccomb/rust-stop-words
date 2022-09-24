@@ -5,13 +5,22 @@ macro_rules! test {
     ) => {
         #[test]
         fn compare_enum_to_2letter() {
-            let x = stop_words::get($language_full);
-            let y = stop_words::get(format!("{}", $language_full));
-            let z = stop_words::get(format!("{}", $language_full).to_string());
-            for idx in 0..x.len() {
-                assert_eq!(x[idx], y[idx]);
-                assert_eq!(z[idx], y[idx]);
-                assert_eq!(x[idx], z[idx]);
+            // Pul out the name versions that we want
+            let lingo = $language_full;
+            let lingo_as_enum = lingo.clone();
+            let lingo_as_string: String = lingo.clone().into();
+            let lingo_as_str = &*(lingo_as_string.clone());
+
+            // Pull word lists
+            let word_list_from_enum = stop_words::get(lingo_as_enum);
+            let word_list_from_string = stop_words::get(lingo_as_string);
+            let word_list_from_str = stop_words::get(lingo_as_str);
+
+            // Run a whole hell of a lot of assertions
+            for idx in 0..word_list_from_enum.len() {
+                assert_eq!(word_list_from_enum[idx], word_list_from_string[idx]);
+                assert_eq!(word_list_from_str[idx], word_list_from_string[idx]);
+                assert_eq!(word_list_from_enum[idx], word_list_from_str[idx]);
             }
         }
 

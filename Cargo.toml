@@ -13,7 +13,8 @@ keywords = ["nlp", "stop-words", "text", "languages", "stopwords"]
 categories = ["text-processing", "internationalization", "localization"]
 
 [features]
-default = ["serde_json"]
+default = ["iso"]
+iso = ["serde_json"]
 nltk = []
 
 [dependencies]
