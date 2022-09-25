@@ -27,14 +27,7 @@ where
     get_iso(input_language.into())
 }
 
-/// This function removes stop words for a specific language from a document using
-/// either a member of the `LANGUAGE` enum, or a two-character ISO language name as either a `str` or a `String` type.
-/// ```
-/// let dirty_text = "um the things did something important".to_string();
-/// let clean_text = stop_words::remove(stop_words::LANGUAGE::English, dirty_text);
-/// assert_eq!(clean_text, "important")
-/// ```
-pub fn remove<T>(input_language: T, document: String) -> String
+fn remove<T>(input_language: T, document: String) -> String
 where
     T: Into<String>,
 {
