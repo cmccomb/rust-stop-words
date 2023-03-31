@@ -16,7 +16,7 @@ fn main() {
     let regex_for_punctuation = one_or_more(punctuation());
     let text_without_punctuation = regex_for_punctuation
         .to_regex()
-        .replace_all(&*lowercase_doc, "");
+        .replace_all(&lowercase_doc, "");
 
     // Make a regex to match stopwords with trailing spaces and punctuation
     let regex_for_stop_words =
@@ -25,6 +25,6 @@ fn main() {
     // Remove stop words
     let clean_text = regex_for_stop_words
         .to_regex()
-        .replace_all(&*text_without_punctuation, "");
+        .replace_all(&text_without_punctuation, "");
     println!("\nClean text:\n{}", clean_text);
 }

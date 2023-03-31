@@ -72,9 +72,9 @@ fn get_names_from_iso_code(input_language: String) -> Vec<String> {
     if !json[&*input_language].is_array() {
         panic!(concat!("Unfortunately, the '{}' language is not currently supported or nonexistent. Please make sure that the name is an appropriate 2-letter ISO code."), input_language )
     }
-    let array_of_words = json[&*input_language].as_array_mut().unwrap();
+    let array_of_words = json[input_language].as_array_mut().unwrap();
     array_of_words
-        .into_iter()
+        .iter()
         .map(|x| x.as_str().unwrap().to_owned())
         .collect()
 }
