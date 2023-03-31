@@ -6,12 +6,9 @@
 mod language_names;
 pub use language_names::LANGUAGE;
 
-#[cfg(feature = "iso")]
-use serde_json;
-
 #[cfg(any(feature = "iso", feature = "nltk"))]
-/// This function  fetches stop words for a language using
-/// either a member of the `LANGUAGE` enum, or a two-character ISO language name as either a `str` or a `String` type.
+/// This function  fetches stop words for a language using either a member of the `LANGUAGE` enum,
+/// or a two-character ISO language name as either a `str` or a `String` type.
 /// ```
 /// let first_list = stop_words::get("ar");
 /// let second_list = stop_words::get(stop_words::LANGUAGE::Arabic);
@@ -21,12 +18,24 @@ pub fn get<T>(input_language: T) -> Vec<String>
 where
     T: Into<String>,
 {
-    get_iso(input_language.into())
+    get_names_from_iso_code(input_language.into())
 }
 
 /// This function fetches stop words for a language using a 2-letter ISO code
 #[cfg(feature = "nltk")]
-fn get_iso(input_language: String) -> Vec<String> {
+fn get_names_from_iso_code(input_language: String) -> Vec<String> {
+    /// This function converts the bytestring to a vector
+    fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
+        let contents = String::from_utf8_lossy(bytes);
+        let split_contents = contents.split('\n');
+        let mut output = vec![];
+        for word in split_contents {
+            output.push(String::from(word));
+        }
+        output
+    }
+
+    // This matches against the language
     match &*input_language {
         "ar" => read_from_bytes(include_bytes!("nltk/arabic")),
         "az" => read_from_bytes(include_bytes!("nltk/azerbaijani")),
@@ -51,13 +60,13 @@ fn get_iso(input_language: String) -> Vec<String> {
         "sv" => read_from_bytes(include_bytes!("nltk/swedish")),
         "tg" => read_from_bytes(include_bytes!("nltk/tajik")),
         "tr" => read_from_bytes(include_bytes!("nltk/turkish")),
-        _ => panic!("Unfortunately, the '{}' language is not currently supported. Please make sure that the name of the language is spelled in English.", input_language)
+        _ => panic!("The '{}' language is not recognized. Please check the documentation for a supported list of languages.", input_language)
     }
 }
 
 /// This function fetches stop words for a language using a 2-letter ISO code
 #[cfg(not(feature = "nltk"))]
-fn get_iso(input_language: String) -> Vec<String> {
+fn get_names_from_iso_code(input_language: String) -> Vec<String> {
     let bytes = include_bytes!("iso/stopwords-iso.json");
     let mut json: serde_json::Value = serde_json::from_slice(bytes).unwrap();
     if !json[&*input_language].is_array() {
@@ -68,16 +77,4 @@ fn get_iso(input_language: String) -> Vec<String> {
         .into_iter()
         .map(|x| x.as_str().unwrap().to_owned())
         .collect()
-}
-
-#[cfg(feature = "nltk")]
-/// This function converts the bytestring to a vector
-pub(crate) fn read_from_bytes(bytes: &[u8]) -> Vec<String> {
-    let contents = String::from_utf8_lossy(bytes);
-    let split_contents = contents.split('\n');
-    let mut output = vec![];
-    for word in split_contents {
-        output.push(String::from(word));
-    }
-    output
 }
