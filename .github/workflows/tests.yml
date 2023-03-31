@@ -24,4 +24,4 @@ jobs:
     - name: Build
       run: cargo build --no-default-features --features nltk --verbose
     - name: Run default tests
-      run: cargo test --no-default-features --features nltk --verbose
+      run: cargo test --no-default-features --features iso --verbose
