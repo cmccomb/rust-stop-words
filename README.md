@@ -10,13 +10,12 @@ lists from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK
 # Usage
 Using this crate is fairly straight-forward: 
 ```rust
-
 // Get the stop words
 let words = stop_words::get(stop_words::LANGUAGE::English);
 
 // Print them
 for word in words {
-    println!("{}", word)
+    println!("{}", word);
 }
 ```
 The function ``get`` will take either a member of the `LANGUAGE` enum or a two-letter ISO language code as either a `str` or a `String` type.

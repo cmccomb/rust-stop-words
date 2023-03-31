@@ -1,13 +1,10 @@
 #![warn(clippy::all)]
 #![warn(missing_docs)]
-#![warn(rustdoc::missing_doc_code_examples)]
 #![warn(clippy::missing_docs_in_private_items)]
 #![doc = include_str!("../README.md")]
 
 mod language_names;
 pub use language_names::LANGUAGE;
-
-use human_regex::{exactly, one_or_more, or, punctuation, whitespace, word_boundary};
 
 #[cfg(feature = "iso")]
 use serde_json;
@@ -25,31 +22,6 @@ where
     T: Into<String>,
 {
     get_iso(input_language.into())
-}
-
-fn remove<T>(input_language: T, document: String) -> String
-where
-    T: Into<String>,
-{
-    // Get the stopwords
-    let words = get(input_language);
-
-    // Remove punctuation and lowercase the text to make parsing easier
-    let lowercase_doc = document.to_ascii_lowercase();
-    let regex_for_punctuation = one_or_more(punctuation());
-    let text_without_punctuation = regex_for_punctuation
-        .to_regex()
-        .replace_all(&*lowercase_doc, "");
-
-    // Make a regex to match stopwords with trailing spaces and punctuation
-    let regex_for_stop_words =
-        word_boundary() + exactly(1, or(&words)) + word_boundary() + one_or_more(whitespace());
-
-    // Remove stop words
-    regex_for_stop_words
-        .to_regex()
-        .replace_all(&*text_without_punctuation, "")
-        .to_string()
 }
 
 /// This function fetches stop words for a language using a 2-letter ISO code
