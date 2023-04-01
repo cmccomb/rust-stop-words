@@ -30,7 +30,9 @@ pub fn get<T: Into<String>>(input_language: T) -> Vec<String> {
         .expect("Could not read JSON file from Stopwords ISO.");
 
     // Get the words
-    json.get(language_name_as_string.clone()).unwrap_or_else(|| panic!("The '{language_name_as_string}' language is not recognized. Please check the documentation for a supported list of languages.")).clone()
+    json.get(language_name_as_string.clone())
+        .unwrap_or_else(|| panic!("The '{language_name_as_string}' language is not recognized. Please check the documentation for a supported list of languages."))
+        .clone()
         .as_array_mut()
         .expect("The referenced value is not a mutable array.")
         .iter()
