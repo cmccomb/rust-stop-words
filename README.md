@@ -101,7 +101,7 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 | hu             | Hungarian                                                                        | ✓             | ✓    |
 | ig             | Igbo                                                                             |               |      |
 | is             | Icelandic                                                                        |               |      |
-| io             | Ido                                                                              |               ||
+| io             | Ido                                                                              |               |      |
 | ii             | Sichuan Yi; Nuosu                                                                |               |      |
 | iu             | Inuktitut                                                                        |               |      |
 | ie             | Interlingue; Occidental                                                          |               |      |
