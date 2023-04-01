@@ -74,7 +74,7 @@ fn get_words_from_iso_code(input_language: LANGUAGE) -> Vec<String> {
     // Make the words!
     json[String::from(input_language)]
         .as_array_mut()
-        .expect("Cannot extract a mutable array from JSON file.")
+        .expect("Cannot create a mutable array from JSON file.")
         .iter()
         .map(serde_json::Value::to_string)
         .collect()
