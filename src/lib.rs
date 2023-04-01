@@ -7,7 +7,6 @@ mod language_names;
 pub use language_names::LANGUAGE;
 use serde_json::Value;
 
-#[cfg(any(feature = "iso", feature = "nltk"))]
 /// This function  fetches stop words for a language using either a member of the `LANGUAGE` enum,
 /// or a two-character ISO language name as either a `str` or a `String` type.
 /// ```
@@ -19,63 +18,25 @@ pub fn get<T>(input_language: T) -> Vec<String>
 where
     T: Into<String>,
 {
-    get_words_from_iso_code(LANGUAGE::from(input_language.into()))
-}
+    // Check the input
+    let language_name_as_enum = LANGUAGE::from(input_language.into());
 
-/// This function fetches stop words for a language using a 2-letter ISO code
-#[cfg(feature = "nltk")]
-fn get_words_from_iso_code(input_language: LANGUAGE) -> Vec<String> {
-    // This matches against the language
-    let bytes: &[u8] = match input_language {
-        LANGUAGE::Arabic => include_bytes!("nltk/arabic"),
-        LANGUAGE::Azerbaijani => include_bytes!("nltk/azerbaijani"),
-        LANGUAGE::Danish => include_bytes!("nltk/danish"),
-        LANGUAGE::Dutch => include_bytes!("nltk/dutch"),
-        LANGUAGE::English => include_bytes!("nltk/english"),
-        LANGUAGE::Finnish => include_bytes!("nltk/finnish"),
-        LANGUAGE::French => include_bytes!("nltk/french"),
-        LANGUAGE::German => include_bytes!("nltk/german"),
-        LANGUAGE::Greek => include_bytes!("nltk/greek"),
-        LANGUAGE::Hungarian => include_bytes!("nltk/hungarian"),
-        LANGUAGE::Indonesian => include_bytes!("nltk/indonesian"),
-        LANGUAGE::Italian => include_bytes!("nltk/italian"),
-        LANGUAGE::Kazakh => include_bytes!("nltk/kazakh"),
-        LANGUAGE::Nepali => include_bytes!("nltk/nepali"),
-        LANGUAGE::Norwegian => include_bytes!("nltk/norwegian"),
-        LANGUAGE::Portuguese => include_bytes!("nltk/portuguese"),
-        LANGUAGE::Romanian => include_bytes!("nltk/romanian"),
-        LANGUAGE::Russian => include_bytes!("nltk/russian"),
-        LANGUAGE::Slovenian => include_bytes!("nltk/slovenian"),
-        LANGUAGE::Spanish => include_bytes!("nltk/spanish"),
-        LANGUAGE::Swedish => include_bytes!("nltk/swedish"),
-        LANGUAGE::Tajik => include_bytes!("nltk/tajik"),
-        LANGUAGE::Turkish => include_bytes!("nltk/turkish"),
-        _ => {
-            // The `get` function checks to ensure that the language code is valid.
-            unreachable!()
-        }
+    // Get the bytes
+    let json_as_bytes: &[u8] = if cfg!(feature = "nltk") {
+        include_bytes!(concat!(env!("OUT_DIR"), "/nltk_file.json"))
+    } else {
+        include_bytes!("iso/stopwords-iso.json")
     };
 
-    // Make the words!
-    String::from_utf8_lossy(bytes)
-        .split('\n')
-        .map(String::from)
-        .collect()
-}
-
-/// This function fetches stop words for a language using a 2-letter ISO code
-#[cfg(not(feature = "nltk"))]
-fn get_words_from_iso_code(input_language: LANGUAGE) -> Vec<String> {
-    // Compile JSON file into the `bytes` variable and deserialize with serde
-    let json_as_bytes = include_bytes!("iso/stopwords-iso.json");
+    // Get the JSON
     let mut json: Value = serde_json::from_slice(json_as_bytes)
-        .expect("Could not read  JSON file from Stopwords ISO.");
+        .expect("Could not read JSON file from Stopwords ISO.");
 
-    // Make the words!
-    json[String::from(input_language)]
+    // Get the words
+    json[String::from(language_name_as_enum)]
         .as_array_mut()
-        .expect("Cannot create a mutable array from JSON file.")
+        .expect("The '{input_language}' language is not recognized. Please check the documentation for a supported list of languages.")
         .iter()
-        .map(serde_json::Value::to_string)
+        .map(Value::to_string)
         .collect()
 }
