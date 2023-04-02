@@ -1,9 +1,9 @@
-use serde_json;
 use std::collections::HashMap;
 use std::io::Write;
 
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
+    println!("cargo:rerun-if-changed=src/nltk");
 
     let nltk_languages = vec![
         ("ar", include_str!("src/nltk/arabic")),

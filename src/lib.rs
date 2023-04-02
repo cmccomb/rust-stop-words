@@ -5,7 +5,6 @@
 
 mod language_names;
 pub use language_names::LANGUAGE;
-use serde_json;
 
 /// This function fetches stop words for a language using either a member of the `LANGUAGE` enum,
 /// or a two-character ISO language name as either a `str` or a `String` type.
