@@ -19,7 +19,7 @@ pub fn get<T: Into<String>>(input_language: T) -> Vec<String> {
 
     // Get the bytes
     let json_as_bytes: &[u8] = if cfg!(feature = "nltk") {
-        include_bytes!(concat!(env!("OUT_DIR"), "/nltk_file.json"))
+        include_bytes!(concat!(env!("OUT_DIR"), "/stopwords-nltk.json"))
     } else {
         include_bytes!("iso/stopwords-iso.json")
     };

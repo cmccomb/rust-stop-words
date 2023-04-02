@@ -2,9 +2,11 @@ use std::collections::HashMap;
 use std::io::Write;
 
 fn main() {
+    // Update on changes
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=src/nltk");
 
+    // Information on file locations
     let nltk_languages = vec![
         ("ar", include_str!("src/nltk/arabic")),
         ("az", include_str!("src/nltk/azerbaijani")),
@@ -31,6 +33,7 @@ fn main() {
         ("tr", include_str!("src/nltk/turkish")),
     ];
 
+    // Make a json structure and populate it with file information
     let mut json_struct: HashMap<String, Vec<String>> = HashMap::new();
     for lingo in nltk_languages {
         let iso_code = lingo.0.to_string();
@@ -42,10 +45,11 @@ fn main() {
         json_struct.insert(iso_code, stop_word_set);
     }
 
+    // Convert to a JSON string
     let nltk_stop_words: String = serde_json::to_string(&json_struct).unwrap();
 
+    // Save the string
     let mut nltk_file =
-        std::fs::File::create(std::env::var("OUT_DIR").unwrap() + "/nltk_file.json").unwrap();
-
+        std::fs::File::create(std::env::var("OUT_DIR").unwrap() + "/stopwords-nltk.json").unwrap();
     write!(nltk_file, "{nltk_stop_words}").expect("Could not write NLTK JSON file.");
 }
