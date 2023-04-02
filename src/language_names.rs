@@ -4,7 +4,7 @@
 #[non_exhaustive]
 #[derive(Clone, Debug)]
 pub enum LANGUAGE {
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Arabic (ISO 639-1 Code: ar)
     Arabic,
 
@@ -12,42 +12,43 @@ pub enum LANGUAGE {
     /// Azerbaijani (ISO 639-1 Code: az)
     Azerbaijani,
 
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Danish (ISO 639-1 Code: da)
     Danish,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Dutch (ISO 639-1 Code: nl)
     Dutch,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// English (ISO 639-1 Code: en)
     English,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Finnish (ISO 639-1 Code: fi)
     Finnish,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// French (ISO 639-1 Code: fr)
     French,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// German (ISO 639-1 Code: de)
     German,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Greek (ISO 639-1 Code: el)
     Greek,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Hungarian (ISO 639-1 Code: hu)
     Hungarian,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Indonesian (ISO 639-1 Code: id)
     Indonesian,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Italian (ISO 639-1 Code: it)
     Italian,
 
@@ -59,31 +60,31 @@ pub enum LANGUAGE {
     /// Nepali (ISO 639-1 Code: ne)
     Nepali,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Norwegian (ISO 639-1 Code: no)
     Norwegian,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Portuguese (ISO 639-1 Code: pt)
     Portuguese,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Romanian (ISO 639-1 Code: ro)
     Romanian,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Russian (ISO 639-1 Code: ru)
     Russian,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Slovenian (ISO 639-1 Code: sl)
     Slovenian,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Spanish (ISO 639-1 Code: sp)
     Spanish,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Swedish (ISO 639-1 Code: sv)
     Swedish,
 
@@ -91,163 +92,163 @@ pub enum LANGUAGE {
     /// Tajik (ISO 639-1 Code: tg)
     Tajik,
 
-    #[cfg(any(feature = "iso", feature = "nltk"))]
+    #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
     /// Turkish (ISO 639-1 Code: tk)
     Turkish,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Afrikaans (ISO 639-1 Code: af)
     Afrikaans,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Armenian (ISO 639-1 Code: hy)
     Armenian,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Basque (ISO 639-1 Code: eu)
     Basque,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Bengali (ISO 639-1 Code: bn)
     Bengali,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Breton (ISO 639-1 Code: br)
     Breton,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Bulgarian (ISO 639-1 Code: bg)
     Bulgarian,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Catalan (ISO 639-1 Code: ca)
     Catalan,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Czech (ISO 639-1 Code: cs)
     Czech,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Chinese (ISO 639-1 Code: zh)
     Chinese,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Esperanto (ISO 639-1 Code: eo)
     Esperanto,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Estonian (ISO 639-1 Code: eo)
     Estonian,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Persian (ISO 639-1 Code: fa)
     Persian,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Irish (ISO 639-1 Code: ga)
     Irish,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Galician (ISO 639-1 Code: gl)
     Galician,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Gujarati (ISO 639-1 Code: gu)
     Gujarati,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Hausa (ISO 639-1 Code: ha)
     Hausa,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Hebrew (ISO 639-1 Code: he)
     Hebrew,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Hindi (ISO 639-1 Code: hi)
     Hindi,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Croatian (ISO 639-1 Code: hr)
     Croatian,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Japanese (ISO 639-1 Code: ha)
     Japanese,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Korean (ISO 639-1 Code: ko)
     Korean,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Kurdish (ISO 639-1 Code: ku)
     Kurdish,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Latin (ISO 639-1 Code: la)
     Latin,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Latvian (ISO 639-1 Code: lv)
     Latvian,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Lithuanian (ISO 639-1 Code: lt)
     Lithuanian,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Marathi (ISO 639-1 Code: mr)
     Marathi,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Malay (ISO 639-1 Code: ms)
     Malay,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Polish (ISO 639-1 Code: pl)
     Polish,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Slovak (ISO 639-1 Code: sk)
     Slovak,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Somali (ISO 639-1 Code: so)
     Somali,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Sotho (ISO 639-1 Code: st)
     Sotho,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Swahili (ISO 639-1 Code: sw)
     Swahili,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Taglog (ISO 639-1 Code: tl)
     Tagalog,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Thai (ISO 639-1 Code: th)
     Thai,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Ukrainian (ISO 639-1 Code: uk)
     Ukrainian,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Urdu (ISO 639-1 Code: ur)
     Urdu,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Vietnamese (ISO 639-1 Code: vi)
     Vietnamese,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Yoruba (ISO 639-1 Code: yo)
     Yoruba,
 
-    #[cfg(feature = "iso")]
+    #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
     /// Zulu (ISO 639-1 Code: zu)
     Zulu,
 
@@ -287,129 +288,129 @@ pub enum LANGUAGE {
 impl From<LANGUAGE> for String {
     fn from(value: LANGUAGE) -> Self {
         match value {
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Arabic => "ar",
             #[cfg(feature = "nltk")]
             LANGUAGE::Azerbaijani => "az",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Danish => "da",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Dutch => "nl",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::English => "en",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Finnish => "fi",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::French => "fr",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::German => "de",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Greek => "el",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Hungarian => "hu",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Indonesian => "id",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Italian => "it",
             #[cfg(feature = "nltk")]
             LANGUAGE::Kazakh => "kk",
             #[cfg(feature = "nltk")]
             LANGUAGE::Nepali => "ne",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Norwegian => "no",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Portuguese => "pt",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Romanian => "ro",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Russian => "ru",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Slovenian => "sl",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Spanish => "es",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Swedish => "sv",
             #[cfg(feature = "nltk")]
             LANGUAGE::Tajik => "tg",
-            #[cfg(any(feature = "iso", feature = "nltk"))]
+            #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Turkish => "tr",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Afrikaans => "af",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Armenian => "hy",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Basque => "eu",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Bengali => "bn",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Breton => "br",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Bulgarian => "bg",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Catalan => "ca",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Czech => "cs",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Chinese => "zh",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Esperanto => "eo",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Estonian => "et",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Persian => "fa",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Irish => "ga",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Galician => "gl",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Gujarati => "gu",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Hausa => "ha",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Hebrew => "he",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Hindi => "hi",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Croatian => "hr",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Japanese => "ja",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Korean => "ko",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Kurdish => "ku",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Latin => "la",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Latvian => "lv",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Lithuanian => "lt",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Marathi => "mr",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Malay => "ms",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Polish => "pl",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Slovak => "sk",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Somali => "so",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Sotho => "st",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Swahili => "sw",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Tagalog => "tl",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Thai => "th",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Ukrainian => "uk",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Urdu => "ur",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Vietnamese => "vi",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Yoruba => "yo",
-            #[cfg(feature = "iso")]
+            #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
             LANGUAGE::Zulu => "zu",
             #[cfg(feature = "unimplemented")]
             LANGUAGE::Afar => "aa",
