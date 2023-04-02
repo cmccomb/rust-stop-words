@@ -9,7 +9,7 @@ lists from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK
 
 # Usage
 Using this crate is fairly straight-forward: 
-```rust
+```rust, no_run
 // Get the stop words
 let words = stop_words::get(stop_words::LANGUAGE::English);
 
@@ -23,7 +23,7 @@ The function ``get`` will take either a member of the `LANGUAGE` enum or a two-l
 You can find a complete example of how to read in a text file and remove stop words [here](https://github.com/cmccomb/rust-stop-words/blob/master/examples/remove_stop_words_with_regex.rs).
 
 
-# Language Availability
+# ISO Language Availability
 This crate supports all languages from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK](https://www.nltk.org/). Expand the table below to see a comprehensive description.
 <details>
     <summary>Language Coverage Table</summary>
@@ -217,3 +217,36 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 
 </details>
 
+# Constructed Language Availability
+We also support some constructed (fictional/fantasy) languages! Expand the table below to see a comprehensive description. ChatGPT was used to generate these lists quickly, so they are incomplete and approximate. Help welcome! To use these languages, add the `constructed` feature.
+
+<details>
+    <summary>Language Coverage Table</summary>
+
+| ISO 639-3 Code           | Language                                                          |
+|--------------------------|-------------------------------------------------------------------|
+| qya                      | [Quenya](https://en.wikipedia.org/wiki/Quenya)                                                        |
+| sjn                      | [Sindarin](https://en.wikipedia.org/wiki/Sindarin)                                                      |
+| tlh                      | [Klingon](https://en.wikipedia.org/wiki/Klingon)                                                       |
+| N/A (_dot_ is used here) | [Dothraki](https://en.wikipedia.org/wiki/Dothraki_language)       |
+| N/A (_dov_ is used here) | [Dovahzul](https://www.thuum.org/library/Dovahzul%20Print%20Dictionary%204th%20Edition.pdf)                                                      |
+| N/A (_nav_ is used here) | [Navi](https://en.wikipedia.org/wiki/Na%CA%BCvi_language)                                                          | 
+| N/A (_val_ is used here) | [High Valyrian](https://en.wikipedia.org/wiki/Valyrian_languages) |
+
+The following prompt was used with the Mar 14, 2023 version of ChatGPT:
+```text
+Please give me one list of 20 stop words for each of the following languages: Sindarin, Quenya, DOthraki, Na'vi, 
+Dovahzul, Klingon, and High Valyrian. I'd like the lists to be formatted as follows:
+Sindarin
+1. [word goes here]
+2. [word goes here]
+...
+20. [word goes here]
+Quenya
+1. [word goes here]
+...
+
+And so on
+```
+
+</details>

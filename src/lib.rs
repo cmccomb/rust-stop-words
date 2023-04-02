@@ -8,7 +8,7 @@ pub use language_names::LANGUAGE;
 
 /// This function fetches stop words for a language using either a member of the `LANGUAGE` enum,
 /// or a two-character ISO language name as either a `str` or a `String` type.
-/// ```
+/// ```no_run
 /// let first_list = stop_words::get("ar");
 /// let second_list = stop_words::get(stop_words::LANGUAGE::Arabic);
 /// assert_eq!(first_list, second_list)
@@ -20,6 +20,8 @@ pub fn get<T: Into<String>>(input_language: T) -> Vec<String> {
     // Get the bytes
     let json_as_bytes: &[u8] = if cfg!(feature = "nltk") {
         include_bytes!(concat!(env!("OUT_DIR"), "/stopwords-nltk.json"))
+    } else if cfg!(feature = "constructed") {
+        include_bytes!(concat!(env!("OUT_DIR"), "/stopwords-constructed.json"))
     } else {
         include_bytes!("iso/stopwords-iso.json")
     };

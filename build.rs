@@ -63,6 +63,7 @@ fn main() {
         ("tlh", include_str!("src/constructed/klingon")),
         ("qya", include_str!("src/constructed/quenya")),
         ("sjn", include_str!("src/constructed/sindarin")),
+        ("nav", include_str!("src/constructed/navi")),
     ];
 
     construct_json(nltk_languages, "stopwords-nltk.json");

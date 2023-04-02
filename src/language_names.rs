@@ -254,6 +254,34 @@ pub enum LANGUAGE {
     #[cfg(feature = "unimplemented")]
     /// Afar (ISO 639-1 Code: aa)
     Afar,
+
+    #[cfg(feature = "constructed")]
+    /// Quenya (ISO 639-3 Code: qya)
+    Quenya,
+
+    #[cfg(feature = "constructed")]
+    /// Sindarin (ISO 639-3 Code: sjn)
+    Sindarin,
+
+    #[cfg(feature = "constructed")]
+    /// Klingon (ISO 639-3 Code: tlh)
+    Klingon,
+
+    #[cfg(feature = "constructed")]
+    /// Dothraki (ISO 639-3 Code: N/A, so _dot_ is used here)
+    Dothraki,
+
+    #[cfg(feature = "constructed")]
+    /// Dovahzul (ISO 639-3 Code: N/A, so _dov_ is used here)
+    Dovahzul,
+
+    #[cfg(feature = "constructed")]
+    /// Navi (ISO 639-3 Code: N/A, so _nav_ is used here)
+    Navi,
+
+    #[cfg(feature = "constructed")]
+    /// High Valyrian (ISO 639-3 Code: N/A, so _val_ is used here)
+    HighValyrian,
 }
 
 impl From<LANGUAGE> for String {
@@ -385,6 +413,20 @@ impl From<LANGUAGE> for String {
             LANGUAGE::Zulu => "zu",
             #[cfg(feature = "unimplemented")]
             LANGUAGE::Afar => "aa",
+            #[cfg(feature = "constructed")]
+            LANGUAGE::Quenya => "qya",
+            #[cfg(feature = "constructed")]
+            LANGUAGE::Sindarin => "sjn",
+            #[cfg(feature = "constructed")]
+            LANGUAGE::Klingon => "tlh",
+            #[cfg(feature = "constructed")]
+            LANGUAGE::Dothraki => "dot",
+            #[cfg(feature = "constructed")]
+            LANGUAGE::Dovahzul => "dov",
+            #[cfg(feature = "constructed")]
+            LANGUAGE::Navi => "nav",
+            #[cfg(feature = "constructed")]
+            LANGUAGE::HighValyrian => "val",
         }
         .to_string()
     }
