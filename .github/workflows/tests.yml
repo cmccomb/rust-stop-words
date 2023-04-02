@@ -29,3 +29,7 @@ jobs:
       run: cargo build --features iso --verbose
     - name: Run tests with iso features
       run: cargo test --features iso --verbose
+    - name: Build with iso features
+      run: cargo build --features constructed --verbose
+    - name: Run tests with iso features
+      run: cargo test --features constructed --verbose
