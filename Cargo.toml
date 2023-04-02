@@ -19,6 +19,7 @@ serde_json = {version="^1"}
 default = ["iso"]
 iso = []
 nltk = []
+constructed = []
 
 [dependencies]
 serde_json = {version="^1"}

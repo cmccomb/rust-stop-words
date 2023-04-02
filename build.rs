@@ -1,6 +1,28 @@
 use std::collections::HashMap;
 use std::io::Write;
 
+fn construct_json(languages: Vec<(&str, &str)>, file_name: &str) {
+    // Make a json structure and populate it with file information
+    let mut json_struct: HashMap<String, Vec<String>> = HashMap::new();
+    for lingo in languages {
+        let iso_code = lingo.0.to_string();
+        let stop_word_set = lingo
+            .1
+            .split('\n')
+            .map(String::from)
+            .collect::<Vec<String>>();
+        json_struct.insert(iso_code, stop_word_set);
+    }
+
+    // Convert to a JSON string
+    let json_string: String = serde_json::to_string(&json_struct).unwrap();
+
+    // Save the string
+    let mut json_file =
+        std::fs::File::create(std::env::var("OUT_DIR").unwrap() + "/" + file_name).unwrap();
+    write!(json_file, "{json_string}").expect("Could not write JSON file.");
+}
+
 fn main() {
     // Update on changes
     println!("cargo:rerun-if-changed=build.rs");
@@ -33,23 +55,16 @@ fn main() {
         ("tr", include_str!("src/nltk/turkish")),
     ];
 
-    // Make a json structure and populate it with file information
-    let mut json_struct: HashMap<String, Vec<String>> = HashMap::new();
-    for lingo in nltk_languages {
-        let iso_code = lingo.0.to_string();
-        let stop_word_set = lingo
-            .1
-            .split('\n')
-            .map(String::from)
-            .collect::<Vec<String>>();
-        json_struct.insert(iso_code, stop_word_set);
-    }
+    // Information on file locations
+    let constructed_languages = vec![
+        ("dot", include_str!("src/constructed/dothraki")),
+        ("dov", include_str!("src/constructed/dovahzul")),
+        ("val", include_str!("src/constructed/highvalyrian")),
+        ("tlh", include_str!("src/constructed/klingon")),
+        ("qya", include_str!("src/constructed/quenya")),
+        ("sjn", include_str!("src/constructed/sindarin")),
+    ];
 
-    // Convert to a JSON string
-    let nltk_stop_words: String = serde_json::to_string(&json_struct).unwrap();
-
-    // Save the string
-    let mut nltk_file =
-        std::fs::File::create(std::env::var("OUT_DIR").unwrap() + "/stopwords-nltk.json").unwrap();
-    write!(nltk_file, "{nltk_stop_words}").expect("Could not write NLTK JSON file.");
+    construct_json(nltk_languages, "stopwords-nltk.json");
+    construct_json(constructed_languages, "stopwords-constructed.json");
 }
