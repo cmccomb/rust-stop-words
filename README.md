@@ -9,7 +9,7 @@ lists from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK
 
 # Usage
 Using this crate is fairly straight-forward: 
-```rust, no_run
+```rust, ignore
 // Get the stop words
 let words = stop_words::get(stop_words::LANGUAGE::English);
 
@@ -223,15 +223,15 @@ We also support some constructed (fictional/fantasy) languages! Expand the table
 <details>
     <summary>Language Coverage Table</summary>
 
-| ISO 639-3 Code           | Language                                                          |
-|--------------------------|-------------------------------------------------------------------|
-| qya                      | [Quenya](https://en.wikipedia.org/wiki/Quenya)                                                        |
-| sjn                      | [Sindarin](https://en.wikipedia.org/wiki/Sindarin)                                                      |
-| tlh                      | [Klingon](https://en.wikipedia.org/wiki/Klingon)                                                       |
-| N/A (_dot_ is used here) | [Dothraki](https://en.wikipedia.org/wiki/Dothraki_language)       |
-| N/A (_dov_ is used here) | [Dovahzul](https://www.thuum.org/library/Dovahzul%20Print%20Dictionary%204th%20Edition.pdf)                                                      |
-| N/A (_nav_ is used here) | [Navi](https://en.wikipedia.org/wiki/Na%CA%BCvi_language)                                                          | 
-| N/A (_val_ is used here) | [High Valyrian](https://en.wikipedia.org/wiki/Valyrian_languages) |
+| ISO 639-3 Code           | Language                                                                                    |
+|--------------------------|---------------------------------------------------------------------------------------------|
+| qya                      | [Quenya](https://en.wikipedia.org/wiki/Quenya)                                              |
+| sjn                      | [Sindarin](https://en.wikipedia.org/wiki/Sindarin)                                          |
+| tlh                      | [Klingon](https://en.wikipedia.org/wiki/Klingon)                                            |
+| mis (_dot_ is used here) | [Dothraki](https://en.wikipedia.org/wiki/Dothraki_language)                                 |
+| mis (_dov_ is used here) | [Dovahzul](https://www.thuum.org/library/Dovahzul%20Print%20Dictionary%204th%20Edition.pdf) |
+| mis (_nav_ is used here) | [Navi](https://en.wikipedia.org/wiki/Na%CA%BCvi_language)                                   | 
+| mis (_val_ is used here) | [High Valyrian](https://en.wikipedia.org/wiki/Valyrian_languages)                           |
 
 The following prompt was used with the Mar 14, 2023 version of ChatGPT:
 ```text

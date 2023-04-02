@@ -7,8 +7,10 @@ mod language_names;
 pub use language_names::LANGUAGE;
 
 /// This function fetches stop words for a language using either a member of the `LANGUAGE` enum,
-/// or a two-character ISO language name as either a `str` or a `String` type.
-/// ```no_run
+/// or a two-character ISO language code as either a `str` or a `String` type. Please note that
+/// constructed languages use either a member of the `LANGUAGE` enum, or a __three__-character ISO
+/// language code as either a `str` or a `String` type
+/// ```ignore
 /// let first_list = stop_words::get("ar");
 /// let second_list = stop_words::get(stop_words::LANGUAGE::Arabic);
 /// assert_eq!(first_list, second_list)
