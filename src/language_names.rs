@@ -1,7 +1,6 @@
 //! Module containing the huge language enum and formatting for it
 
-use std::fmt::Display;
-use std::fmt::Formatter;
+use std::fmt::{Display, Formatter};
 
 /// Enum containing available language names
 #[non_exhaustive]
