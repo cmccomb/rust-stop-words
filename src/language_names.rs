@@ -1,7 +1,5 @@
 //! Module containing the huge language enum and formatting for it
 
-use std::fmt::{Display, Formatter};
-
 /// Enum containing available language names
 #[non_exhaustive]
 #[derive(Clone, Debug)]
@@ -254,7 +252,7 @@ pub enum LANGUAGE {
     Zulu,
 
     #[cfg(feature = "unimplemented")]
-    /// Afar (ISO 639-1 Code: af)
+    /// Afar (ISO 639-1 Code: aa)
     Afar,
 }
 
@@ -386,14 +384,14 @@ impl From<LANGUAGE> for String {
             #[cfg(feature = "iso")]
             LANGUAGE::Zulu => "zu",
             #[cfg(feature = "unimplemented")]
-            LANGUAGE::Afar => "af",
+            LANGUAGE::Afar => "aa",
         }
         .to_string()
     }
 }
 
-impl Display for LANGUAGE {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+impl std::fmt::Display for LANGUAGE {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.clone())
     }
 }
