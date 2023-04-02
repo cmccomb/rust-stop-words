@@ -17,11 +17,15 @@ jobs:
             os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
     - uses: actions/checkout@v2
-    - name: Build
+    - name: Build with default features
       run: cargo build --verbose
-    - name: Run default tests
+    - name: Run tests on default features
       run: cargo test --verbose
-    - name: Build
-      run: cargo build --no-default-features --features nltk --verbose
-    - name: Run default tests
-      run: cargo test --no-default-features --features iso --verbose
+    - name: Build with nltk features
+      run: cargo build --features nltk --verbose
+    - name: Run tests with nltk features
+      run: cargo test --features nltk --verbose
+    - name: Build with iso features
+      run: cargo build --features iso --verbose
+    - name: Run tests with iso features
+      run: cargo test --features iso --verbose
