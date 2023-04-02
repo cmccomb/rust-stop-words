@@ -13,15 +13,15 @@ keywords = ["nlp", "stop-words", "text", "languages", "stopwords"]
 categories = ["text-processing", "internationalization", "localization"]
 
 [build-dependencies]
-serde_json = {version="1.0.95"}
+serde_json = {version="^1"}
 
 [features]
 default = ["iso"]
-iso = ["serde_json"]
+iso = []
 nltk = []
 
 [dependencies]
-serde_json = {version="^1", optional=true}
+serde_json = {version="^1"}
 
 [dev-dependencies]
 human_regex = "^0.3.0"
