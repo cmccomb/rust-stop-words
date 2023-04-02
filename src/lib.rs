@@ -5,7 +5,7 @@
 
 mod language_names;
 pub use language_names::LANGUAGE;
-use serde_json::Value;
+use serde_json;
 
 /// This function fetches stop words for a language using either a member of the `LANGUAGE` enum,
 /// or a two-character ISO language name as either a `str` or a `String` type.
@@ -26,7 +26,7 @@ pub fn get<T: Into<String>>(input_language: T) -> Vec<String> {
     };
 
     // Get the JSON
-    let json: Value = serde_json::from_slice(json_as_bytes)
+    let json: serde_json::Value = serde_json::from_slice(json_as_bytes)
         .expect("Could not read JSON file from Stopwords ISO.");
 
     // Get the words
@@ -36,6 +36,6 @@ pub fn get<T: Into<String>>(input_language: T) -> Vec<String> {
         .as_array_mut()
         .expect("The referenced value is not a mutable array.")
         .iter()
-        .map(Value::to_string)
+        .map(serde_json::Value::to_string)
         .collect()
 }
