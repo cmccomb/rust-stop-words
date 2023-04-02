@@ -12,14 +12,14 @@ license = "MIT OR Apache-2.0"
 keywords = ["nlp", "stop-words", "text", "languages", "stopwords"]
 categories = ["text-processing", "internationalization", "localization"]
 
-[build-dependencies]
-serde_json = {version="^1"}
-
 [features]
 default = ["iso"]
 iso = []
 nltk = []
 constructed = []
+
+[build-dependencies]
+serde_json = {version="^1"}
 
 [dependencies]
 serde_json = {version="^1"}
