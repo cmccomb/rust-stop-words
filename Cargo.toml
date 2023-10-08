@@ -1,6 +1,6 @@
 [package]
 name = "stop-words"
-version = "0.8.1"
+version = "0.8.0"
 authors = ["Chris McComb <ccmcc2012@gmail.com>"]
 description = "Common stop words in many languages"
 edition = "2021"
