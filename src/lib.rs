@@ -33,13 +33,17 @@ pub fn get<T: Into<String>>(input_language: T) -> Vec<String> {
         .expect("Could not read JSON file from Stopwords ISO.");
 
     // Get the words
-    json.get(language_name_as_string.clone())
+    json.get(&language_name_as_string)
         .unwrap_or_else(|| panic!("The '{language_name_as_string}' language is not recognized. Please check the documentation for a supported list of languages."))
-        .clone()
-        .as_array_mut()
+        .as_array()
         .expect("The referenced value is not a mutable array.")
         .iter()
-        .map(serde_json::Value::to_string)
-        .map(|x| x.replace("\"", ""))
+        .map(|x| {
+            if let serde_json::Value::String(s) = x {
+                s.to_owned()
+            } else {
+                panic!("The referenced value is not a string.")
+            }
+        })
         .collect()
 }
