@@ -40,5 +40,6 @@ pub fn get<T: Into<String>>(input_language: T) -> Vec<String> {
         .expect("The referenced value is not a mutable array.")
         .iter()
         .map(serde_json::Value::to_string)
+        .map(|x| x.replace("\"", ""))
         .collect()
 }
