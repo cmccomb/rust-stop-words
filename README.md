@@ -235,18 +235,17 @@ We also support some constructed (fictional/fantasy) languages! Expand the table
 
 The following prompt was used with the Mar 14, 2023 version of ChatGPT:
 ```text
-Please give me one list of 20 stop words for each of the following languages: Sindarin, Quenya, DOthraki, Na'vi, 
+Please give me one list of 20+ stop words for each of the following languages: Sindarin, Quenya, Dothraki, Na'vi, 
 Dovahzul, Klingon, and High Valyrian. I'd like the lists to be formatted as follows:
 Sindarin
 1. [word goes here]
 2. [word goes here]
 ...
-20. [word goes here]
 Quenya
 1. [word goes here]
 ...
 
-And so on
+And so on.
 ```
 
 </details>
