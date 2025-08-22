@@ -22,6 +22,7 @@ constructed = []
 serde_json = { version = "^1" }
 
 [dependencies]
+serde_json = { version = "^1" }
 
 [dev-dependencies]
 human_regex = "^0.3.0"
