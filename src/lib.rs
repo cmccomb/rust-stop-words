@@ -4,7 +4,14 @@
 #![doc = include_str!("../README.md")]
 
 mod language_names;
-pub use language_names::LANGUAGE;
+pub use crate::language_names::LANGUAGE;
+
+#[allow(clippy::missing_docs_in_private_items)]
+mod generated {
+    include!(concat!(env!("OUT_DIR"), "/stopwords.rs"));
+}
+
+use crate::generated::lookup;
 
 /// This function fetches stop words for a language using either a member of the `LANGUAGE` enum,
 /// or a two-character ISO language code as any type implementing [`std::convert::AsRef`]`<str>`.
@@ -17,36 +24,12 @@ pub use language_names::LANGUAGE;
 /// ```
 /// # Panics
 ///
-/// Panics if the provided language code is not recognized or the underlying JSON data is invalid.
-pub fn get<T: AsRef<str>>(input_language: T) -> Vec<String> {
-    // Check the input
-    let language_name = input_language.as_ref();
-
-    // Get the bytes
-    let json_as_bytes: &[u8] = if cfg!(feature = "nltk") {
-        include_bytes!(concat!(env!("OUT_DIR"), "/stopwords-nltk.json"))
-    } else if cfg!(feature = "constructed") {
-        include_bytes!(concat!(env!("OUT_DIR"), "/stopwords-constructed.json"))
-    } else {
-        include_bytes!("iso/stopwords-iso.json")
-    };
-
-    // Get the JSON
-    let mut json: serde_json::Value = serde_json::from_slice(json_as_bytes)
-        .expect("Could not read JSON file from Stopwords ISO.");
-
-    // Get the words
-    json.get_mut(language_name)
-        .unwrap_or_else(|| panic!("The '{language_name}' language is not recognized. Please check the documentation for a supported list of languages."))
-        .as_array_mut()
-        .expect("The referenced value is not a mutable array.")
-        .iter_mut()
-        .map(|x| {
-            if let serde_json::Value::String(s) = x.take() {
-                s
-            } else {
-                panic!("The referenced value is not a string.")
-            }
-        })
-        .collect()
+/// Panics if the provided language code is not recognized.
+pub fn get<T: std::convert::AsRef<str>>(input_language: T) -> &'static [&'static str] {
+    let language_name: &str = input_language.as_ref();
+    lookup(language_name).unwrap_or_else(|| {
+        panic!(
+            "The '{language_name}' language is not recognized. Please check the documentation for a supported list of languages."
+        )
+    })
 }

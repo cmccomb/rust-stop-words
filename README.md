@@ -218,7 +218,7 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 </details>
 
 # Constructed Language Availability
-We also support some constructed (fictional/fantasy) languages! Expand the table below to see a comprehensive description. ChatGPT was used to generate these lists quickly, so they are incomplete and approximate. Help welcome! To use these languages, add the `constructed` feature.
+We also support some constructed (fictional/fantasy) languages! Expand the table below to see a comprehensive description. `ChatGPT` was used to generate these lists quickly, so they are incomplete and approximate. Help welcome! To use these languages, add the `constructed` feature.
 
 <details>
     <summary>Language Coverage Table</summary>
@@ -233,7 +233,7 @@ We also support some constructed (fictional/fantasy) languages! Expand the table
 | mis (_nav_ is used here) | [Navi](https://en.wikipedia.org/wiki/Na%CA%BCvi_language)                                   | 
 | mis (_val_ is used here) | [High Valyrian](https://en.wikipedia.org/wiki/Valyrian_languages)                           |
 
-The following prompt was used with the Mar 14, 2023 version of ChatGPT:
+The following prompt was used with the Mar 14, 2023 version of `ChatGPT`:
 ```text
 Please give me one list of 20+ stop words for each of the following languages: Sindarin, Quenya, Dothraki, Na'vi, 
 Dovahzul, Klingon, and High Valyrian. I'd like the lists to be formatted as follows:
