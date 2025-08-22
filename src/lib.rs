@@ -7,17 +7,20 @@ mod language_names;
 pub use language_names::LANGUAGE;
 
 /// This function fetches stop words for a language using either a member of the `LANGUAGE` enum,
-/// or a two-character ISO language code as either a `str` or a `String` type. Please note that
-/// constructed languages use either a member of the `LANGUAGE` enum, or a __three__-character ISO
-/// language code as either a `str` or a `String` type
+/// or a two-character ISO language code as any type implementing [`std::convert::AsRef`]`<str>`.
+/// Please note that constructed languages use either a member of the `LANGUAGE` enum, or a
+/// __three__-character ISO language code as either a `str` or a `String` type.
 /// ```ignore
 /// let first_list = stop_words::get("ar");
 /// let second_list = stop_words::get(stop_words::LANGUAGE::Arabic);
 /// assert_eq!(first_list, second_list)
 /// ```
-pub fn get<T: Into<String>>(input_language: T) -> Vec<String> {
+/// # Panics
+///
+/// Panics if the provided language code is not recognized or the underlying JSON data is invalid.
+pub fn get<T: AsRef<str>>(input_language: T) -> Vec<String> {
     // Check the input
-    let language_name_as_string = input_language.into();
+    let language_name = input_language.as_ref();
 
     // Get the bytes
     let json_as_bytes: &[u8] = if cfg!(feature = "nltk") {
@@ -33,15 +36,13 @@ pub fn get<T: Into<String>>(input_language: T) -> Vec<String> {
         .expect("Could not read JSON file from Stopwords ISO.");
 
     // Get the words
-    json.get_mut(&language_name_as_string)
-        .take()
-        .unwrap_or_else(|| panic!("The '{language_name_as_string}' language is not recognized. Please check the documentation for a supported list of languages."))
+    json.get_mut(language_name)
+        .unwrap_or_else(|| panic!("The '{language_name}' language is not recognized. Please check the documentation for a supported list of languages."))
         .as_array_mut()
         .expect("The referenced value is not a mutable array.")
         .iter_mut()
         .map(|x| {
-            let x = x.take();
-            if let serde_json::Value::String(s) = x {
+            if let serde_json::Value::String(s) = x.take() {
                 s
             } else {
                 panic!("The referenced value is not a string.")

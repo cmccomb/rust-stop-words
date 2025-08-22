@@ -285,9 +285,11 @@ pub enum LANGUAGE {
     HighValyrian,
 }
 
-impl From<LANGUAGE> for String {
-    fn from(value: LANGUAGE) -> Self {
-        match value {
+impl LANGUAGE {
+    /// Return the ISO language code for this variant.
+    #[must_use]
+    pub const fn as_str(&self) -> &'static str {
+        match self {
             #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
             LANGUAGE::Arabic => "ar",
             #[cfg(feature = "nltk")]
@@ -429,12 +431,23 @@ impl From<LANGUAGE> for String {
             #[cfg(feature = "constructed")]
             LANGUAGE::HighValyrian => "val",
         }
-        .to_string()
+    }
+}
+
+impl From<LANGUAGE> for String {
+    fn from(value: LANGUAGE) -> Self {
+        value.as_str().to_owned()
+    }
+}
+
+impl AsRef<str> for LANGUAGE {
+    fn as_ref(&self) -> &str {
+        self.as_str()
     }
 }
 
 impl std::fmt::Display for LANGUAGE {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.clone())
+        f.write_str(self.as_ref())
     }
 }
