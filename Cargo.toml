@@ -19,10 +19,9 @@ nltk = []
 constructed = []
 
 [build-dependencies]
-serde_json = {version="^1"}
+serde_json = { version = "^1" }
 
 [dependencies]
-serde_json = {version="^1"}
 
 [dev-dependencies]
 human_regex = "^0.3.0"
