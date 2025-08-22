@@ -288,6 +288,7 @@ pub enum LANGUAGE {
 impl LANGUAGE {
     /// Return the ISO language code for this variant.
     #[must_use]
+    #[allow(clippy::too_many_lines)]
     pub const fn as_str(&self) -> &'static str {
         match self {
             #[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
