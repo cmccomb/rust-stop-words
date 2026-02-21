@@ -70,7 +70,7 @@ fn main() {
         ];
         for (code, data) in nltk_languages {
             let words: std::vec::Vec<std::string::String> = data
-                .split('\n')
+                .lines()
                 .filter(|w| !w.is_empty())
                 .map(std::string::String::from)
                 .collect();
@@ -90,7 +90,7 @@ fn main() {
         ];
         for (code, data) in constructed_languages {
             let words: std::vec::Vec<std::string::String> = data
-                .split('\n')
+                .lines()
                 .filter(|w| !w.is_empty())
                 .map(std::string::String::from)
                 .collect();
