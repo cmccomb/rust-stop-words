@@ -40,6 +40,12 @@ mod arabic {
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
+mod albanian {
+    test!(stop_words::LANGUAGE::Albanian);
+}
+
+#[cfg(feature = "nltk")]
+#[cfg(test)]
 mod azerbaijani {
     test!(stop_words::LANGUAGE::Azerbaijani);
 }
@@ -56,13 +62,19 @@ mod armenian {
     test!(stop_words::LANGUAGE::Armenian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
 #[cfg(test)]
 mod basque {
     test!(stop_words::LANGUAGE::Basque);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "nltk")]
+#[cfg(test)]
+mod belarusian {
+    test!(stop_words::LANGUAGE::Belarusian);
+}
+
+#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
 #[cfg(test)]
 mod bengali {
     test!(stop_words::LANGUAGE::Bengali);
@@ -80,7 +92,7 @@ mod bulgarian {
     test!(stop_words::LANGUAGE::Bulgarian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
 #[cfg(test)]
 mod catalan {
     test!(stop_words::LANGUAGE::Catalan);
@@ -92,7 +104,7 @@ mod czech {
     test!(stop_words::LANGUAGE::Czech);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
 #[cfg(test)]
 mod chinese {
     test!(stop_words::LANGUAGE::Chinese);
@@ -164,10 +176,16 @@ mod gujarati {
     test!(stop_words::LANGUAGE::Gujarati);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
 #[cfg(test)]
 mod hebrew {
     test!(stop_words::LANGUAGE::Hebrew);
+}
+
+#[cfg(feature = "nltk")]
+#[cfg(test)]
+mod hinglish {
+    test!(stop_words::LANGUAGE::Hinglish);
 }
 
 #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
@@ -296,6 +314,12 @@ mod tajik {
     test!(stop_words::LANGUAGE::Tajik);
 }
 
+#[cfg(feature = "nltk")]
+#[cfg(test)]
+mod tamil {
+    test!(stop_words::LANGUAGE::Tamil);
+}
+
 #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
 #[cfg(test)]
 mod thai {
@@ -312,6 +336,12 @@ mod tagalog {
 #[cfg(test)]
 mod turkish {
     test!(stop_words::LANGUAGE::Turkish);
+}
+
+#[cfg(feature = "nltk")]
+#[cfg(test)]
+mod uzbek {
+    test!(stop_words::LANGUAGE::Uzbek);
 }
 
 #[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]

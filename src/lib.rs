@@ -13,10 +13,11 @@ mod generated {
 
 use crate::generated::lookup;
 
-/// This function fetches stop words for a language using either a member of the `LANGUAGE` enum,
-/// or a two-character ISO language code as any type implementing [`std::convert::AsRef`]`<str>`.
-/// Please note that constructed languages use either a member of the `LANGUAGE` enum, or a
-/// __three__-character ISO language code as either a `str` or a `String` type.
+/// This function fetches stop words for a language using either a member of the `LANGUAGE` enum
+/// or a lookup code as any type implementing [`std::convert::AsRef`]`<str>`.
+/// For most languages the lookup code is a two-character ISO 639-1 code.
+/// Constructed languages use three-character codes (`dot`, `dov`, `nav`, `qya`, `sjn`, `tlh`,
+/// `val`), and NLTK-specific `hinglish` is supported when the `nltk` feature is enabled.
 /// ```ignore
 /// let first_list = stop_words::get("ar");
 /// let second_list = stop_words::get(stop_words::LANGUAGE::Arabic);

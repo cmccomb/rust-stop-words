@@ -16,20 +16,12 @@ jobs:
         matrix:
             os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - uses: actions/checkout@v2
-    - name: Build with default features
-      run: cargo build --verbose
+    - uses: actions/checkout@v5
     - name: Run tests on default features
       run: cargo test --verbose
-    - name: Build with nltk features
-      run: cargo build --features nltk --verbose
     - name: Run tests with nltk features
-      run: cargo test --features nltk --verbose
-    - name: Build with iso features
-      run: cargo build --features iso --verbose
-    - name: Run tests with iso features
-      run: cargo test --features iso --verbose
-    - name: Build with iso features
-      run: cargo build --features constructed --verbose
-    - name: Run tests with iso features
-      run: cargo test --features constructed --verbose
+      run: cargo test --no-default-features --features nltk --verbose
+    - name: Run tests with constructed features
+      run: cargo test --no-default-features --features constructed --verbose
+    - name: Run tests with nltk + constructed features
+      run: cargo test --no-default-features --features "nltk,constructed" --verbose

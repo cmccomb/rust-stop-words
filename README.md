@@ -18,7 +18,8 @@ for word in words {
     println!("{}", word);
 }
 ```
-The function ``get`` will take either a member of the `LANGUAGE` enum or a two-letter ISO language code as either a `str` or a `String` type.
+The function ``get`` accepts either a member of the `LANGUAGE` enum or a language lookup code as either a `str` or `String`.
+For ISO languages this is usually a two-letter ISO 639-1 code, for constructed languages this is a three-letter code (`dot`, `dov`, `nav`, `qya`, `sjn`, `tlh`, `val`), and NLTK-specific `hinglish` is also supported when the `nltk` feature is enabled.
 
 You can find a complete example of how to read in a text file and remove stop words [here](https://github.com/cmccomb/rust-stop-words/blob/master/examples/remove_stop_words_with_regex.rs).
 
@@ -34,7 +35,7 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 | ab             | Abkhazian                                                                        |               |      |
 | af             | Afrikaans                                                                        | ✓             |      |
 | ak             | Akan                                                                             |               |      |
-| sq             | Albanian                                                                         |               |      |
+| sq             | Albanian                                                                         |               | ✓    |
 | am             | Amharic                                                                          |               |      |
 | ar             | Arabic                                                                           | ✓             | ✓    |
 | an             | Aragonese                                                                        |               |      |
@@ -46,9 +47,9 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 | az             | Azerbaijani                                                                      |               | ✓    |
 | ba             | Bashkir                                                                          |               |      |
 | bm             | Bambara                                                                          |               |      |
-| eu             | Basque                                                                           | ✓             |      |
-| be             | Belarusian                                                                       |               |      |
-| bn             | Bengali                                                                          | ✓             |      |
+| eu             | Basque                                                                           | ✓             | ✓    |
+| be             | Belarusian                                                                       |               | ✓    |
+| bn             | Bengali                                                                          | ✓             | ✓    |
 | bh             | Bihari languages                                                                 |               |      |
 | bi             | Bislama                                                                          |               |      |
 | bo             | Tibetan                                                                          |               |      |
@@ -56,11 +57,11 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 | br             | Breton                                                                           | ✓             |      |
 | bg             | Bulgarian                                                                        | ✓             |      |
 | my             | Burmese                                                                          |               |      |
-| ca             | Catalan; Valencian                                                               | ✓             |      |
+| ca             | Catalan; Valencian                                                               | ✓             | ✓    |
 | cs             | Czech                                                                            | ✓             |      |
 | ch             | Chamorro                                                                         |               |      |
 | ce             | Chechen                                                                          |               |      |
-| zh             | Chinese                                                                          | ✓             |      |
+| zh             | Chinese                                                                          | ✓             | ✓    |
 | cu             | Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic |               |      |
 | cv             | Chuvash                                                                          |               |      |
 | kw             | Cornish                                                                          |               |      |
@@ -93,7 +94,7 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 | gu             | Gujarati                                                                         | ✓             |      |
 | ht             | Haitian; Haitian Creole                                                          |               |      |
 | ha             | Hausa                                                                            | ✓             |      |
-| he             | Hebrew                                                                           | ✓             |      |
+| he             | Hebrew                                                                           | ✓             | ✓    |
 | hz             | Herero                                                                           |               |      |
 | hi             | Hindi                                                                            | ✓             |      |
 | ho             | Hiri Motu                                                                        |               |      |
@@ -187,7 +188,7 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 | sw             | Swahili                                                                          | ✓             |      |
 | sv             | Swedish                                                                          | ✓             | ✓    |
 | ty             | Tahitian                                                                         |               |      |
-| ta             | Tamil                                                                            |               |      |
+| ta             | Tamil                                                                            |               | ✓    |
 | tt             | Tatar                                                                            |               |      |
 | te             | Telugu                                                                           |               |      |
 | tg             | Tajik                                                                            |               | ✓    |
@@ -203,7 +204,7 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 | ug             | Uighur; Uyghur                                                                   |               |      |
 | uk             | Ukrainian                                                                        | ✓             |      |
 | ur             | Urdu                                                                             | ✓             |      |
-| uz             | Uzbek                                                                            |               |      |
+| uz             | Uzbek                                                                            |               | ✓    |
 | ve             | Venda                                                                            |               |      |
 | vi             | Vietnamese                                                                       | ✓             |      |
 | vo             | Volapük                                                                          |               |      |
@@ -216,6 +217,8 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 | zu             | Zulu                                                                             | ✓             |      |
 
 </details>
+
+NLTK also includes a non-ISO list for `hinglish` (lookup key: `"hinglish"`) when the `nltk` feature is enabled.
 
 # Constructed Language Availability
 We also support some constructed (fictional/fantasy) languages! Expand the table below to see a comprehensive description. `ChatGPT` was used to generate these lists quickly, so they are incomplete and approximate. Help welcome! To use these languages, add the `constructed` feature.

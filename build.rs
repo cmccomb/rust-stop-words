@@ -34,8 +34,14 @@ fn main() {
 
     if nltk {
         let nltk_languages = vec![
+            ("sq", include_str!("src/nltk/albanian")),
             ("ar", include_str!("src/nltk/arabic")),
             ("az", include_str!("src/nltk/azerbaijani")),
+            ("eu", include_str!("src/nltk/basque")),
+            ("be", include_str!("src/nltk/belarusian")),
+            ("bn", include_str!("src/nltk/bengali")),
+            ("ca", include_str!("src/nltk/catalan")),
+            ("zh", include_str!("src/nltk/chinese")),
             ("da", include_str!("src/nltk/danish")),
             ("nl", include_str!("src/nltk/dutch")),
             ("en", include_str!("src/nltk/english")),
@@ -43,6 +49,8 @@ fn main() {
             ("fr", include_str!("src/nltk/french")),
             ("de", include_str!("src/nltk/german")),
             ("el", include_str!("src/nltk/greek")),
+            ("he", include_str!("src/nltk/hebrew")),
+            ("hinglish", include_str!("src/nltk/hinglish")),
             ("hu", include_str!("src/nltk/hungarian")),
             ("id", include_str!("src/nltk/indonesian")),
             ("it", include_str!("src/nltk/italian")),
@@ -55,8 +63,10 @@ fn main() {
             ("sl", include_str!("src/nltk/slovenian")),
             ("es", include_str!("src/nltk/spanish")),
             ("sv", include_str!("src/nltk/swedish")),
+            ("ta", include_str!("src/nltk/tamil")),
             ("tg", include_str!("src/nltk/tajik")),
             ("tr", include_str!("src/nltk/turkish")),
+            ("uz", include_str!("src/nltk/uzbek")),
         ];
         for (code, data) in nltk_languages {
             let words: std::vec::Vec<std::string::String> = data
