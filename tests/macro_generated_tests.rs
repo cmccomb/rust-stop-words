@@ -1,20 +1,27 @@
 /// Let's define a macro to help us out
+#[cfg(any(feature = "iso", feature = "nltk", feature = "constructed"))]
 macro_rules! test {
     (
-        $language_full:expr
+        $variant:ident
     ) => {
         #[test]
+        #[allow(deprecated)] // Verify the original enum remains usable.
         fn compare_enum_to_2letter() {
-            // Pul out the name versions that we want
-            let lingo = $language_full;
-            let lingo_as_enum = lingo.clone();
-            let lingo_as_string: String = lingo.clone().into();
+            // Pull out the name versions that we want
+            let lingo = stop_words::Language::$variant;
+            let lingo_as_enum = lingo;
+            let lingo_as_string: String = lingo.into();
             let lingo_as_str = &*(lingo_as_string.clone());
 
             // Pull word lists
             let word_list_from_enum = stop_words::get(lingo_as_enum);
             let word_list_from_string = stop_words::get(lingo_as_string);
             let word_list_from_str = stop_words::get(lingo_as_str);
+
+            assert_eq!(
+                word_list_from_enum,
+                stop_words::get(stop_words::LANGUAGE::$variant)
+            );
 
             // Run a whole hell of a lot of assertions
             for idx in 0..word_list_from_enum.len() {
@@ -26,451 +33,451 @@ macro_rules! test {
 
         #[test]
         fn make_sure_list_is_not_empty() {
-            let x = stop_words::get($language_full);
+            let x = stop_words::get(stop_words::Language::$variant);
             assert!(x.len() > 0)
         }
     };
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod arabic {
-    test!(stop_words::LANGUAGE::Arabic);
+    test!(Arabic);
 }
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
 mod albanian {
-    test!(stop_words::LANGUAGE::Albanian);
+    test!(Albanian);
 }
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
 mod azerbaijani {
-    test!(stop_words::LANGUAGE::Azerbaijani);
+    test!(Azerbaijani);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod afrikaans {
-    test!(stop_words::LANGUAGE::Afrikaans);
+    test!(Afrikaans);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod armenian {
-    test!(stop_words::LANGUAGE::Armenian);
+    test!(Armenian);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod basque {
-    test!(stop_words::LANGUAGE::Basque);
+    test!(Basque);
 }
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
 mod belarusian {
-    test!(stop_words::LANGUAGE::Belarusian);
+    test!(Belarusian);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod bengali {
-    test!(stop_words::LANGUAGE::Bengali);
+    test!(Bengali);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod breton {
-    test!(stop_words::LANGUAGE::Breton);
+    test!(Breton);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod bulgarian {
-    test!(stop_words::LANGUAGE::Bulgarian);
+    test!(Bulgarian);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod catalan {
-    test!(stop_words::LANGUAGE::Catalan);
+    test!(Catalan);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod czech {
-    test!(stop_words::LANGUAGE::Czech);
+    test!(Czech);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod chinese {
-    test!(stop_words::LANGUAGE::Chinese);
+    test!(Chinese);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod danish {
-    test!(stop_words::LANGUAGE::Danish);
+    test!(Danish);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod dutch {
-    test!(stop_words::LANGUAGE::Dutch);
+    test!(Dutch);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod english {
-    test!(stop_words::LANGUAGE::English);
+    test!(English);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod esperanto {
-    test!(stop_words::LANGUAGE::Esperanto);
+    test!(Esperanto);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod estonian {
-    test!(stop_words::LANGUAGE::Estonian);
+    test!(Estonian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod persian {
-    test!(stop_words::LANGUAGE::Persian);
+    test!(Persian);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod finnish {
-    test!(stop_words::LANGUAGE::Finnish);
+    test!(Finnish);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod french {
-    test!(stop_words::LANGUAGE::French);
+    test!(French);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod german {
-    test!(stop_words::LANGUAGE::German);
+    test!(German);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod greek {
-    test!(stop_words::LANGUAGE::Greek);
+    test!(Greek);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod gujarati {
-    test!(stop_words::LANGUAGE::Gujarati);
+    test!(Gujarati);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod hebrew {
-    test!(stop_words::LANGUAGE::Hebrew);
+    test!(Hebrew);
 }
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
 mod hinglish {
-    test!(stop_words::LANGUAGE::Hinglish);
+    test!(Hinglish);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod hindi {
-    test!(stop_words::LANGUAGE::Hindi);
+    test!(Hindi);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod hungarian {
-    test!(stop_words::LANGUAGE::Hungarian);
+    test!(Hungarian);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod indonesian {
-    test!(stop_words::LANGUAGE::Indonesian);
+    test!(Indonesian);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod italian {
-    test!(stop_words::LANGUAGE::Italian);
+    test!(Italian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod irish {
-    test!(stop_words::LANGUAGE::Irish);
+    test!(Irish);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod galician {
-    test!(stop_words::LANGUAGE::Galician);
+    test!(Galician);
 }
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
 mod kazakh {
-    test!(stop_words::LANGUAGE::Kazakh);
+    test!(Kazakh);
 }
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
 mod nepali {
-    test!(stop_words::LANGUAGE::Nepali);
+    test!(Nepali);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod norwegian {
-    test!(stop_words::LANGUAGE::Norwegian);
+    test!(Norwegian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod polish {
-    test!(stop_words::LANGUAGE::Polish);
+    test!(Polish);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod portuguese {
-    test!(stop_words::LANGUAGE::Portuguese);
+    test!(Portuguese);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod romanian {
-    test!(stop_words::LANGUAGE::Romanian);
+    test!(Romanian);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod russian {
-    test!(stop_words::LANGUAGE::Russian);
+    test!(Russian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod slovak {
-    test!(stop_words::LANGUAGE::Slovak);
+    test!(Slovak);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod slovenian {
-    test!(stop_words::LANGUAGE::Slovenian);
+    test!(Slovenian);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod spanish {
-    test!(stop_words::LANGUAGE::Spanish);
+    test!(Spanish);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod swedish {
-    test!(stop_words::LANGUAGE::Swedish);
+    test!(Swedish);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod somali {
-    test!(stop_words::LANGUAGE::Somali);
+    test!(Somali);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod sotho {
-    test!(stop_words::LANGUAGE::Sotho);
+    test!(Sotho);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod swahili {
-    test!(stop_words::LANGUAGE::Swahili);
+    test!(Swahili);
 }
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
 mod tajik {
-    test!(stop_words::LANGUAGE::Tajik);
+    test!(Tajik);
 }
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
 mod tamil {
-    test!(stop_words::LANGUAGE::Tamil);
+    test!(Tamil);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod thai {
-    test!(stop_words::LANGUAGE::Thai);
+    test!(Thai);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod tagalog {
-    test!(stop_words::LANGUAGE::Tagalog);
+    test!(Tagalog);
 }
 
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+#[cfg(any(feature = "nltk", feature = "iso"))]
 #[cfg(test)]
 mod turkish {
-    test!(stop_words::LANGUAGE::Turkish);
+    test!(Turkish);
 }
 
 #[cfg(feature = "nltk")]
 #[cfg(test)]
 mod uzbek {
-    test!(stop_words::LANGUAGE::Uzbek);
+    test!(Uzbek);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod ukrainian {
-    test!(stop_words::LANGUAGE::Ukrainian);
+    test!(Ukrainian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod urdu {
-    test!(stop_words::LANGUAGE::Urdu);
+    test!(Urdu);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod vietnamese {
-    test!(stop_words::LANGUAGE::Vietnamese);
+    test!(Vietnamese);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod yoruba {
-    test!(stop_words::LANGUAGE::Yoruba);
+    test!(Yoruba);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod zulu {
-    test!(stop_words::LANGUAGE::Zulu);
+    test!(Zulu);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod hausa {
-    test!(stop_words::LANGUAGE::Hausa);
+    test!(Hausa);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod croatian {
-    test!(stop_words::LANGUAGE::Croatian);
+    test!(Croatian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod japanese {
-    test!(stop_words::LANGUAGE::Japanese);
+    test!(Japanese);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod korean {
-    test!(stop_words::LANGUAGE::Korean);
+    test!(Korean);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod kurdish {
-    test!(stop_words::LANGUAGE::Kurdish);
+    test!(Kurdish);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod latin {
-    test!(stop_words::LANGUAGE::Latin);
+    test!(Latin);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod latvian {
-    test!(stop_words::LANGUAGE::Latvian);
+    test!(Latvian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod lithuanian {
-    test!(stop_words::LANGUAGE::Lithuanian);
+    test!(Lithuanian);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod marathi {
-    test!(stop_words::LANGUAGE::Marathi);
+    test!(Marathi);
 }
 
-#[cfg(all(feature = "iso", not(feature = "nltk"), not(feature = "constructed")))]
+#[cfg(feature = "iso")]
 #[cfg(test)]
 mod malay {
-    test!(stop_words::LANGUAGE::Malay);
+    test!(Malay);
 }
 
 #[cfg(feature = "constructed")]
 #[cfg(test)]
 mod klingon {
-    test!(stop_words::LANGUAGE::Klingon);
+    test!(Klingon);
 }
 
 #[cfg(feature = "constructed")]
 #[cfg(test)]
 mod dothraki {
-    test!(stop_words::LANGUAGE::Dothraki);
+    test!(Dothraki);
 }
 #[cfg(feature = "constructed")]
 #[cfg(test)]
 mod dovahzul {
-    test!(stop_words::LANGUAGE::Dovahzul);
+    test!(Dovahzul);
 }
 
 #[cfg(feature = "constructed")]
 #[cfg(test)]
 mod highvalyrian {
-    test!(stop_words::LANGUAGE::HighValyrian);
+    test!(HighValyrian);
 }
 
 #[cfg(feature = "constructed")]
 #[cfg(test)]
 mod navi {
-    test!(stop_words::LANGUAGE::Navi);
+    test!(Navi);
 }
 
 #[cfg(feature = "constructed")]
 #[cfg(test)]
 mod quenya {
-    test!(stop_words::LANGUAGE::Quenya);
+    test!(Quenya);
 }
 
 #[cfg(feature = "constructed")]
 #[cfg(test)]
 mod sindarin {
-    test!(stop_words::LANGUAGE::Sindarin);
+    test!(Sindarin);
 }

@@ -16,12 +16,50 @@ jobs:
         matrix:
             os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
     - name: Run tests on default features
       run: cargo test --verbose
-    - name: Run tests with nltk features
-      run: cargo test --no-default-features --features nltk --verbose
-    - name: Run tests with constructed features
-      run: cargo test --no-default-features --features constructed --verbose
-    - name: Run tests with nltk + constructed features
-      run: cargo test --no-default-features --features "nltk,constructed" --verbose
+
+  features:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        features:
+          - ""
+          - "iso"
+          - "nltk"
+          - "constructed"
+          - "iso,nltk"
+          - "iso,constructed"
+          - "nltk,constructed"
+          - "all"
+    steps:
+    - uses: actions/checkout@v7
+    - name: Test feature combination
+      run: cargo test --no-default-features --features "${{ matrix.features }}" --verbose
+
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - name: Check formatting
+      run: cargo fmt --all -- --check
+    - name: Run Clippy
+      run: cargo clippy --all-targets --all-features -- -D warnings
+    - name: Build documentation
+      env:
+        RUSTDOCFLAGS: "-D warnings"
+      run: cargo doc --no-deps --all-features
+    - name: Test all features, including unimplemented languages
+      run: cargo test --all-features
+
+  compatibility:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - name: Install Rust 1.84
+      run: rustup toolchain install 1.84.0 --profile minimal
+    - name: Test compatibility before Rust 2024
+      run: |
+        cargo +1.84.0 test --no-default-features
+        cargo +1.84.0 test --all-features

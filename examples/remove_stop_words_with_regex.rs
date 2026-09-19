@@ -1,6 +1,6 @@
 // This example demonstrates removing stop words using regular expressions.
-// It is only built when ISO or NLTK stop words are available and constructed languages are disabled.
-#[cfg(all(any(feature = "nltk", feature = "iso"), not(feature = "constructed")))]
+// It is only built when ISO or NLTK stop words are available.
+#[cfg(any(feature = "nltk", feature = "iso"))]
 fn main() {
     // Read in a file
     let document = std::fs::read_to_string("examples/foreword.txt").expect("Cannot read file");
@@ -9,7 +9,8 @@ fn main() {
     println!("Original text:\n{}", document);
 
     // Get the stopwords
-    let words = stop_words::get(stop_words::LANGUAGE::English);
+    let words = stop_words::lookup(stop_words::Language::English)
+        .expect("English data is enabled by the ISO or NLTK feature");
 
     // Remove punctuation and lowercase the text to make parsing easier
     let lowercase_doc = document.to_ascii_lowercase();
@@ -20,7 +21,7 @@ fn main() {
 
     // Make a regex to match stopwords with trailing spaces and punctuation
     let regex_for_stop_words = human_regex::word_boundary()
-        + human_regex::exactly(1, human_regex::or(&words))
+        + human_regex::exactly(1, human_regex::or(words))
         + human_regex::word_boundary()
         + human_regex::one_or_more(human_regex::whitespace());
 
@@ -31,8 +32,5 @@ fn main() {
     println!("\nClean text:\n{}", clean_text);
 }
 
-#[cfg(any(
-    all(not(feature = "nltk"), not(feature = "iso")),
-    feature = "constructed"
-))]
+#[cfg(not(any(feature = "nltk", feature = "iso")))]
 fn main() {}
