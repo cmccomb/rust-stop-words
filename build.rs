@@ -1,4 +1,4 @@
-fn write_language(out: &mut String, match_arms: &mut Vec<String>, code: &str, words: &[&str]) {
+fn write_language(out: &mut String, lookup_arms: &mut Vec<String>, code: &str, words: &[&str]) {
     let constant_name = code.to_uppercase();
     out.push_str("static ");
     out.push_str(&constant_name);
@@ -11,7 +11,26 @@ fn write_language(out: &mut String, match_arms: &mut Vec<String>, code: &str, wo
         out.push_str("\",");
     }
     out.push_str("];\n");
-    match_arms.push(format!("        \"{code}\" => Some(&{constant_name}),\n"));
+    lookup_arms.push(format!("        \"{code}\" => Some(&{constant_name}),\n"));
+}
+
+fn parse_words(data: &str) -> Vec<String> {
+    data.lines()
+        .filter(|word| !word.is_empty())
+        .map(String::from)
+        .collect()
+}
+
+fn parse_constructed_words(code: &str, data: &str) -> Vec<String> {
+    let words = parse_words(data);
+    let mut seen = std::collections::HashSet::new();
+    for word in &words {
+        assert!(
+            seen.insert(word),
+            "duplicate word {word:?} in constructed-language list {code:?}"
+        );
+    }
+    words
 }
 
 fn main() {
@@ -21,7 +40,8 @@ fn main() {
     println!("cargo:rerun-if-changed=src/iso/stopwords-iso.json");
 
     let mut file_contents = String::new();
-    let mut match_arms: Vec<String> = Vec::new();
+    let mut lookup_arms: Vec<String> = Vec::new();
+    let mut available_languages: Vec<String> = Vec::new();
 
     let nltk = std::env::var("CARGO_FEATURE_NLTK").is_ok();
     let constructed = std::env::var("CARGO_FEATURE_CONSTRUCTED").is_ok();
@@ -69,11 +89,7 @@ fn main() {
             ("uz", include_str!("src/nltk/uzbek")),
         ];
         for (code, data) in nltk_languages {
-            let words: std::vec::Vec<std::string::String> = data
-                .lines()
-                .filter(|w| !w.is_empty())
-                .map(std::string::String::from)
-                .collect();
+            let words = parse_words(data);
             languages.insert(code.to_string(), words);
         }
     }
@@ -89,11 +105,7 @@ fn main() {
             ("nav", include_str!("src/constructed/navi")),
         ];
         for (code, data) in constructed_languages {
-            let words: std::vec::Vec<std::string::String> = data
-                .lines()
-                .filter(|w| !w.is_empty())
-                .map(std::string::String::from)
-                .collect();
+            let words = parse_constructed_words(code, data);
             languages.insert(code.to_string(), words);
         }
     }
@@ -112,16 +124,25 @@ fn main() {
     for (code, words_vec) in languages {
         let words: std::vec::Vec<&str> =
             words_vec.iter().map(std::string::String::as_str).collect();
-        write_language(&mut file_contents, &mut match_arms, &code, &words);
+        available_languages.push(code.clone());
+        write_language(&mut file_contents, &mut lookup_arms, &code, &words);
     }
 
     file_contents.push_str(
         "pub(crate) fn lookup(language: &str) -> Option<&'static [&'static str]> {\n    match language {\n",
     );
-    for arm in match_arms {
-        file_contents.push_str(&arm);
+    for arm in &lookup_arms {
+        file_contents.push_str(arm);
     }
     file_contents.push_str("        _ => None,\n    }\n}\n");
+
+    file_contents.push_str("pub(crate) static AVAILABLE_LANGUAGES: &[&str] = &[\n");
+    for code in available_languages {
+        file_contents.push_str("    \"");
+        file_contents.push_str(&code);
+        file_contents.push_str("\",\n");
+    }
+    file_contents.push_str("];\n");
 
     let out_dir = std::env::var("OUT_DIR").unwrap();
     let out_path = std::path::Path::new(&out_dir).join("stopwords.rs");

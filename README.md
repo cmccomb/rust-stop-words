@@ -1,6 +1,7 @@
 [![Github CI](https://github.com/cmccomb/rust-stop-words/actions/workflows/tests.yml/badge.svg)](https://github.com/cmccomb/rust-stop-words/actions)
 [![Crates.io](https://img.shields.io/crates/v/stop-words.svg)](https://crates.io/crates/stop-words)
 [![docs.rs](https://img.shields.io/docsrs/stop-words/latest?logo=rust)](https://docs.rs/stop-words)
+
 # About
 
 Stop words are words that don't carry much meaning, and are typically removed as a preprocessing step before text
@@ -8,23 +9,67 @@ analysis or natural language processing. This crate contains common stop words f
 lists from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK](https://www.nltk.org/).
 
 # Usage
-Using this crate is fairly straight-forward: 
-```rust, ignore
-// Get the stop words
-let words = stop_words::get(stop_words::LANGUAGE::English);
 
-// Print them
-for word in words {
-    println!("{}", word);
+Use a language enum or its lookup code:
+
+```rust
+use stop_words::lookup;
+
+if let Some(words) = lookup("en") {
+    assert!(words.contains(&"the"));
 }
+
+// Unknown or disabled languages return None.
+assert!(lookup("not-a-language").is_none());
 ```
-The function ``get`` accepts either a member of the `LANGUAGE` enum or a language lookup code as either a `str` or `String`.
-For ISO languages this is usually a two-letter ISO 639-1 code, for constructed languages this is a three-letter code (`dot`, `dov`, `nav`, `qya`, `sjn`, `tlh`, `val`), and NLTK-specific `hinglish` is also supported when the `nltk` feature is enabled.
 
-You can find a complete example of how to read in a text file and remove stop words [here](https://github.com/cmccomb/rust-stop-words/blob/master/examples/remove_stop_words_with_regex.rs).
+`lookup` accepts a `Language`, a language code such as `"en"`, or a borrowed `String`. It returns a static slice without allocating. Codes are matched exactly, without case or whitespace normalization.
 
+With the `iso` or `nltk` feature enabled, `lookup(stop_words::Language::English)` returns the same list as `lookup("en")`.
 
-# ISO Language Availability
+`Language` is the preferred language enum; the original `LANGUAGE` enum is deprecated since 0.10.1 and remains available for compatibility, including direct variant imports. Replace `LANGUAGE` with `Language` to migrate. They are distinct types accepted by both lookup functions. The existing `get` function is retained and panics for unknown or disabled languages. Call `available_languages()` to discover the codes enabled in a particular build.
+
+For ISO languages, a lookup code is usually a two-letter ISO 639-1 code. Fictional constructed languages use three-letter codes (`dot`, `dov`, `nav`, `qya`, `sjn`, `tlh`, `val`), and NLTK-specific `hinglish` is supported when the `nltk` feature is enabled.
+
+You can find a complete example of reading a text file and removing stop words [here](https://github.com/cmccomb/rust-stop-words/blob/main/examples/remove_stop_words_with_regex.rs).
+
+# Features
+
+| Feature | Default | Contents |
+|---------|---------|----------|
+| `iso` | yes | Stopwords ISO lists |
+| `nltk` | no | NLTK lists, including NLTK-only languages |
+| `constructed` | no | Experimental fictional-language lists |
+| `all` | no | `iso`, `nltk`, and `constructed` together |
+
+Features are additive. Enabling `constructed`, for example, does not remove ISO or NLTK enum variants.
+When both `iso` and `nltk` provide a language, the NLTK list takes precedence, preserving the crate's existing behavior.
+
+The crate continues to use the Rust 2021 edition.
+
+## Membership and customization
+
+The crate returns static slices without allocating. For repeated membership checks or domain-specific changes, collect the slice into the set type your application needs:
+
+```rust
+use std::collections::HashSet;
+use stop_words::lookup;
+
+let Some(english) = lookup("en") else {
+    return;
+};
+let mut words: HashSet<&str> = english.iter().copied().collect();
+words.remove("computer"); // Preserve a meaningful domain term.
+words.insert("project");  // Add an application-specific stop word.
+
+assert!(!words.contains("computer"));
+assert!(words.contains("project"));
+```
+
+Entries are returned as supplied by their source dataset. Normalize input and list entries consistently for case-insensitive matching; the crate does not impose language-dependent normalization.
+
+# Natural Language Availability
+
 This crate supports all languages from [Stopwords ISO](https://github.com/stopwords-iso) and also from [NLTK](https://www.nltk.org/). Expand the table below to see a comprehensive description.
 <details>
     <summary>Language Coverage Table</summary>
@@ -220,8 +265,9 @@ This crate supports all languages from [Stopwords ISO](https://github.com/stopwo
 
 NLTK also includes a non-ISO list for `hinglish` (lookup key: `"hinglish"`) when the `nltk` feature is enabled.
 
-# Constructed Language Availability
-We also support some constructed (fictional/fantasy) languages! Expand the table below to see a comprehensive description. `ChatGPT` was used to generate these lists quickly, so they are incomplete and approximate. Help welcome! To use these languages, add the `constructed` feature.
+# Fictional Constructed Language Availability
+
+The optional `constructed` feature provides small experimental lists for seven fictional languages. These lists were initially generated with ChatGPT in March 2023 rather than derived from authoritative corpora. Treat them as approximate starting points, not linguistically validated datasets. Source-backed corrections and corpus-derived replacements are welcome.
 
 <details>
     <summary>Language Coverage Table</summary>
@@ -235,20 +281,5 @@ We also support some constructed (fictional/fantasy) languages! Expand the table
 | mis (_dov_ is used here) | [Dovahzul](https://www.thuum.org/library/Dovahzul%20Print%20Dictionary%204th%20Edition.pdf) |
 | mis (_nav_ is used here) | [Navi](https://en.wikipedia.org/wiki/Na%CA%BCvi_language)                                   | 
 | mis (_val_ is used here) | [High Valyrian](https://en.wikipedia.org/wiki/Valyrian_languages)                           |
-
-The following prompt was used with the Mar 14, 2023 version of `ChatGPT`:
-```text
-Please give me one list of 20+ stop words for each of the following languages: Sindarin, Quenya, Dothraki, Na'vi, 
-Dovahzul, Klingon, and High Valyrian. I'd like the lists to be formatted as follows:
-Sindarin
-1. [word goes here]
-2. [word goes here]
-...
-Quenya
-1. [word goes here]
-...
-
-And so on.
-```
 
 </details>

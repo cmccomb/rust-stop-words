@@ -15,6 +15,17 @@ mod panic_tests {
 #[cfg(test)]
 mod nltk_regressions {
     #[test]
+    fn source_entries_are_preserved_exactly() {
+        // This source contains a trailing-space entry, catching accidental normalization.
+        let expected: Vec<&str> = include_str!("../src/nltk/azerbaijani")
+            .lines()
+            .filter(|word| !word.is_empty())
+            .collect();
+
+        assert_eq!(stop_words::get("az"), expected);
+    }
+
+    #[test]
     fn hinglish_lookup_by_code_returns_words() {
         let words = stop_words::get("hinglish");
         assert!(!words.is_empty());
@@ -22,11 +33,25 @@ mod nltk_regressions {
 
     #[test]
     fn hinglish_enum_maps_to_literal_code() {
-        assert_eq!(stop_words::LANGUAGE::Hinglish.as_ref(), "hinglish");
+        assert_eq!(stop_words::Language::Hinglish.as_ref(), "hinglish");
         assert_eq!(
-            stop_words::get(stop_words::LANGUAGE::Hinglish),
+            stop_words::get(stop_words::Language::Hinglish),
             stop_words::get("hinglish")
         );
+    }
+}
+
+#[cfg(all(feature = "iso", feature = "nltk"))]
+#[cfg(test)]
+mod source_precedence {
+    #[test]
+    fn nltk_precedes_iso_when_both_are_enabled() {
+        let expected: Vec<&str> = include_str!("../src/nltk/english")
+            .lines()
+            .filter(|word| !word.is_empty())
+            .collect();
+
+        assert_eq!(stop_words::get("en"), expected);
     }
 }
 
